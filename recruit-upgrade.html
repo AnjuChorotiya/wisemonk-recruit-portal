@@ -1,0 +1,763 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Upgrade — Wisemonk Recruitment</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600;700;800&family=Geist+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --primary-50: #EEF1FF;
+      --primary-100: #D6DCFF;
+      --primary-500: #0026FF;
+      --primary-600: #001FCC;
+      --primary-700: #00199E;
+      --neutral-0: #FFFFFF;
+      --neutral-50: #F7F8FA;
+      --neutral-100: #EEF0F4;
+      --neutral-200: #DDE1E9;
+      --neutral-300: #C4CAD6;
+      --neutral-400: #9AA2B2;
+      --neutral-500: #6B7588;
+      --neutral-600: #4E5768;
+      --neutral-700: #363D4D;
+      --neutral-800: #222733;
+      --neutral-900: #121620;
+      --ai-grad: linear-gradient(135deg, #7C5CFF, #2684FF);
+      --success-50: #E6F9F0;
+      --success-500: #12B76A;
+      --success-700: #027A48;
+      --warning-50: #FFFAEB;
+      --warning-500: #F79009;
+      --warning-700: #B54708;
+      --border: #EEF0F4;
+      --border-strong: #DDE1E9;
+      --text-primary: #222733;
+      --text-secondary: #363D4D;
+      --text-muted: #9AA2B2;
+      --radius-sm: 8px;
+      --radius-md: 12px;
+      --radius-lg: 16px;
+      --radius-xl: 20px;
+      --radius-full: 100px;
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: 'GT Standard', 'Geist', sans-serif; background: #F1F8FF; color: var(--text-primary); min-height: 100vh; }
+    h1, h2, h3, h4, h5, h6 { font-family: 'GT Standard', 'Geist', sans-serif; }
+    a { text-decoration: none; color: inherit; }
+    button { font-family: inherit; border-radius: var(--radius-sm); }
+
+    /* ===== Topbar — Stripe-clean ===== */
+    .topbar {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 18px 32px;
+      background: var(--neutral-0);
+      border-bottom: 1px solid var(--border);
+    }
+    .nav-logo { display: flex; align-items: center; gap: 10px; height: 36px; overflow: hidden; cursor: pointer; }
+    .nav-logo img { height: 46px; margin-top: -10px; display: block; }
+    .close-btn {
+      width: 36px; height: 36px;
+      border-radius: 50%;
+      background: var(--neutral-50);
+      border: 1px solid var(--border-strong);
+      display: flex; align-items: center; justify-content: center;
+      cursor: pointer;
+      transition: all 0.15s;
+      color: var(--text-secondary);
+    }
+    .close-btn:hover { background: var(--neutral-100); color: var(--text-primary); }
+    .close-btn svg { width: 18px; height: 18px; }
+
+    main { padding: 32px 32px 80px; }
+    .wrapper { max-width: 1080px; margin: 0 auto; }
+
+    /* ===== Contextual hero — Linear style ===== */
+    .context-banner {
+      display: flex; align-items: center; gap: 14px;
+      padding: 14px 18px;
+      background: var(--warning-50);
+      border: 1px solid #FFE3A8;
+      border-radius: var(--radius-md);
+      margin-bottom: 28px;
+      font-size: 14px;
+      color: var(--warning-700);
+    }
+    .context-banner .ico {
+      width: 28px; height: 28px;
+      border-radius: 8px;
+      background: var(--warning-500);
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0;
+    }
+    .context-banner .ico svg { width: 14px; height: 14px; color: #fff; }
+    .context-banner .body { flex: 1; font-weight: 600; }
+    .context-banner .body strong { color: #6B3D02; font-weight: 700; }
+
+    /* ===== Two-column layout: value left, checkout right ===== */
+    .split {
+      display: grid;
+      grid-template-columns: 1.1fr 1fr;
+      gap: 32px;
+      align-items: start;
+    }
+    @media (max-width: 920px) {
+      .split { grid-template-columns: 1fr; gap: 24px; }
+    }
+
+    /* ===== Left column — value props (Linear pricing) ===== */
+    .left h1 {
+      font-size: 38px; font-weight: 700; letter-spacing: -0.8px;
+      line-height: 1.1;
+      margin-bottom: 14px;
+    }
+    .left h1 em {
+      font-style: normal;
+      background: var(--ai-grad);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
+    .left .lede {
+      font-size: 16.5px; line-height: 1.6;
+      color: var(--text-muted);
+      margin-bottom: 28px;
+      max-width: 480px;
+    }
+    .left .lede strong { color: var(--text-secondary); font-weight: 600; }
+
+    .unlock-list {
+      display: flex; flex-direction: column;
+      gap: 14px;
+      margin-bottom: 28px;
+    }
+    .unlock-item {
+      display: flex; gap: 14px; align-items: flex-start;
+    }
+    .unlock-item .check {
+      width: 24px; height: 24px;
+      border-radius: 50%;
+      background: var(--success-500);
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0;
+      margin-top: 1px;
+    }
+    .unlock-item .check svg { width: 13px; height: 13px; color: #fff; }
+    .unlock-item .text {
+      flex: 1;
+      font-size: 15px;
+      line-height: 1.55;
+      color: var(--text-primary);
+    }
+    .unlock-item .text strong { font-weight: 700; }
+    .unlock-item .text span { display: block; color: var(--text-muted); font-size: 13.5px; margin-top: 2px; }
+
+    /* ===== Compare table — Notion-style ===== */
+    .compare {
+      border: 1px solid var(--border-strong);
+      border-radius: var(--radius-md);
+      overflow: hidden;
+      background: var(--neutral-0);
+      margin-top: 6px;
+    }
+    .compare-row {
+      display: grid;
+      grid-template-columns: 1.4fr 1fr 1fr;
+      align-items: center;
+    }
+    .compare-row + .compare-row { border-top: 1px solid var(--border); }
+    .compare-cell { padding: 10px 14px; font-size: 13px; }
+    .compare-row.head .compare-cell {
+      font-family: 'Geist Mono', monospace; font-weight: 500;
+      font-size: 11px; letter-spacing: 0.5px; text-transform: uppercase;
+      color: var(--text-muted);
+      padding: 8px 14px;
+      background: var(--neutral-50);
+    }
+    .compare-cell.feature { font-weight: 600; color: var(--text-primary); }
+    .compare-cell.center { text-align: center; }
+    .compare-cell .check-yes { color: var(--success-500); font-weight: 700; }
+    .compare-cell .check-no { color: var(--text-muted); }
+    .compare-cell.pro { background: linear-gradient(180deg, var(--primary-50), transparent); font-weight: 700; color: var(--primary-600); position: relative; }
+
+    /* ===== Right column — Stripe checkout ===== */
+    .checkout {
+      background: var(--neutral-0);
+      border: 1px solid var(--border-strong);
+      border-radius: var(--radius-lg);
+      padding: 28px 28px 24px;
+      box-shadow: 0 18px 40px -20px rgba(34, 39, 51, 0.18);
+      position: sticky; top: 28px;
+    }
+
+    .billing-toggle {
+      display: inline-flex;
+      background: var(--neutral-50);
+      border: 1px solid var(--border-strong);
+      border-radius: var(--radius-full);
+      padding: 3px;
+      margin-bottom: 22px;
+    }
+    .billing-toggle button {
+      padding: 6px 14px;
+      background: transparent;
+      border: none;
+      cursor: pointer;
+      font-size: 12.5px;
+      font-weight: 700;
+      color: var(--text-muted);
+      border-radius: var(--radius-full);
+      transition: all 0.15s;
+      position: relative;
+    }
+    .billing-toggle button.active {
+      background: var(--neutral-0);
+      color: var(--text-primary);
+      box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+    }
+    .billing-toggle .save {
+      display: inline-block;
+      margin-left: 4px;
+      padding: 1px 6px;
+      background: var(--success-500);
+      color: #fff;
+      border-radius: 4px;
+      font-size: 10px;
+    }
+
+    .price-row { display: flex; align-items: baseline; gap: 6px; margin-bottom: 4px; }
+    .price-row .currency { font-size: 22px; font-weight: 600; color: var(--text-secondary); }
+    .price-row .amount { font-size: 48px; font-weight: 700; letter-spacing: -1.5px; line-height: 1; }
+    .price-row .period { font-size: 14px; color: var(--text-muted); font-weight: 500; }
+    .price-sub { font-size: 13px; color: var(--text-muted); margin-bottom: 22px; }
+    .price-sub.annual { color: var(--success-700); font-weight: 600; }
+
+    /* Express pay (Stripe wallets) */
+    .express-pay {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 8px;
+      margin-bottom: 18px;
+    }
+    .express-btn {
+      padding: 11px 14px;
+      border: 1.5px solid var(--border-strong);
+      border-radius: var(--radius-full);
+      background: var(--neutral-0);
+      cursor: pointer;
+      display: flex; align-items: center; justify-content: center; gap: 8px;
+      font-size: 13px; font-weight: 600;
+      color: var(--text-primary);
+      transition: all 0.15s;
+    }
+    .express-btn:hover { background: var(--neutral-50); border-color: var(--neutral-400); }
+    .express-btn svg { width: 32px; height: 14px; }
+
+    .or-divider {
+      display: flex; align-items: center; gap: 10px;
+      margin: 16px 0;
+      font-size: 11.5px; color: var(--text-muted);
+      font-family: 'Geist Mono', monospace; font-weight: 500;
+      letter-spacing: 0.5px; text-transform: uppercase;
+    }
+    .or-divider::before, .or-divider::after { content: ''; flex: 1; height: 1px; background: var(--border); }
+
+    /* Fields — Stripe-style */
+    .form-field { margin-bottom: 12px; }
+    .form-field label {
+      display: block;
+      font-size: 12.5px; font-weight: 600;
+      color: var(--text-secondary);
+      margin-bottom: 6px;
+    }
+    .form-input {
+      width: 100%;
+      padding: 12px 14px;
+      background: var(--neutral-0);
+      border: 1.5px solid var(--border-strong);
+      border-radius: var(--radius-sm);
+      font-family: inherit;
+      font-size: 15px;
+      font-weight: 500;
+      color: var(--text-primary);
+      transition: all 0.15s;
+      outline: none;
+    }
+    .form-input::placeholder { color: var(--text-muted); font-weight: 400; }
+    .form-input:hover { border-color: var(--neutral-400); }
+    .form-input:focus { border-color: var(--primary-500); box-shadow: 0 0 0 3px var(--primary-50); }
+
+    .card-row {
+      position: relative;
+    }
+    .card-row .brand-icons {
+      position: absolute; right: 12px; top: 50%;
+      transform: translateY(-50%);
+      display: flex; gap: 4px;
+    }
+    .brand-pill {
+      padding: 2px 6px;
+      background: var(--neutral-50);
+      border: 1px solid var(--border-strong);
+      border-radius: 4px;
+      font-size: 9px; font-weight: 700;
+      letter-spacing: 0.4px;
+      color: var(--text-secondary);
+    }
+    .row-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+
+    /* Order summary */
+    .summary {
+      padding: 14px 16px;
+      background: var(--neutral-50);
+      border-radius: var(--radius-md);
+      margin: 16px 0 18px;
+      font-size: 13px;
+    }
+    .summary-row { display: flex; justify-content: space-between; padding: 4px 0; color: var(--text-secondary); }
+    .summary-row.tot { padding-top: 10px; margin-top: 8px; border-top: 1px solid var(--border-strong); font-weight: 700; color: var(--text-primary); font-size: 14px; }
+
+    /* Pay CTA */
+    .pay-btn {
+      width: 100%; padding: 15px 22px;
+      border: none; border-radius: var(--radius-full);
+      background: var(--neutral-900); color: #fff;
+      font-family: inherit; font-size: 15px; font-weight: 600;
+      cursor: pointer; transition: all 0.15s;
+      display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+    }
+    .pay-btn:hover:not(:disabled) { background: #000; transform: translateY(-1px); }
+    .pay-btn:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
+    .pay-btn svg { width: 15px; height: 15px; }
+    .pay-btn .spinner {
+      width: 14px; height: 14px;
+      border: 2px solid rgba(255,255,255,0.3);
+      border-top-color: #fff;
+      border-radius: 50%;
+      animation: spin 0.8s linear infinite;
+    }
+    @keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+
+    /* Trust line */
+    .trust-line {
+      display: flex; align-items: center; justify-content: center; gap: 8px;
+      margin-top: 14px;
+      font-size: 12px; color: var(--text-muted);
+    }
+    .trust-line svg { width: 12px; height: 12px; }
+    .trust-line strong { color: var(--text-secondary); font-weight: 600; }
+
+    /* Bottom trust strip */
+    .trust-strip {
+      display: flex; align-items: center; justify-content: center;
+      gap: 28px;
+      margin-top: 44px;
+      padding: 20px;
+      flex-wrap: wrap;
+      font-size: 13px; color: var(--text-muted);
+    }
+    .trust-strip-item { display: flex; align-items: center; gap: 8px; }
+    .trust-strip-item svg { width: 16px; height: 16px; color: var(--text-secondary); }
+    .trust-strip-item strong { color: var(--text-secondary); font-weight: 700; }
+
+    /* ===== Success state ===== */
+    .success-view { display: none; text-align: center; padding: 60px 0; }
+    .success-view.active { display: block; }
+    .success-icon {
+      width: 120px; height: 120px;
+      margin: 0 auto 24px;
+      border-radius: 50%;
+      background: var(--success-500);
+      display: flex; align-items: center; justify-content: center;
+      box-shadow: 0 20px 50px -10px rgba(18, 183, 106, 0.5);
+      animation: pop 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+    @keyframes pop { 0% { transform: scale(0); opacity: 0; } 100% { transform: scale(1); opacity: 1; } }
+    .success-icon svg { width: 60px; height: 60px; color: #fff; }
+    .success-view h1 { font-size: 34px; font-weight: 700; letter-spacing: -0.6px; margin-bottom: 12px; }
+    .success-view .lede { font-size: 16px; color: var(--text-muted); margin-bottom: 24px; }
+    .success-cta {
+      display: inline-flex; align-items: center; gap: 10px;
+      padding: 14px 28px;
+      background: var(--primary-500); color: #fff;
+      border: none; border-radius: var(--radius-full);
+      font-family: inherit; font-size: 15px; font-weight: 700;
+      cursor: pointer; transition: all 0.15s;
+      box-shadow: 0 8px 20px -6px rgba(0,38,255,0.5);
+    }
+    .success-cta:hover { background: var(--primary-600); transform: translateY(-1px); }
+    .success-cta svg { width: 16px; height: 16px; }
+
+    /* Hide checkout view when success active */
+    .checkout-view.hidden { display: none; }
+
+    @media (max-width: 720px) {
+      .topbar { padding: 14px 18px; }
+      main { padding: 22px 18px 56px; }
+      .left h1 { font-size: 28px; }
+      .checkout { padding: 22px 20px; position: static; }
+    }
+  </style>
+</head>
+<body>
+
+  <header class="topbar">
+    <div class="nav-logo" id="logoHome"><img src="wisemonk_logo_final.png" alt="Wisemonk"></div>
+    <button type="button" class="close-btn" id="closeBtn" aria-label="Close">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+    </button>
+  </header>
+
+  <main>
+    <div class="wrapper">
+
+      <!-- ============ CHECKOUT VIEW ============ -->
+      <div class="checkout-view" id="checkoutView">
+
+        <!-- Contextual banner -->
+        <div class="context-banner" id="contextBanner">
+          <div class="ico">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+          </div>
+          <div class="body" id="contextBody">
+            <strong>12 more candidates are waiting.</strong> Upgrade to Pro to unlock unlimited candidates and roles.
+          </div>
+        </div>
+
+        <div class="split">
+          <!-- ===== Left: value pitch (Linear-style) ===== -->
+          <div class="left">
+            <h1>Hire without limits, <em>for $99/mo.</em></h1>
+            <p class="lede">
+              You've used your free role. Unlock unlimited candidates, unlimited roles, and the full hiring stack. <strong>Cancel anytime.</strong>
+            </p>
+
+            <div class="unlock-list">
+              <div class="unlock-item">
+                <div class="check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div>
+                <div class="text">
+                  <strong>Unlimited candidates per role</strong>
+                  <span>See everyone we surface, not just the top 5.</span>
+                </div>
+              </div>
+              <div class="unlock-item">
+                <div class="check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div>
+                <div class="text">
+                  <strong>Unlimited open roles</strong>
+                  <span>Hire across teams in parallel — no per-seat fees.</span>
+                </div>
+              </div>
+              <div class="unlock-item">
+                <div class="check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div>
+                <div class="text">
+                  <strong>Full EOR included</strong>
+                  <span>Payroll, PF, gratuity, ESI, contracts — all auto-handled per hire.</span>
+                </div>
+              </div>
+              <div class="unlock-item">
+                <div class="check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div>
+                <div class="text">
+                  <strong>AI screening &amp; async video</strong>
+                  <span>3-min video interviews scored by AI before you see them.</span>
+                </div>
+              </div>
+              <div class="unlock-item">
+                <div class="check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div>
+                <div class="text">
+                  <strong>White-label careers page</strong>
+                  <span>Your logo, colour, custom subdomain.</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Notion-style compare -->
+            <div class="compare">
+              <div class="compare-row head">
+                <div class="compare-cell">Feature</div>
+                <div class="compare-cell center">Free</div>
+                <div class="compare-cell center" style="color: var(--primary-600);">Pro</div>
+              </div>
+              <div class="compare-row">
+                <div class="compare-cell feature">Open roles</div>
+                <div class="compare-cell center pro">Unlimited</div>
+                <div class="compare-cell center pro">Unlimited</div>
+              </div>
+              <div class="compare-row">
+                <div class="compare-cell feature">Applicants per role</div>
+                <div class="compare-cell center pro">Unlimited</div>
+                <div class="compare-cell center pro">Unlimited</div>
+              </div>
+              <div class="compare-row">
+                <div class="compare-cell feature">AI screening + async video</div>
+                <div class="compare-cell center"><span class="check-yes">✓</span></div>
+                <div class="compare-cell center pro"><span class="check-yes">✓</span></div>
+              </div>
+              <div class="compare-row">
+                <div class="compare-cell feature">Built-in scheduler &amp; video room</div>
+                <div class="compare-cell center"><span class="check-yes">✓</span></div>
+                <div class="compare-cell center pro"><span class="check-yes">✓</span></div>
+              </div>
+              <div class="compare-row">
+                <div class="compare-cell feature">AI talent search across our network</div>
+                <div class="compare-cell center">Top 3 matches</div>
+                <div class="compare-cell center pro">Unlimited</div>
+              </div>
+              <div class="compare-row">
+                <div class="compare-cell feature">AI interview summary &amp; rubric scoring</div>
+                <div class="compare-cell center">First round only</div>
+                <div class="compare-cell center pro">All rounds</div>
+              </div>
+              <div class="compare-row">
+                <div class="compare-cell feature">Custom interview plan (multiple rounds)</div>
+                <div class="compare-cell center">Up to 2 rounds</div>
+                <div class="compare-cell center pro">Unlimited rounds</div>
+              </div>
+              <div class="compare-row">
+                <div class="compare-cell feature">Team seats</div>
+                <div class="compare-cell center">1</div>
+                <div class="compare-cell center pro">Unlimited</div>
+              </div>
+              <div class="compare-row">
+                <div class="compare-cell feature">White-label careers page &amp; emails</div>
+                <div class="compare-cell center"><span class="check-no">—</span></div>
+                <div class="compare-cell center pro"><span class="check-yes">✓</span></div>
+              </div>
+              <div class="compare-row">
+                <div class="compare-cell feature">India EOR (payroll, PF, gratuity, ESI)</div>
+                <div class="compare-cell center"><span class="check-no">—</span></div>
+                <div class="compare-cell center pro"><span class="check-yes">✓</span></div>
+              </div>
+              <div class="compare-row">
+                <div class="compare-cell feature">Offer letter automation + e-sign</div>
+                <div class="compare-cell center"><span class="check-no">—</span></div>
+                <div class="compare-cell center pro"><span class="check-yes">✓</span></div>
+              </div>
+              <div class="compare-row">
+                <div class="compare-cell feature">Priority support (4-hour SLA)</div>
+                <div class="compare-cell center"><span class="check-no">—</span></div>
+                <div class="compare-cell center pro"><span class="check-yes">✓</span></div>
+              </div>
+            </div>
+          </div>
+
+          <!-- ===== Right: checkout (Stripe-style) ===== -->
+          <div class="checkout">
+
+            <div class="billing-toggle" role="tablist">
+              <button type="button" class="active" data-period="monthly">Monthly</button>
+              <button type="button" data-period="annual">Annual <span class="save">−20%</span></button>
+            </div>
+
+            <div class="price-row" id="priceRow">
+              <span class="currency">$</span>
+              <span class="amount" id="priceAmount">99</span>
+              <span class="period">/month</span>
+            </div>
+            <div class="price-sub" id="priceSub">Billed monthly · cancel anytime</div>
+
+            <!-- Express pay (Stripe wallets) -->
+            <div class="express-pay">
+              <button type="button" class="express-btn">
+                <svg viewBox="0 0 33 14" fill="currentColor"><path d="M5.7 2.4C6.3 1.8 6.8 1 6.7 0.2 6 .2 5.2.7 4.6 1.3 4 1.9 3.5 2.7 3.6 3.5c.7 0 1.5-.5 2.1-1.1zM6.7 3.7c-1.2-.1-2.2.7-2.7.7-.6 0-1.5-.6-2.4-.6-1.2 0-2.4.7-3 1.8-1.3 2.2-.3 5.5 1 7.3.6.9 1.3 1.8 2.2 1.8.9 0 1.2-.6 2.3-.6 1.1 0 1.4.6 2.4.6 1 0 1.6-.9 2.2-1.7.7-1 1-2 1-2 0 0-2-.8-2-3 0-1.9 1.6-2.8 1.7-2.9-.9-1.3-2.3-1.4-2.7-1.4z"/></svg>
+                Pay
+              </button>
+              <button type="button" class="express-btn">
+                <svg viewBox="0 0 33 14" fill="none">
+                  <path d="M4 7c0-2 1-3 3-3s3 1 3 3-1 3-3 3-3-1-3-3z" fill="#4285F4"/>
+                  <path d="M11 7c0-2 1-3 3-3s3 1 3 3-1 3-3 3-3-1-3-3z" fill="#EA4335"/>
+                  <path d="M18 7c0-2 1-3 3-3s3 1 3 3-1 3-3 3-3-1-3-3z" fill="#FBBC04"/>
+                  <path d="M25 7c0-2 1-3 3-3s3 1 3 3-1 3-3 3-3-1-3-3z" fill="#34A853"/>
+                </svg>
+                Pay
+              </button>
+            </div>
+
+            <div class="or-divider">Or pay with card</div>
+
+            <form id="payForm" novalidate>
+              <div class="form-field">
+                <label for="emailIn">Email</label>
+                <input class="form-input" type="email" id="emailIn" placeholder="you@company.com" value="alex@acme.com">
+              </div>
+
+              <div class="form-field card-row">
+                <label for="cardIn">Card information</label>
+                <input class="form-input" type="text" id="cardIn" placeholder="1234 1234 1234 1234" inputmode="numeric" maxlength="19" autocomplete="cc-number">
+                <div class="brand-icons">
+                  <span class="brand-pill" style="color: #1A1F71;">VISA</span>
+                  <span class="brand-pill" style="color: #EB001B;">MC</span>
+                  <span class="brand-pill" style="color: #006FCF;">AMEX</span>
+                </div>
+              </div>
+
+              <div class="row-2">
+                <div class="form-field">
+                  <input class="form-input" type="text" id="expIn" placeholder="MM / YY" maxlength="7" autocomplete="cc-exp">
+                </div>
+                <div class="form-field">
+                  <input class="form-input" type="text" id="cvcIn" placeholder="CVC" maxlength="4" autocomplete="cc-csc">
+                </div>
+              </div>
+
+              <div class="form-field">
+                <label for="nameIn">Name on card</label>
+                <input class="form-input" type="text" id="nameIn" placeholder="Alex Mehta" autocomplete="cc-name">
+              </div>
+
+              <div class="form-field">
+                <label for="countryIn">Country</label>
+                <select class="form-input" id="countryIn">
+                  <option>United States</option>
+                  <option>United Kingdom</option>
+                  <option>Canada</option>
+                  <option>Australia</option>
+                  <option>Germany</option>
+                  <option>India</option>
+                  <option>Singapore</option>
+                </select>
+              </div>
+
+              <div class="summary">
+                <div class="summary-row"><span>Wisemonk Pro</span><span id="sumPlan">$99 / month</span></div>
+                <div class="summary-row"><span>Tax</span><span>—</span></div>
+                <div class="summary-row tot"><span>Total today</span><span id="sumTotal">$99.00</span></div>
+              </div>
+
+              <button class="pay-btn" type="submit" id="payBtn">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+                <span id="payText">Pay $99 and unlock</span>
+              </button>
+
+              <div class="trust-line">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+                Secured by <strong>Stripe</strong> · PCI-DSS compliant
+              </div>
+            </form>
+          </div>
+        </div>
+
+        <!-- Bottom trust strip -->
+        <div class="trust-strip">
+          <div class="trust-strip-item">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+            <span><strong>14-day refund</strong> if your first hire doesn't work out</span>
+          </div>
+          <div class="trust-strip-item">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+            <span><strong>Cancel anytime</strong> · no contracts</span>
+          </div>
+          <div class="trust-strip-item">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+            <span><strong>SOC 2 · ISO 27001</strong></span>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- ============ SUCCESS VIEW ============ -->
+      <div class="success-view" id="successView">
+        <div class="success-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+        </div>
+        <h1>You're on Pro</h1>
+        <p class="lede">Unlimited candidates, unlimited roles, full EOR — all unlocked.</p>
+        <button class="success-cta" id="continueBtn">
+          <span id="continueText">Continue where you left off</span>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
+        </button>
+      </div>
+
+    </div>
+  </main>
+
+  <script>
+    // ===== State =====
+    const params = new URLSearchParams(location.search);
+    const reason = params.get('reason') || 'more-candidates';
+    let billingPeriod = 'monthly';
+
+    // Contextual banner copy
+    const banner = document.getElementById('contextBody');
+    if (reason === 'second-role') {
+      banner.innerHTML = `<strong>Ready to scale your hiring?</strong> Open more roles with full AI search, EOR hiring, and unlimited team seats.`;
+    } else if (reason === 'more-candidates') {
+      banner.innerHTML = `<strong>Unlock AI talent search.</strong> Free shows top 3 matches. Pro unlocks every candidate in our network — instantly.`;
+    }
+
+    // Billing toggle
+    document.querySelectorAll('.billing-toggle button').forEach(btn => {
+      btn.addEventListener('click', () => {
+        document.querySelectorAll('.billing-toggle button').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        billingPeriod = btn.dataset.period;
+        updatePricing();
+      });
+    });
+
+    function updatePricing() {
+      const amount = document.getElementById('priceAmount');
+      const sub = document.getElementById('priceSub');
+      const sumPlan = document.getElementById('sumPlan');
+      const sumTotal = document.getElementById('sumTotal');
+      const payText = document.getElementById('payText');
+      if (billingPeriod === 'annual') {
+        amount.textContent = '79';
+        sub.className = 'price-sub annual';
+        sub.textContent = 'Billed $948/year · save $240';
+        sumPlan.textContent = '$948 / year';
+        sumTotal.textContent = '$948.00';
+        payText.textContent = 'Pay $948 and unlock';
+      } else {
+        amount.textContent = '99';
+        sub.className = 'price-sub';
+        sub.textContent = 'Billed monthly · cancel anytime';
+        sumPlan.textContent = '$99 / month';
+        sumTotal.textContent = '$99.00';
+        payText.textContent = 'Pay $99 and unlock';
+      }
+    }
+
+    // Card number formatting
+    const cardIn = document.getElementById('cardIn');
+    cardIn.addEventListener('input', () => {
+      const v = cardIn.value.replace(/\D/g, '').slice(0, 16);
+      cardIn.value = v.replace(/(.{4})/g, '$1 ').trim();
+    });
+    const expIn = document.getElementById('expIn');
+    expIn.addEventListener('input', () => {
+      let v = expIn.value.replace(/\D/g, '').slice(0, 4);
+      if (v.length >= 3) v = v.slice(0,2) + ' / ' + v.slice(2);
+      expIn.value = v;
+    });
+
+    // Submit (mock)
+    document.getElementById('payForm').addEventListener('submit', e => {
+      e.preventDefault();
+      const btn = document.getElementById('payBtn');
+      btn.disabled = true;
+      btn.innerHTML = '<span class="spinner"></span> Processing…';
+      setTimeout(() => {
+        document.getElementById('checkoutView').classList.add('hidden');
+        document.getElementById('successView').classList.add('active');
+        // Update success CTA based on reason
+        const ctaText = document.getElementById('continueText');
+        if (reason === 'second-role') ctaText.textContent = 'Create your next role';
+      }, 1400);
+    });
+
+    // Success CTA
+    document.getElementById('continueBtn').addEventListener('click', () => {
+      if (reason === 'second-role') location.href = 'recruit-role.html';
+      else location.href = 'recruit-pipeline.html';
+    });
+
+    // Topbar
+    document.getElementById('logoHome').addEventListener('click', () => location.href = 'recruit-pipeline.html');
+    document.getElementById('closeBtn').addEventListener('click', () => {
+      if (history.length > 1) history.back();
+      else location.href = 'recruit-pipeline.html';
+    });
+  </script>
+
+</body>
+</html>

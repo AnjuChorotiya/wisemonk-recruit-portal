@@ -1,0 +1,704 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sign up — Wisemonk Recruitment</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600;700;800&family=Geist+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --primary-50: #EEF1FF;
+      --primary-100: #D6DCFF;
+      --primary-500: #0026FF;
+      --primary-600: #001FCC;
+      --neutral-0: #FFFFFF;
+      --neutral-50: #F7F8FA;
+      --neutral-100: #EEF0F4;
+      --neutral-200: #DDE1E9;
+      --neutral-300: #C4CAD6;
+      --neutral-400: #9AA2B2;
+      --neutral-500: #6B7588;
+      --neutral-700: #363D4D;
+      --neutral-800: #222733;
+      --border: #EEF0F4;
+      --border-strong: #DDE1E9;
+      --text-primary: #222733;
+      --text-secondary: #363D4D;
+      --text-muted: #9AA2B2;
+      --radius-md: 12px;
+      --radius-lg: 16px;
+      --radius-full: 100px;
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: 'GT Standard', 'Geist', sans-serif; background: #F1F8FF; color: var(--text-primary); min-height: 100vh; display: flex; flex-direction: column; }
+    h1, h2, h3, h4, h5, h6 { font-family: 'GT Standard', 'Geist', sans-serif; }
+    a { text-decoration: none; color: inherit; }
+    button { font-family: inherit; border-radius: var(--radius-sm); }
+
+    .topbar {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 22px 40px 18px; background: var(--neutral-0);
+    }
+    .nav-logo { display: flex; align-items: center; gap: 10px; height: 36px; overflow: hidden; cursor: pointer; }
+    .nav-logo img { height: 46px; margin-top: -10px; display: block; }
+    .top-action {
+      font-size: 14px; font-weight: 600; color: var(--text-secondary);
+      padding: 10px 18px; border-radius: var(--radius-full);
+      border: 1.5px solid var(--border-strong); background: var(--neutral-0);
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+    .top-action:hover { border-color: var(--text-secondary); color: var(--text-primary); background: var(--neutral-50); }
+
+    main { flex: 1; padding: 32px 24px 80px; }
+    .wrapper { max-width: 560px; margin: 0 auto; }
+
+    /* Progress */
+    .progress { display: flex; align-items: center; justify-content: center; gap: 8px; margin-bottom: 36px; }
+    .dot { height: 6px; border-radius: 4px; background: var(--neutral-200); transition: all 0.3s; width: 32px; }
+    .dot.active { background: var(--primary-500); width: 48px; }
+    .dot.done { background: var(--primary-500); }
+    .progress-label {
+      font-family: 'Geist Mono', monospace; font-weight: 500;
+      font-size: 12px; letter-spacing: 0.5px; text-transform: uppercase;
+      color: var(--text-muted); margin-left: 12px;
+    }
+
+    /* Back link */
+    .back-link {
+      display: inline-flex; align-items: center; gap: 6px;
+      padding: 8px 14px 8px 10px;
+      border-radius: var(--radius-full);
+      font-size: 14px; font-weight: 600; color: var(--text-primary);
+      margin-bottom: 12px;
+      transition: background 0.15s;
+      background: none; border: none; cursor: pointer;
+    }
+    .back-link:hover { color: var(--primary-600); background: var(--neutral-100); }
+    .back-link svg { width: 16px; height: 16px; }
+
+    .question-block { text-align: center; margin-bottom: 32px; }
+    h1 { font-size: 30px; font-weight: 700; letter-spacing: -0.4px; line-height: 1.25; margin-bottom: 12px; }
+    .subhead { font-size: 15px; color: var(--text-muted); line-height: 1.55; }
+    .subhead strong { color: var(--text-secondary); font-weight: 600; }
+
+    /* Steps */
+    .step { display: none; animation: fadeIn 0.25s ease-out; }
+    .step.active { display: block; }
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
+
+    /* Email step (no max-width inside) */
+    .step[data-step="email"] .wrapper-inner { max-width: 520px; margin: 0 auto; }
+    .step[data-step="verify"] .wrapper-inner { max-width: 520px; margin: 0 auto; text-align: center; }
+    .step[data-step="country"] .wrapper-inner { max-width: 520px; margin: 0 auto; }
+
+    /* Form fields */
+    .field { position: relative; margin-bottom: 22px; }
+    .field-label { font-size: 13px; font-weight: 600; color: var(--text-secondary); margin-bottom: 8px; display: block; }
+    .input {
+      width: 100%; padding: 16px 18px;
+      background: var(--neutral-0);
+      border: 1.5px solid var(--border-strong);
+      border-radius: var(--radius-md);
+      font-family: inherit; font-size: 15.5px; font-weight: 500;
+      color: var(--text-primary);
+      transition: border-color 0.15s, box-shadow 0.15s;
+      outline: none;
+    }
+    .input::placeholder { color: var(--text-muted); font-weight: 400; }
+    .input:hover { border-color: var(--neutral-400); }
+    .input:focus { border-color: var(--primary-500); box-shadow: 0 0 0 4px var(--primary-50); }
+
+    /* CTA + ghost + SSO */
+    .cta-button {
+      width: 100%; padding: 16px 24px; border: none;
+      border-radius: var(--radius-full);
+      background: var(--primary-500); color: #fff;
+      font-family: inherit; font-size: 16px; font-weight: 700;
+      cursor: pointer; transition: all 0.15s ease;
+      display: inline-flex; align-items: center; justify-content: center; gap: 10px;
+      box-shadow: 0 6px 16px -6px rgba(0,38,255,0.45);
+    }
+    .cta-button:hover { background: var(--primary-600); transform: translateY(-1px); box-shadow: 0 8px 20px -6px rgba(0,38,255,0.55); }
+    .cta-button svg { width: 18px; height: 18px; }
+    .ghost-btn {
+      width: 100%; padding: 14px 24px;
+      border-radius: var(--radius-full);
+      border: 1.5px solid var(--border-strong);
+      background: var(--neutral-0);
+      font-family: inherit; font-size: 15px; font-weight: 600;
+      color: var(--text-secondary);
+      cursor: pointer; transition: all 0.15s;
+    }
+    .ghost-btn:hover:not(:disabled) { border-color: var(--neutral-400); color: var(--text-primary); background: var(--neutral-50); }
+    .ghost-btn:disabled { color: var(--text-muted); cursor: not-allowed; }
+    .sso-btn {
+      width: 100%; display: inline-flex; align-items: center; justify-content: center; gap: 12px;
+      padding: 14px 18px; border-radius: var(--radius-full);
+      border: 1.5px solid var(--border-strong); background: var(--neutral-0);
+      font-family: inherit; font-size: 15px; font-weight: 600; color: var(--text-primary);
+      cursor: pointer; transition: all 0.15s;
+    }
+    .sso-btn:hover { background: var(--neutral-50); border-color: var(--neutral-300); }
+    .sso-btn img { width: 18px; height: 18px; }
+    .divider { display: flex; align-items: center; gap: 14px; margin: 20px 0; font-size: 12.5px; color: var(--text-muted); font-weight: 500; }
+    .divider::before, .divider::after { content: ''; flex: 1; height: 1px; background: var(--border); }
+    .disclaimer { margin-top: 22px; text-align: center; font-size: 13px; line-height: 1.6; color: var(--text-muted); }
+    .disclaimer a { color: var(--text-secondary); font-weight: 600; text-decoration: underline; text-underline-offset: 3px; }
+
+    /* Verify step bits */
+    .icon-wrap {
+      width: 88px; height: 88px; margin: 8px auto 24px;
+      border-radius: 50%; background: var(--primary-50);
+      display: flex; align-items: center; justify-content: center;
+      position: relative;
+    }
+    .icon-wrap::before { content: ''; position: absolute; inset: -10px; border-radius: 50%; border: 1px dashed var(--primary-100); }
+    .icon-wrap svg { width: 42px; height: 42px; color: var(--primary-500); }
+    .email-pill {
+      display: inline-flex; align-items: center; gap: 8px;
+      padding: 8px 16px;
+      background: var(--neutral-50);
+      border: 1px solid var(--border-strong);
+      border-radius: var(--radius-full);
+      font-size: 14px; font-weight: 600; color: var(--text-primary);
+      margin: 18px 0 28px;
+    }
+    .email-pill svg { width: 16px; height: 16px; color: var(--text-muted); }
+    .helper-card {
+      margin-top: 24px; padding: 16px 18px;
+      background: var(--neutral-50); border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      text-align: left;
+      display: flex; gap: 12px; align-items: flex-start;
+    }
+    .helper-card svg { width: 18px; height: 18px; color: var(--text-muted); flex-shrink: 0; margin-top: 2px; }
+    .helper-card p { font-size: 13.5px; line-height: 1.55; color: var(--text-secondary); }
+    .helper-card a, .helper-card button.link {
+      color: var(--primary-500); font-weight: 600; text-decoration: underline; text-underline-offset: 3px;
+      background: none; border: none; padding: 0; cursor: pointer; font-family: inherit; font-size: inherit;
+    }
+    .wrong-email { margin-top: 22px; font-size: 13.5px; color: var(--text-muted); }
+    .wrong-email button {
+      background: none; border: none; cursor: pointer;
+      color: var(--text-secondary); font-weight: 600; font-family: inherit;
+      font-size: 13.5px;
+      text-decoration: underline; text-underline-offset: 3px;
+    }
+    .wrong-email button:hover { color: var(--primary-500); }
+
+    /* Country select */
+    .select-wrap { position: relative; }
+    .country-select {
+      width: 100%;
+      display: flex; align-items: center; gap: 12px;
+      padding: 16px 18px;
+      background: var(--neutral-0);
+      border: 1.5px solid var(--border-strong);
+      border-radius: var(--radius-md);
+      font-family: inherit; font-size: 15.5px; font-weight: 500;
+      color: var(--text-primary);
+      cursor: pointer;
+      transition: border-color 0.15s, box-shadow 0.15s;
+    }
+    .country-select:hover { border-color: var(--neutral-400); }
+    .country-select.open, .country-select:focus { border-color: var(--primary-500); box-shadow: 0 0 0 4px var(--primary-50); outline: none; }
+    .country-select .flag { width: 24px; height: 24px; border-radius: 50%; object-fit: cover; flex-shrink: 0; box-shadow: 0 0 0 1px var(--border-strong); }
+    .country-select .name { flex: 1; text-align: left; }
+    .country-select .chev { color: var(--text-muted); transition: transform 0.2s; }
+    .country-select.open .chev { transform: rotate(180deg); }
+    .dropdown {
+      position: absolute;
+      top: calc(100% + 6px); left: 0; right: 0;
+      background: var(--neutral-0);
+      border: 1px solid var(--border-strong);
+      border-radius: var(--radius-md);
+      box-shadow: 0 14px 32px -8px rgba(34,39,51,0.18);
+      max-height: 320px; overflow: hidden;
+      display: none; z-index: 10;
+    }
+    .dropdown.open { display: flex; flex-direction: column; }
+    .dropdown-search { padding: 10px 12px; border-bottom: 1px solid var(--border); }
+    .dropdown-search input {
+      width: 100%;
+      padding: 10px 12px 10px 36px;
+      border: 1px solid var(--border); border-radius: 8px;
+      font-family: inherit; font-size: 14px;
+      background: var(--neutral-50) url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%239AA2B2' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><circle cx='11' cy='11' r='8'/><path d='m21 21-4.3-4.3'/></svg>") no-repeat 12px center / 16px;
+      outline: none;
+    }
+    .dropdown-search input:focus { border-color: var(--primary-500); background-color: var(--neutral-0); }
+    .dropdown-list { overflow-y: auto; padding: 6px; }
+    .dropdown-item { display: flex; align-items: center; gap: 12px; padding: 10px 12px; border-radius: 8px; cursor: pointer; font-size: 14.5px; transition: background 0.1s; }
+    .dropdown-item:hover, .dropdown-item.highlight { background: var(--primary-50); }
+    .dropdown-item .flag { width: 22px; height: 22px; border-radius: 50%; object-fit: cover; flex-shrink: 0; box-shadow: 0 0 0 1px var(--border-strong); }
+    .dropdown-item.empty { color: var(--text-muted); text-align: center; cursor: default; }
+    .dropdown-item.empty:hover { background: transparent; }
+
+    /* Option cards (hires + timeline) */
+    .options-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 28px; }
+    .options-stack { display: flex; flex-direction: column; gap: 10px; margin-bottom: 28px; }
+    .option {
+      position: relative;
+      padding: 22px 18px;
+      background: var(--neutral-0);
+      border: 1.5px solid var(--border-strong);
+      border-radius: var(--radius-md);
+      cursor: pointer; text-align: left;
+      transition: all 0.15s;
+      display: flex; flex-direction: column; gap: 6px;
+      font-family: inherit;
+    }
+    .option.row {
+      flex-direction: row; align-items: center; gap: 16px;
+      padding: 18px 60px 18px 18px;
+    }
+    .option:hover { border-color: var(--neutral-400); background: var(--neutral-50); }
+    .option .icon {
+      width: 40px; height: 40px;
+      border-radius: 10px;
+      background: var(--primary-50);
+      display: flex; align-items: center; justify-content: center;
+      margin-bottom: 8px;
+      transition: all 0.15s;
+      flex-shrink: 0;
+    }
+    .option.row .icon { width: 42px; height: 42px; margin-bottom: 0; }
+    .option .icon svg { width: 22px; height: 22px; color: var(--primary-500); }
+    .option .body { flex: 1; }
+    .option .label { font-size: 16px; font-weight: 700; color: var(--text-primary); margin-bottom: 2px; }
+    .option .desc { font-size: 13.5px; color: var(--text-muted); line-height: 1.45; }
+    .option .check-mark {
+      position: absolute;
+      top: 14px; right: 14px;
+      width: 22px; height: 22px;
+      border-radius: 50%;
+      border: 1.5px solid var(--border-strong);
+      display: flex; align-items: center; justify-content: center;
+      background: var(--neutral-0);
+      transition: all 0.15s;
+    }
+    .option.row .check-mark { top: 50%; right: 18px; transform: translateY(-50%); }
+    .option .check-mark svg { width: 12px; height: 12px; color: #fff; opacity: 0; transition: opacity 0.15s; }
+    .option.selected {
+      border-color: var(--primary-500);
+      background: var(--primary-50);
+      box-shadow: 0 0 0 3px rgba(0,38,255,0.08);
+    }
+    .option.selected .check-mark { background: var(--primary-500); border-color: var(--primary-500); }
+    .option.selected .check-mark svg { opacity: 1; }
+    .option.selected .icon { background: var(--neutral-0); }
+
+    .actions-stack { display: flex; flex-direction: column; gap: 12px; }
+
+    @media (max-width: 720px) {
+      .topbar { padding: 16px 18px; }
+      main { padding: 20px 18px 56px; }
+      h1 { font-size: 24px; }
+      .options-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+  <header class="topbar">
+    <div class="nav-logo" id="logoHome">
+      <img src="wisemonk_logo_final.png" alt="Wisemonk">
+    </div>
+    <button type="button" class="top-action" id="topAction">Log in</button>
+  </header>
+
+  <main>
+    <div class="wrapper">
+
+      <!-- Progress (hidden on email/verify intro is up to flow logic) -->
+      <div class="progress" id="progress">
+        <div class="dot" data-pdot="1"></div>
+        <div class="dot" data-pdot="2"></div>
+        <div class="dot" data-pdot="3"></div>
+        <div class="dot" data-pdot="4"></div>
+        <span class="progress-label" id="progressLabel">Step 1 of 4</span>
+      </div>
+
+      <!-- ============== STEP: EMAIL ============== -->
+      <section class="step active" data-step="email">
+        <div class="wrapper-inner">
+          <div class="question-block">
+            <h1>Let's get you hiring from India</h1>
+            <p class="subhead">Start with your work email. We'll send you a link to verify and continue.</p>
+          </div>
+
+          <form id="emailForm" novalidate>
+            <div class="field">
+              <label class="field-label" for="email">Work email</label>
+              <input class="input" type="email" id="email" name="email" placeholder="alex@company.com" autocomplete="email">
+            </div>
+
+            <button class="cta-button" type="submit">
+              Continue with email
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
+            </button>
+          </form>
+
+          <div class="divider">or</div>
+
+          <button class="sso-btn" type="button" id="googleSso">
+            <img src="https://www.google.com/favicon.ico" alt="">
+            Continue with Google
+          </button>
+
+          <p class="disclaimer">
+            By continuing, you agree to Wisemonk's <a href="#">Terms of Service</a> and <a href="#">Privacy Policy</a>.
+          </p>
+        </div>
+      </section>
+
+      <!-- ============== STEP: VERIFY ============== -->
+      <section class="step" data-step="verify">
+        <div class="wrapper-inner">
+          <div class="icon-wrap">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M3 7.5 12 13l9-5.5"/>
+              <rect x="3" y="5" width="18" height="14" rx="2"/>
+            </svg>
+          </div>
+
+          <h1>Check your inbox</h1>
+          <p class="subhead">We sent a verification link to</p>
+          <div class="email-pill">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 7.5 12 13l9-5.5"/><rect x="3" y="5" width="18" height="14" rx="2"/></svg>
+            <span id="emailValue">your@email.com</span>
+          </div>
+          <p class="subhead">Click the link in the email to continue. The link expires in 15 minutes.</p>
+
+          <div class="actions-stack" style="margin-top: 32px;">
+            <button class="cta-button" type="button" id="verifyContinue">
+              I've verified — continue
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
+            </button>
+            <button class="ghost-btn" type="button" id="resendBtn">Resend email</button>
+          </div>
+
+          <div class="helper-card">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg>
+            <p>Can't find the email? Check your spam folder, or <button class="link" id="resendInline">resend it</button>. Still stuck? <a href="mailto:help@wisemonk.io">Email us</a>.</p>
+          </div>
+
+          <p class="wrong-email">
+            Wrong email? <button type="button" id="changeEmail">Use a different one</button>
+          </p>
+        </div>
+      </section>
+
+      <!-- ============== STEP: COUNTRY ============== -->
+      <section class="step" data-step="country">
+        <div class="wrapper-inner">
+          <button type="button" class="back-link" data-back="email">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+            Back
+          </button>
+
+          <div class="question-block">
+            <h1>Where is your business based?</h1>
+            <p class="subhead">We'll set up the right contracts and payment options for your India hires. <strong>You can change this later.</strong></p>
+          </div>
+
+          <div class="field">
+            <label class="field-label">Country of registration</label>
+            <div class="select-wrap">
+              <button type="button" class="country-select" id="countrySelect" aria-haspopup="listbox" aria-expanded="false">
+                <img class="flag" id="selectedFlag" src="https://hatscripts.github.io/circle-flags/flags/us.svg" alt="">
+                <span class="name" id="selectedName">United States</span>
+                <svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="18" height="18"><path d="m6 9 6 6 6-6"/></svg>
+              </button>
+              <div class="dropdown" id="dropdown">
+                <div class="dropdown-search">
+                  <input type="text" id="searchInput" placeholder="Search country" autocomplete="off">
+                </div>
+                <div class="dropdown-list" id="dropdownList"></div>
+              </div>
+            </div>
+          </div>
+
+          <button class="cta-button" type="button" id="countryContinue">
+            Continue
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
+          </button>
+        </div>
+      </section>
+
+      <!-- ============== STEP: HIRES ============== -->
+      <section class="step" data-step="hires">
+        <button type="button" class="back-link" data-back="country">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+          Back
+        </button>
+
+        <div class="question-block">
+          <h1>How many people are you hiring?</h1>
+          <p class="subhead">A rough estimate is fine — it just helps us tailor your dashboard.</p>
+        </div>
+
+        <div class="options-grid" data-question="hires">
+          <button class="option" data-value="1" type="button">
+            <div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="10" cy="7" r="4"/></svg></div>
+            <div class="label">Just 1 role</div>
+            <div class="desc">My first India hire.</div>
+            <div class="check-mark"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div>
+          </button>
+          <button class="option" data-value="2-5" type="button">
+            <div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></div>
+            <div class="label">2–5 roles</div>
+            <div class="desc">Building a small team.</div>
+            <div class="check-mark"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div>
+          </button>
+          <button class="option" data-value="6-10" type="button">
+            <div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><circle cx="17" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/></svg></div>
+            <div class="label">6–10 roles</div>
+            <div class="desc">Scaling up a department.</div>
+            <div class="check-mark"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div>
+          </button>
+          <button class="option" data-value="10+" type="button">
+            <div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M18 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><circle cx="10" cy="7" r="4"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/><path d="M19 11h2M20 10v2"/></svg></div>
+            <div class="label">10+ roles</div>
+            <div class="desc">Setting up a full India office.</div>
+            <div class="check-mark"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div>
+          </button>
+        </div>
+
+        <button class="cta-button" type="button" id="hiresContinue">
+          Continue
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
+        </button>
+      </section>
+
+      <!-- ============== STEP: TIMELINE ============== -->
+      <section class="step" data-step="timeline">
+        <button type="button" class="back-link" data-back="hires">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+          Back
+        </button>
+
+        <div class="question-block">
+          <h1>When do you want to start hiring?</h1>
+          <p class="subhead">We'll prioritise your pipeline based on how urgent this is.</p>
+        </div>
+
+        <div class="options-stack" data-question="timeline">
+          <button class="option row" data-value="asap" type="button">
+            <div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2 3 14h9l-1 8 10-12h-9l1-8z"/></svg></div>
+            <div class="body">
+              <div class="label">Right away</div>
+              <div class="desc">I want candidates within a week.</div>
+            </div>
+            <div class="check-mark"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div>
+          </button>
+          <button class="option row" data-value="30d" type="button">
+            <div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg></div>
+            <div class="body">
+              <div class="label">Within 30 days</div>
+              <div class="desc">Hiring soon, no specific deadline.</div>
+            </div>
+            <div class="check-mark"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div>
+          </button>
+          <button class="option row" data-value="1-3m" type="button">
+            <div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></div>
+            <div class="body">
+              <div class="label">In 1–3 months</div>
+              <div class="desc">Planning ahead for next quarter.</div>
+            </div>
+            <div class="check-mark"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div>
+          </button>
+          <button class="option row" data-value="exploring" type="button">
+            <div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></div>
+            <div class="body">
+              <div class="label">Just exploring</div>
+              <div class="desc">Curious about how Wisemonk works.</div>
+            </div>
+            <div class="check-mark"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div>
+          </button>
+        </div>
+
+        <button class="cta-button" type="button" id="timelineContinue">
+          Finish &amp; enter setup
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
+        </button>
+      </section>
+
+    </div>
+  </main>
+
+  <script>
+    // ===================== State & Step machine =====================
+    const state = { email: '', country: 'US', countryName: 'United States', hires: null, timeline: null };
+
+    // Steps in order; verify is transient and shares dot-1 with email
+    const STEP_ORDER = ['email', 'verify', 'country', 'hires', 'timeline'];
+    let currentStep = 'email';
+
+    const stepEls = {};
+    document.querySelectorAll('.step').forEach(s => stepEls[s.dataset.step] = s);
+
+    const progressLabel = document.getElementById('progressLabel');
+    const dots = document.querySelectorAll('.dot');
+    const topAction = document.getElementById('topAction');
+
+    function updateProgress(step) {
+      // dot-step mapping: email=1, verify=1(done), country=2, hires=3, timeline=4
+      const map = { email: 1, verify: 1, country: 2, hires: 3, timeline: 4 };
+      const active = map[step];
+      dots.forEach((d, i) => {
+        d.classList.remove('active', 'done');
+        const dotIdx = i + 1;
+        if (step === 'verify' && dotIdx === 1) { d.classList.add('done'); return; }
+        if (dotIdx < active) d.classList.add('done');
+        else if (dotIdx === active) d.classList.add('active');
+      });
+      progressLabel.textContent = step === 'verify' ? 'Verifying email' : `Step ${active} of 4`;
+
+      // top-right button: "Log in" on email step, "Log out" after
+      topAction.textContent = step === 'email' ? 'Log in' : 'Log out';
+    }
+
+    function goTo(step) {
+      Object.values(stepEls).forEach(el => el.classList.remove('active'));
+      stepEls[step].classList.add('active');
+      currentStep = step;
+      updateProgress(step);
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    // Back buttons (data-back attr)
+    document.querySelectorAll('[data-back]').forEach(btn => {
+      btn.addEventListener('click', () => goTo(btn.dataset.back));
+    });
+
+    // Topbar logout / login — both reset the flow to step 1
+    topAction.addEventListener('click', () => {
+      // Reset state
+      state.email = ''; state.hires = null; state.timeline = null;
+      document.getElementById('email').value = '';
+      document.querySelectorAll('.option.selected').forEach(o => o.classList.remove('selected'));
+      goTo('email');
+    });
+
+    // Logo → also goes home (step 1)
+    document.getElementById('logoHome').addEventListener('click', () => goTo('email'));
+
+    // ===================== STEP: email =====================
+    document.getElementById('emailForm').addEventListener('submit', e => {
+      e.preventDefault();
+      state.email = document.getElementById('email').value.trim() || 'your@email.com';
+      document.getElementById('emailValue').textContent = state.email;
+      goTo('verify');
+    });
+
+    document.getElementById('googleSso').addEventListener('click', () => {
+      state.email = 'you@google-sso.com';
+      goTo('country');
+    });
+
+    // ===================== STEP: verify =====================
+    document.getElementById('verifyContinue').addEventListener('click', () => goTo('country'));
+    document.getElementById('changeEmail').addEventListener('click', () => goTo('email'));
+
+    const resendBtn = document.getElementById('resendBtn');
+    const resendInline = document.getElementById('resendInline');
+    let cooldown = 0;
+    function startCooldown() {
+      cooldown = 30;
+      resendBtn.disabled = true;
+      tick();
+      function tick() {
+        if (cooldown <= 0) { resendBtn.disabled = false; resendBtn.textContent = 'Resend email'; return; }
+        resendBtn.textContent = `Resend in ${cooldown}s`;
+        cooldown--;
+        setTimeout(tick, 1000);
+      }
+    }
+    resendBtn.addEventListener('click', startCooldown);
+    resendInline.addEventListener('click', startCooldown);
+
+    // ===================== STEP: country =====================
+    const FLAG = code => `https://hatscripts.github.io/circle-flags/flags/${code.toLowerCase()}.svg`;
+    const countries = [
+      { code: 'US', name: 'United States' },{ code: 'GB', name: 'United Kingdom' },
+      { code: 'CA', name: 'Canada' },{ code: 'AU', name: 'Australia' },
+      { code: 'DE', name: 'Germany' },{ code: 'FR', name: 'France' },
+      { code: 'NL', name: 'Netherlands' },{ code: 'IE', name: 'Ireland' },
+      { code: 'ES', name: 'Spain' },{ code: 'IT', name: 'Italy' },
+      { code: 'PT', name: 'Portugal' },{ code: 'SE', name: 'Sweden' },
+      { code: 'CH', name: 'Switzerland' },{ code: 'SG', name: 'Singapore' },
+      { code: 'AE', name: 'United Arab Emirates' },{ code: 'IL', name: 'Israel' },
+      { code: 'JP', name: 'Japan' },{ code: 'KR', name: 'South Korea' },
+      { code: 'HK', name: 'Hong Kong' },{ code: 'IN', name: 'India' },
+      { code: 'BR', name: 'Brazil' },{ code: 'MX', name: 'Mexico' },
+      { code: 'ZA', name: 'South Africa' },{ code: 'NZ', name: 'New Zealand' }
+    ];
+
+    const cSelect = document.getElementById('countrySelect');
+    const dropdown = document.getElementById('dropdown');
+    const list = document.getElementById('dropdownList');
+    const search = document.getElementById('searchInput');
+    const selectedFlag = document.getElementById('selectedFlag');
+    const selectedName = document.getElementById('selectedName');
+
+    function renderList(filter = '') {
+      const f = filter.toLowerCase().trim();
+      const filtered = countries.filter(c => c.name.toLowerCase().includes(f));
+      list.innerHTML = filtered.length
+        ? filtered.map(c => `<div class="dropdown-item" data-code="${c.code}"><img class="flag" src="${FLAG(c.code)}" alt=""><span>${c.name}</span></div>`).join('')
+        : '<div class="dropdown-item empty">No countries match your search</div>';
+      list.querySelectorAll('.dropdown-item[data-code]').forEach(el => {
+        el.addEventListener('click', () => {
+          const c = countries.find(x => x.code === el.dataset.code);
+          state.country = c.code; state.countryName = c.name;
+          selectedFlag.src = FLAG(c.code);
+          selectedName.textContent = c.name;
+          closeDropdown();
+        });
+      });
+    }
+    function openDropdown() {
+      cSelect.classList.add('open'); dropdown.classList.add('open');
+      cSelect.setAttribute('aria-expanded', 'true'); search.value = '';
+      renderList(); setTimeout(() => search.focus(), 50);
+    }
+    function closeDropdown() {
+      cSelect.classList.remove('open'); dropdown.classList.remove('open');
+      cSelect.setAttribute('aria-expanded', 'false');
+    }
+    cSelect.addEventListener('click', () => dropdown.classList.contains('open') ? closeDropdown() : openDropdown());
+    search.addEventListener('input', e => renderList(e.target.value));
+    document.addEventListener('click', e => { if (!e.target.closest('.select-wrap')) closeDropdown(); });
+    document.addEventListener('keydown', e => { if (e.key === 'Escape') closeDropdown(); });
+
+    document.getElementById('countryContinue').addEventListener('click', () => goTo('hires'));
+
+    // ===================== STEP: hires + timeline (option pickers) =====================
+    document.querySelectorAll('[data-question]').forEach(group => {
+      const q = group.dataset.question;
+      group.querySelectorAll('.option').forEach(opt => {
+        opt.addEventListener('click', () => {
+          group.querySelectorAll('.option').forEach(o => o.classList.remove('selected'));
+          opt.classList.add('selected');
+          state[q] = opt.dataset.value;
+        });
+      });
+    });
+
+    document.getElementById('hiresContinue').addEventListener('click', () => goTo('timeline'));
+    document.getElementById('timelineContinue').addEventListener('click', () => {
+      // Hand off straight to role creation (brand setup removed)
+      const qs = `email=${encodeURIComponent(state.email || '')}&country=${state.country}&hires=${encodeURIComponent(state.hires || '')}&timeline=${encodeURIComponent(state.timeline || '')}`;
+      location.href = `recruit-role.html?${qs}`;
+    });
+
+    // Init
+    updateProgress('email');
+  </script>
+
+</body>
+</html>

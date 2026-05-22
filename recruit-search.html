@@ -1,0 +1,1015 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Search talent with AI — Wisemonk Recruitment</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600;700;800&family=Geist+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --primary-50: #EEF1FF; --primary-100: #D6DCFF; --primary-200: #B3BEFF; --primary-500: #0026FF; --primary-600: #001FCC;
+      --neutral-0: #FFFFFF; --neutral-50: #F7F8FA; --neutral-100: #EEF0F4; --neutral-200: #DDE1E9; --neutral-300: #C4CAD6; --neutral-400: #9AA2B2; --neutral-500: #6B7588; --neutral-700: #363D4D; --neutral-800: #222733;
+      --ai-grad: linear-gradient(135deg, #7C5CFF, #2684FF);
+      --success-50: #E6F9F0; --success-500: #12B76A; --success-700: #027A48;
+      --warning-50: #FFFAEB; --warning-500: #F79009; --warning-700: #B54708;
+      --danger-50: #FFF1F0; --danger-500: #F04438; --danger-700: #B42318;
+      --border: #EEF0F4; --border-strong: #DDE1E9;
+      --text-primary: #222733; --text-secondary: #363D4D; --text-muted: #9AA2B2;
+      --radius-sm: 6px; --radius-md: 12px; --radius-lg: 16px; --radius-full: 100px;
+      --sidebar-w: 280px; --header-h: 60px;
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: 'GT Standard', 'Geist', sans-serif; background: #fff; color: var(--text-primary); min-height: 100vh; }
+    h1, h2, h3, h4, h5, h6 { font-family: 'GT Standard', 'Geist', sans-serif; }
+    a { text-decoration: none; color: inherit; }
+    button { font-family: inherit; border-radius: var(--radius-sm); }
+    .app { display: grid; grid-template-columns: var(--sidebar-w) 1fr; grid-template-areas: "sidebar main"; min-height: 100vh; }
+
+    /* Sidebar */
+    .sidebar { grid-area: sidebar; background: #FFFFFF; padding: 12px 12px 16px; display: flex; flex-direction: column; position: sticky; top: 0; height: 100vh; }
+    .brand-logo { display: block; padding: 8px 8px; margin-bottom: 32px; cursor: pointer; }
+    .brand-logo img { height: 52px; display: block; clip-path: inset(19px 0 5px 10px); margin-top: -19px; margin-bottom: -5px; margin-left: -10px; mix-blend-mode: multiply; }
+    .nav-section { display: flex; flex-direction: column; gap: 4px; }
+    .nav-section + .nav-section { margin-top: 16px; }
+    .nav-item { display: flex; align-items: center; gap: 12px; padding: 10px 16px; border-radius: 8px; font-size: 16px; font-weight: 500; color: var(--text-secondary); cursor: pointer; transition: all 0.12s; letter-spacing: -0.1px; background: transparent; border: none; text-align: left; width: 100%; font-family: inherit; }
+    .nav-item:hover { background: var(--neutral-50); color: var(--text-secondary); }
+    .nav-item.active { background: #EEF1FF; color: var(--text-primary); font-weight: 600; box-shadow: 0 1px 2px rgba(34, 39, 51, 0.06); }
+    .nav-item svg { width: 17px; height: 17px; flex-shrink: 0; color: var(--text-secondary); stroke-width: 1.7; }
+    .nav-item.active svg { color: var(--text-primary); }
+    .nav-item .label { flex: 1; }
+    .nav-item .badge { padding: 1px 7px; background: transparent; color: var(--text-secondary); border-radius: var(--radius-full); font-size: 10.5px; font-weight: 600; }
+    .nav-item.active .badge { background: var(--text-primary); color: #fff; }
+    .nav-item .value { font-size: 12.5px; color: var(--text-secondary); font-family: 'Geist Mono', monospace; font-weight: 500; }
+    .ws-switch { background: var(--neutral-0); border-radius: 12px; padding: 4px; margin-bottom: 12px; box-shadow: 0 1px 2px rgba(34, 39, 51, 0.05); }
+    .ws-switch-row { display: flex; align-items: center; gap: 10px; padding: 8px 10px; border-radius: 8px; cursor: pointer; transition: background 0.12s; }
+    .ws-switch-row:hover { background: var(--neutral-50); }
+    .ws-switch-av { width: 32px; height: 32px; border-radius: 50%; background: #FF6B35; color: #fff; display: flex; align-items: center; justify-content: center; font-size: 13px; font-weight: 700; flex-shrink: 0; }
+    .ws-switch-body { flex: 1; min-width: 0; }
+    .ws-switch-name { font-size: 13px; font-weight: 600; color: var(--text-primary); line-height: 1.2; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; letter-spacing: -0.1px; }
+    .ws-switch-sub { font-size: 11.5px; color: var(--text-muted); margin-top: 2px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .ws-switch-chev { color: var(--text-muted); flex-shrink: 0; }
+    .ws-switch-chev svg { width: 14px; height: 14px; }
+    .ws-switch-divider { height: 1px; background: var(--neutral-100); margin: 0 6px; }
+    .ws-switch-score { display: flex; align-items: center; gap: 10px; padding: 8px 10px; border-radius: 8px; cursor: pointer; transition: background 0.12s; }
+    .ws-switch-score:hover { background: var(--neutral-50); }
+    .ws-switch-score .ring { width: 28px; height: 28px; border-radius: 50%; background: conic-gradient(var(--primary-500) 0% 78%, var(--neutral-100) 78% 100%); display: flex; align-items: center; justify-content: center; flex-shrink: 0; position: relative; }
+    .ws-switch-score .ring::after { content: ''; position: absolute; inset: 3px; background: var(--neutral-0); border-radius: 50%; }
+    .ws-switch-score .ring-num { font-size: 11px; font-weight: 700; color: var(--text-primary); position: relative; z-index: 1; }
+    .ws-switch-score .lbl { font-size: 13px; font-weight: 500; color: var(--text-secondary); letter-spacing: -0.1px; }
+    .create-btn { display: flex; align-items: center; justify-content: center; gap: 8px; width: 100%; padding: 11px 16px; background: var(--text-primary); color: #fff; border: none; border-radius: var(--radius-full); font-family: inherit; font-size: 14px; font-weight: 600; cursor: pointer; transition: all 0.15s; margin-bottom: 14px; box-shadow: 0 1px 2px rgba(0,0,0,0.06); letter-spacing: -0.1px; }
+    .create-btn:hover { background: #1a1a1a; transform: translateY(-1px); box-shadow: 0 4px 12px -4px rgba(0,0,0,0.3); }
+    .create-btn svg { width: 14px; height: 14px; }
+    /* Sidebar bottom (profile + utility icons) */
+    .sidebar-bottom { margin-top: auto; padding-top: 12px; display: flex; flex-direction: column; gap: 6px; }
+    .sidebar-utils { display: flex; align-items: center; gap: 4px; padding: 0 4px; }
+    .sb-icon-btn { width: 34px; height: 34px; border-radius: 8px; background: transparent; border: none; cursor: pointer; display: inline-flex; align-items: center; justify-content: center; color: var(--text-muted); transition: all 0.12s; position: relative; }
+    .sb-icon-btn:hover { background: var(--neutral-50); color: var(--text-primary); }
+    .sb-icon-btn svg { width: 17px; height: 17px; }
+    .sb-icon-btn .dot { position: absolute; top: 8px; right: 8px; width: 7px; height: 7px; background: var(--danger-500); border: 1.5px solid var(--neutral-0); border-radius: 50%; }
+    .sb-profile { display: flex; align-items: center; gap: 10px; padding: 8px 10px; border-radius: 8px; cursor: pointer; background: transparent; border: none; width: 100%; transition: background 0.12s; font-family: inherit; }
+    .sb-profile:hover { background: var(--neutral-50); }
+    .sb-profile .av { width: 28px; height: 28px; border-radius: 50%; background: #0026FF; color: #fff; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 600; flex-shrink: 0; }
+    .sb-profile .info { flex: 1; min-width: 0; text-align: left; }
+    .sb-profile .name { font-size: 13px; font-weight: 600; color: var(--text-primary); line-height: 1.2; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; letter-spacing: -0.1px; }
+    .sb-profile .chev { color: var(--text-muted); flex-shrink: 0; }
+    .sb-profile .chev svg { width: 14px; height: 14px; }
+
+    /* Header */
+    .header { grid-area: header; background: var(--neutral-0); border-bottom: 1px solid var(--border); padding: 0 24px; display: flex; align-items: center; justify-content: space-between; gap: 14px; position: sticky; top: 0; z-index: 40; }
+    .breadcrumb { display: flex; align-items: center; gap: 8px; font-size: 14px; color: var(--text-muted); }
+    .breadcrumb .current { color: var(--text-primary); font-weight: 600; }
+    .header-actions { display: flex; align-items: center; gap: 8px; }
+    .icon-btn { width: 34px; height: 34px; border-radius: var(--radius-sm); background: transparent; border: none; cursor: pointer; display: flex; align-items: center; justify-content: center; color: var(--text-secondary); transition: all 0.15s; position: relative; }
+    .icon-btn:hover { background: var(--neutral-50); color: var(--text-primary); }
+    .icon-btn svg { width: 16px; height: 16px; }
+    .icon-btn .dot { position: absolute; top: 7px; right: 8px; width: 7px; height: 7px; background: var(--danger-500); border: 1.5px solid var(--neutral-0); border-radius: 50%; }
+    .profile-chip { display: inline-flex; align-items: center; gap: 10px; padding: 4px 8px 4px 4px; background: transparent; border: none; border-radius: var(--radius-full); cursor: pointer; transition: background 0.15s; font-family: inherit; }
+    .profile-chip:hover { background: var(--neutral-50); }
+    .profile-chip .av { width: 24px; height: 24px; border-radius: 50%; background: #0026FF; color: #fff; display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 700; flex-shrink: 0; }
+    .profile-chip .info { display: flex; flex-direction: column; line-height: 1.2; text-align: left; }
+    .profile-chip .name { font-size: 13px; font-weight: 700; color: var(--text-primary); white-space: nowrap; }
+    .profile-chip .chev { color: var(--text-muted); margin-left: 2px; }
+    .profile-chip .chev svg { width: 14px; height: 14px; }
+    @media (max-width: 720px) { .profile-chip .info { display: none; } }
+
+    main { grid-area: main; padding: 28px 32px 80px; overflow-x: clip; background: #fff; }
+    .wrapper { max-width: 1100px; min-width: min(600px, 100%); margin: 0 auto; }
+
+    /* Upgrade banner */
+    .upgrade-banner {
+      display: flex; align-items: center; justify-content: space-between; gap: 24px;
+      padding: 22px 26px;
+      background: linear-gradient(120deg, #EFF3FF 0%, #E5EEFF 50%, #F1F8FF 100%);
+      border-radius: var(--radius-md);
+      margin-bottom: 24px;
+      position: relative; overflow: hidden;
+    }
+    .upgrade-banner::before { content: ''; position: absolute; top: -50%; right: -10%; width: 380px; height: 380px; background: radial-gradient(circle, rgba(0,38,255,0.08), transparent 60%); pointer-events: none; }
+    .upgrade-banner::after { content: ''; position: absolute; bottom: -60%; left: -10%; width: 360px; height: 360px; background: radial-gradient(circle, rgba(38,132,255,0.10), transparent 60%); pointer-events: none; }
+    .upgrade-banner .ub-text { flex: 1; position: relative; z-index: 1; }
+    .upgrade-banner .ub-msg { font-size: 18px; font-weight: 700; color: var(--text-primary); line-height: 1.3; letter-spacing: -0.2px; margin-bottom: 16px; max-width: 520px; }
+    .upgrade-banner .ub-sub { font-size: 13.5px; color: var(--text-muted); }
+    .upgrade-cta-btn {
+      display: inline-flex; align-items: center; gap: 10px;
+      padding: 10px 18px 10px 10px;
+      background: #000; color: #fff;
+      border: none; border-radius: var(--radius-full);
+      font-family: inherit; font-size: 14px; font-weight: 600;
+      cursor: pointer; transition: all 0.15s;
+      box-shadow: 0 6px 18px -6px rgba(0,0,0,0.45);
+      position: relative; z-index: 50;
+      flex-shrink: 0;
+    }
+    .upgrade-cta-btn:hover { background: #1a1a1a; transform: translateY(-1px); }
+    .upgrade-cta-btn .pro-tag {
+      display: inline-flex; align-items: center; gap: 4px;
+      padding: 4px 9px;
+      background: linear-gradient(135deg, rgba(255,255,255,0.18), rgba(255,255,255,0.05));
+      border: 1px solid rgba(255,255,255,0.18);
+      border-radius: var(--radius-full);
+      font-size: 10.5px; font-weight: 600;
+      letter-spacing: 0.6px; text-transform: uppercase;
+    }
+    .upgrade-cta-btn .pro-tag svg { width: 10px; height: 10px; color: #FFD66F; }
+
+    /* AI search bar (locked) */
+    .ai-search-bar {
+      display: flex; align-items: center; gap: 10px;
+      padding: 8px 8px 8px 18px;
+      background: var(--neutral-0);
+      border: 1.5px solid var(--primary-200);
+      border-radius: var(--radius-full);
+      margin-bottom: 24px;
+      box-shadow: 0 0 0 4px rgba(0,38,255,0.05);
+    }
+    .ai-search-spark {
+      width: 28px; height: 28px;
+      border-radius: 50%;
+      background: var(--ai-grad);
+      display: inline-flex; align-items: center; justify-content: center;
+      flex-shrink: 0;
+    }
+    .ai-search-spark svg { width: 14px; height: 14px; color: #fff; }
+    .ai-search-bar input {
+      flex: 1; min-width: 0;
+      border: none; outline: none; background: transparent;
+      font: inherit; font-size: 14.5px; font-weight: 500;
+      color: var(--text-primary);
+      padding: 8px 0;
+      cursor: not-allowed;
+    }
+    .ai-search-bar input::placeholder { color: var(--text-muted); font-weight: 400; }
+    .ai-search-cancel {
+      width: 34px; height: 34px;
+      border-radius: 50%;
+      border: none; background: var(--neutral-50);
+      color: var(--text-secondary);
+      cursor: pointer;
+      display: inline-flex; align-items: center; justify-content: center;
+      flex-shrink: 0;
+      transition: background 0.15s, color 0.15s;
+    }
+    .ai-search-cancel:hover { background: var(--neutral-100); color: var(--text-primary); }
+    .ai-search-cancel svg { width: 15px; height: 15px; }
+
+    /* Bullet list inside the upgrade banner */
+    .upgrade-banner .ub-list {
+      list-style: none; padding: 0; margin: 0;
+      display: flex; flex-direction: column; gap: 8px;
+      position: relative; z-index: 1;
+    }
+    .upgrade-banner .ub-list li {
+      display: flex; align-items: center; gap: 10px;
+      font-size: 13.5px; line-height: 1.4;
+      color: var(--text-secondary);
+    }
+    .upgrade-banner .ub-list li svg {
+      width: 15px; height: 15px;
+      color: var(--text-secondary);
+      flex-shrink: 0;
+    }
+
+    /* Locked empty state */
+    .ai-search-locked {
+      text-align: center;
+      padding: 60px 24px;
+    }
+    .ai-search-locked h3 { font-size: 18px; font-weight: 700; color: var(--text-primary); letter-spacing: -0.2px; margin-bottom: 8px; }
+    .ai-search-locked p { font-size: 14px; color: var(--text-muted); max-width: 460px; margin: 0 auto 24px; line-height: 1.5; }
+    .ai-upgrade-btn {
+      display: inline-flex; align-items: center; gap: 8px;
+      padding: 12px 24px;
+      background: var(--text-primary);
+      color: #fff;
+      border: none;
+      border-radius: var(--radius-full);
+      font: inherit; font-size: 14px; font-weight: 600;
+      cursor: pointer;
+      transition: transform 0.15s, box-shadow 0.15s;
+      box-shadow: 0 6px 18px -6px rgba(17, 22, 35, 0.35);
+    }
+    .ai-upgrade-btn:hover { transform: translateY(-1px); box-shadow: 0 10px 22px -8px rgba(17, 22, 35, 0.45); }
+    .ai-upgrade-btn svg { width: 15px; height: 15px; }
+
+    @media (max-width: 880px) {
+      .app { grid-template-columns: 1fr; grid-template-areas: "header" "main"; }
+      .sidebar { display: none; }
+      main { padding: 20px 18px 56px; }
+    }
+      /* ============ NOTIFICATIONS SIDE PANEL ============ */
+    .notif-overlay { display: none; }
+    .notif-panel {
+      position: fixed;
+      top: 0; left: var(--sidebar-w);
+      width: 460px; max-width: calc(100vw - var(--sidebar-w));
+      height: 100vh;
+      background: var(--neutral-0);
+      box-shadow: -2px 0 8px rgba(17, 22, 35, 0.08), 2px 0 8px rgba(17, 22, 35, 0.08);
+      display: flex; flex-direction: column;
+      transform: translateX(calc(-100% - var(--sidebar-w, 280px)));
+      visibility: hidden;
+      z-index: 91;
+    }
+    .notif-panel.open { transform: translateX(0); visibility: visible; }
+    .notif-panel-head {
+      padding: 20px 22px 14px;
+      display: flex; align-items: center; justify-content: space-between;
+      gap: 12px;
+      flex-shrink: 0;
+    }
+    .notif-panel-head h2 { font-size: 20px; font-weight: 700; letter-spacing: -0.2px; }
+    .notif-head-actions { display: flex; align-items: center; gap: 12px; }
+    .notif-unread {
+      display: inline-flex; align-items: center; gap: 8px;
+      font-size: 12.5px; font-weight: 500;
+      color: var(--text-secondary);
+      cursor: pointer;
+    }
+    .notif-unread input { display: none; }
+    .notif-unread .track {
+      width: 28px; height: 16px;
+      background: var(--neutral-200);
+      border-radius: 100px;
+      position: relative;
+      transition: background 0.2s;
+    }
+    .notif-unread .track::after {
+      content: ''; position: absolute;
+      top: 2px; left: 2px;
+      width: 12px; height: 12px;
+      background: #fff; border-radius: 50%;
+      transition: transform 0.2s;
+      box-shadow: 0 1px 2px rgba(0,0,0,0.2);
+    }
+    .notif-unread input:checked + .track { background: var(--primary-500); }
+    .notif-unread input:checked + .track::after { transform: translateX(12px); }
+    .notif-close {
+      width: 32px; height: 32px;
+      border-radius: 8px;
+      background: transparent;
+      border: 1px solid var(--border-strong);
+      color: var(--text-secondary);
+      cursor: pointer;
+      display: inline-flex; align-items: center; justify-content: center;
+      transition: all 0.15s;
+    }
+    .notif-close:hover { background: var(--neutral-50); color: var(--text-primary); }
+    .notif-close svg { width: 14px; height: 14px; pointer-events: none; }
+    .notif-tabs {
+      display: flex; align-items: center; gap: 22px;
+      padding: 0 22px;
+      border-bottom: 1px solid var(--border);
+      flex-shrink: 0;
+    }
+    .notif-tab {
+      padding: 10px 0;
+      background: none; border: none; cursor: pointer;
+      font-family: inherit;
+      font-size: 13.5px; font-weight: 500;
+      color: var(--text-muted);
+      position: relative;
+      display: inline-flex; align-items: center; gap: 6px;
+      transition: color 0.15s;
+    }
+    .notif-tab:hover { color: var(--text-secondary); }
+    .notif-tab.active { color: var(--text-primary); font-weight: 600; }
+    .notif-tab.active::after {
+      content: ''; position: absolute;
+      bottom: -1px; left: 0; right: 0; height: 2px;
+      background: var(--text-primary);
+      border-radius: 2px;
+    }
+    .notif-tab .dot {
+      width: 6px; height: 6px;
+      border-radius: 50%;
+      background: var(--danger-500);
+      display: none;
+    }
+    .notif-tab.has-unread .dot { display: inline-block; }
+    .notif-list { flex: 1; overflow-y: auto; padding: 6px 12px 80px; }
+    .notif-item {
+      display: grid;
+      grid-template-columns: 36px 1fr auto;
+      gap: 12px;
+      padding: 14px 10px;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: background 0.12s;
+      position: relative;
+    }
+    .notif-item:hover { background: var(--neutral-50); }
+    .notif-item .av {
+      width: 36px; height: 36px;
+      border-radius: 50%;
+      background: var(--neutral-100);
+      display: flex; align-items: center; justify-content: center;
+      color: var(--text-primary);
+      font-size: 13px; font-weight: 700;
+      flex-shrink: 0;
+    }
+    .notif-item .av.ai { background: var(--ai-grad); color: #fff; }
+    .notif-item .av svg { width: 16px; height: 16px; }
+    .notif-item .body { min-width: 0; padding-top: 1px; }
+    .notif-item .title {
+      font-size: 13.5px;
+      color: var(--text-primary);
+      font-weight: 500;
+      line-height: 1.45;
+      display: flex; align-items: baseline; gap: 6px;
+    }
+    .notif-item.unread .title::before {
+      content: '';
+      width: 7px; height: 7px;
+      background: var(--danger-500);
+      border-radius: 50%;
+      flex-shrink: 0;
+      align-self: center;
+    }
+    .notif-item .title strong { font-weight: 700; }
+    .notif-item .desc {
+      font-size: 12.5px;
+      color: var(--text-muted);
+      margin-top: 3px;
+      line-height: 1.5;
+    }
+    .notif-item .when {
+      font-size: 11.5px;
+      color: var(--text-muted);
+      font-family: 'Geist Mono', monospace;
+      font-weight: 500;
+      white-space: nowrap;
+      align-self: start;
+      padding-top: 3px;
+    }
+    .notif-empty {
+      padding: 32px 22px;
+      text-align: center;
+      font-size: 13px;
+      color: var(--text-muted);
+    }
+      /* ============ COLLAPSIBLE SIDEBAR ============ */
+    body.sidebar-collapsed { --sidebar-w: 76px; }
+    body.sidebar-collapsed .sidebar { padding: 12px 8px 16px; }
+    body.sidebar-collapsed .brand-logo img { clip-path: none; margin-left: 0; margin-top: 0; margin-bottom: 0; width: 36px; height: auto; }
+    body.sidebar-collapsed .nav-item { justify-content: center; gap: 0; }
+    body.sidebar-collapsed .nav-item .label,
+    body.sidebar-collapsed .nav-item .badge,
+    body.sidebar-collapsed .nav-section-label,
+    body.sidebar-collapsed .sb-profile .info,
+    body.sidebar-collapsed .sb-profile .chev,
+    body.sidebar-collapsed .create-btn span,
+    body.sidebar-collapsed .sidebar-utils { display: none !important; }
+    body.sidebar-collapsed .create-btn { gap: 0; font-size: 0; line-height: 1; width: 42px; height: 42px; min-height: 0; padding: 0; margin: 0 auto 14px; border-radius: 50%; }
+    body.sidebar-collapsed .sb-profile { justify-content: center; padding: 6px 0; }
+    body.sidebar-collapsed .notif-panel { left: var(--sidebar-w); }
+    body.sidebar-collapsed .decision-bar { left: var(--sidebar-w); }
+    body.sidebar-collapsed .cand-panel-overlay,
+    body.sidebar-collapsed .filter-overlay { left: 0; }
+    body.sidebar-collapsed .wrapper { max-width: none; }
+    body.sidebar-collapsed main { padding-left: 24px; padding-right: 24px; }
+    /* Collapse toggle button */
+    .nav-collapse-btn {
+      position: absolute;
+      top: 26px;
+      right: -12px;
+      width: 24px; height: 24px;
+      border-radius: 50%;
+      background: var(--neutral-0);
+      border: 1px solid var(--border-strong);
+      color: var(--text-secondary);
+      cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      box-shadow: 0 2px 6px rgba(17, 22, 35, 0.08);
+      transition: all 0.15s;
+      z-index: 50;
+    }
+    .nav-collapse-btn:hover { color: var(--text-primary); border-color: var(--text-secondary); box-shadow: 0 3px 10px rgba(17, 22, 35, 0.12); }
+    .nav-collapse-btn svg { width: 12px; height: 12px; transition: transform 0.2s; }
+    body.sidebar-collapsed .nav-collapse-btn svg { transform: rotate(180deg); }
+
+    /* ============ SEARCH RESULTS ============ */
+    .search-suggests {
+      display: flex; align-items: center; flex-wrap: wrap; gap: 8px;
+      margin: 12px 0 22px;
+    }
+    .search-suggests .ss-label { font-size: 12.5px; color: var(--text-muted); margin-right: 2px; }
+    .ss-chip {
+      padding: 6px 12px;
+      background: var(--neutral-50);
+      border: 1px solid var(--border);
+      border-radius: 100px;
+      font-family: inherit;
+      font-size: 12.5px; font-weight: 500;
+      color: var(--text-secondary);
+      cursor: pointer;
+      transition: all 0.12s;
+    }
+    .ss-chip:hover { border-color: var(--primary-500); color: var(--primary-500); background: #fff; }
+
+    .search-empty {
+      text-align: center;
+      padding: 56px 20px;
+      max-width: 460px;
+      margin: 0 auto;
+    }
+    .search-empty h3 { font-size: 16px; font-weight: 700; margin-bottom: 6px; color: var(--text-primary); }
+    .search-empty p { font-size: 13.5px; color: var(--text-muted); line-height: 1.55; }
+
+    .search-results-head { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; margin: 8px 0 14px; }
+    .search-results-head h2 { font-size: 16px; font-weight: 700; color: var(--text-primary); }
+    .search-results-head .results-sub { font-size: 12.5px; color: var(--text-muted); }
+
+    /* Talent-row cards (mirrors recruit-pipeline.html) */
+    .talent-list {
+      background: var(--neutral-0);
+      border: 1px solid var(--border-strong);
+      border-radius: var(--radius-md);
+      overflow: hidden;
+    }
+    .talent-row {
+      padding: 18px 20px;
+      display: grid;
+      grid-template-columns: auto 1fr auto;
+      gap: 16px;
+      align-items: flex-start;
+    }
+    .talent-row + .talent-row { border-top: 1px solid var(--border); }
+    .talent-logo {
+      width: 44px; height: 44px;
+      border-radius: 10px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 13px; font-weight: 700;
+      color: #fff;
+      flex-shrink: 0;
+    }
+    .talent-body { min-width: 0; }
+    .talent-head { display: flex; align-items: center; gap: 8px; font-size: 13px; color: var(--text-muted); margin-bottom: 2px; }
+    .talent-head .org { color: var(--text-secondary); font-weight: 600; }
+    .talent-head .dot { color: var(--text-muted); }
+    .talent-title { font-size: 15.5px; font-weight: 700; color: var(--text-primary); line-height: 1.35; margin-bottom: 10px; }
+    .talent-pricing { font-size: 13px; color: var(--text-secondary); margin-bottom: 12px; }
+    .talent-pricing .sep { color: var(--neutral-300); margin: 0 6px; }
+    .talent-tags { display: flex; flex-wrap: wrap; gap: 6px; }
+    .talent-tag {
+      display: inline-flex; align-items: center; gap: 5px;
+      padding: 5px 12px;
+      background: var(--neutral-0);
+      border: 1px solid var(--border-strong);
+      border-radius: var(--radius-full);
+      font-size: 12.5px; font-weight: 500;
+      color: var(--text-primary);
+    }
+    .talent-actions-stack { display: flex; flex-direction: column; align-items: flex-end; justify-content: space-between; gap: 24px; flex-shrink: 0; }
+    .talent-icons { display: flex; align-items: center; gap: 6px; }
+    .talent-icons .ic-btn {
+      width: 28px; height: 28px;
+      border-radius: 6px;
+      background: none; border: none;
+      cursor: pointer;
+      display: inline-flex; align-items: center; justify-content: center;
+      color: var(--text-muted);
+      transition: all 0.15s;
+    }
+    .talent-icons .ic-btn:hover { background: var(--neutral-100); color: var(--text-primary); }
+    .talent-icons .ic-btn svg { width: 14px; height: 14px; }
+    .talent-cta-group { display: inline-flex; gap: 8px; }
+    .talent-btn {
+      display: inline-flex; align-items: center; gap: 6px;
+      padding: 8px 16px;
+      background: var(--neutral-0);
+      border: 1.5px solid var(--border-strong);
+      border-radius: var(--radius-full);
+      font-family: inherit;
+      font-size: 13px; font-weight: 600;
+      color: var(--text-primary);
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+    .talent-btn:hover { border-color: var(--neutral-400); }
+    .talent-btn.primary { background: var(--primary-500); color: #fff; border-color: var(--primary-500); }
+    .talent-btn.primary:hover { background: var(--primary-600); border-color: var(--primary-600); }
+    .talent-btn.shortlisted { background: var(--success-50); color: var(--success-700); border-color: #C9F0DC; cursor: default; }
+    .talent-btn svg { width: 13px; height: 13px; }
+
+    /* Locked rows (beyond the free 3) get blurred behind an upgrade overlay */
+    .talent-row.locked {
+      filter: blur(5px);
+      pointer-events: none;
+      user-select: none;
+      opacity: 0.85;
+    }
+    .results-wrap { position: relative; }
+    /* Fixed-bottom upgrade overlay — matches the pipeline applicants pattern */
+    .unlock-overlay {
+      position: fixed;
+      bottom: 0;
+      left: var(--sidebar-w);
+      right: 0;
+      padding: 90px 24px 28px;
+      text-align: center;
+      background: linear-gradient(180deg, rgba(255,255,255,0) 0%, #ffffff 55%, #ffffff 100%);
+      display: flex; flex-direction: column; align-items: center; gap: 6px;
+      pointer-events: none;
+      z-index: 40;
+    }
+    .unlock-overlay > * { pointer-events: auto; }
+    body.sidebar-collapsed .unlock-overlay { left: var(--sidebar-w); }
+    @media (max-width: 880px) { .unlock-overlay { left: 0; } }
+    .unlock-overlay h2 {
+      font-size: 26px; font-weight: 700;
+      letter-spacing: -0.4px;
+      line-height: 1.2;
+      max-width: 520px;
+      margin: 0 auto 8px;
+    }
+    .unlock-overlay h2 strong {
+      background: var(--ai-grad);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      font-weight: 700;
+    }
+    .unlock-overlay p {
+      font-size: 14px; color: var(--text-muted);
+      max-width: 460px;
+      margin: 0 auto 18px;
+    }
+    .unlock-btn {
+      display: inline-flex; align-items: center; gap: 10px;
+      padding: 12px 24px;
+      background: #000;
+      color: #fff;
+      border: none;
+      border-radius: var(--radius-full);
+      font-family: inherit;
+      font-size: 14px; font-weight: 600;
+      cursor: pointer;
+      transition: all 0.15s;
+      box-shadow: 0 8px 24px -6px rgba(0, 0, 0, 0.45);
+    }
+    .unlock-btn:hover { background: #1a1a1a; transform: translateY(-1px); }
+    .unlock-btn svg { width: 14px; height: 14px; color: #fff; }
+  </style>
+</head>
+<body>
+<div class="app">
+  <aside class="sidebar">
+    <a href="recruit-pipeline.html" class="brand-logo"><img src="wisemonk_logo_final.png" alt="Wisemonk"></a>
+    <!-- Create button -->
+    <button class="create-btn" type="button" onclick="location.href='recruit-role.html'">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+      Create role
+    </button>
+    <div class="nav-section">
+      <a class="nav-item" href="recruit-pipeline.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg><span class="label">Open roles</span><span class="badge">1</span></a>
+      <a class="nav-item" href="recruit-candidates.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg><span class="label">Shortlisted</span><span class="badge">5</span></a>
+      <a class="nav-item" href="recruit-interviews.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg><span class="label">Interviews</span><span class="badge">1</span></a>
+      <button class="nav-item" type="button" data-action="open-notifications"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg><span class="label">Notifications</span><span class="badge">3</span></button>
+      <a class="nav-item active" href="recruit-search.html"><svg viewBox="0 0 24 24" fill="url(#aiNavGrad8)" stroke="none"><defs><linearGradient id="aiNavGrad8" x1="0" y1="0" x2="24" y2="24" gradientUnits="userSpaceOnUse"><stop offset="0%" stop-color="#7C5CFF"/><stop offset="100%" stop-color="#2684FF"/></linearGradient></defs><path d="M12 2L13.8 9.5 L21 11 L13.8 12.5 L12 22 L10.2 12.5 L3 11 L10.2 9.5 Z"/></svg><span class="label">Search talent with AI</span></a>
+    </div>
+    <!-- Sidebar bottom: profile -->
+    <div class="sidebar-bottom">
+      <button class="sb-profile" onclick="location.href='recruit-settings.html'" title="Profile">
+        <div class="av">A</div>
+        <div class="info"><div class="name">Alex Mehta</div></div>
+        <span class="chev"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></span>
+      </button>
+    </div>
+  </aside>
+
+  <main>
+    <div class="wrapper">
+
+      <!-- Upgrade banner (matches the rest of the portal) -->
+      <div class="upgrade-banner">
+        <div class="ub-text">
+          <div class="ub-msg">Get unlimited candidates and roles by upgrading to Pro</div>
+          <div class="ub-sub">Hire your dream team without limits.</div>
+        </div>
+        <button class="upgrade-cta-btn" type="button" onclick="location.href='recruit-upgrade.html'">
+          <span class="pro-tag">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2z"/></svg>
+            Pro
+          </span>
+          Upgrade to Pro
+        </button>
+      </div>
+
+      <h1 style="font-size: 24px; font-weight: 700; letter-spacing: -0.3px; margin-bottom: 8px;">Search talent with AI</h1>
+      <p style="font-size: 14px; color: var(--text-muted); margin-bottom: 24px;">Describe what you need — role, skills, experience, location, salary band — and AI surfaces matching candidates instantly.</p>
+
+      <!-- AI search bar -->
+      <div class="ai-search-bar">
+        <span class="ai-search-spark">
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2L13.8 9.5 L21 11 L13.8 12.5 L12 22 L10.2 12.5 L3 11 L10.2 9.5 Z"/></svg>
+        </span>
+        <input type="text" id="searchInput" placeholder="e.g. Senior backend engineer, Python + Postgres, 4+ years, fintech, 30-day notice" autocomplete="off" autofocus>
+        <button type="button" class="ai-search-cancel" id="clearBtn" aria-label="Clear" hidden>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+        </button>
+      </div>
+
+      <!-- Suggested searches -->
+      <div class="search-suggests" id="suggests">
+        <span class="ss-label">Try:</span>
+        <button class="ss-chip" data-q="Senior backend engineer Python Postgres fintech">Senior backend, Python + Postgres</button>
+        <button class="ss-chip" data-q="Product designer Figma B2B SaaS 3+ years">Product designer, B2B SaaS</button>
+        <button class="ss-chip" data-q="DevOps SRE AWS Kubernetes">DevOps + SRE</button>
+        <button class="ss-chip" data-q="Frontend React TypeScript">Frontend React</button>
+      </div>
+
+      <!-- Initial empty state (before any query typed) -->
+      <div class="search-empty" id="initialEmpty">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" width="44" height="44" style="color: var(--text-muted); margin-bottom: 14px;"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+        <h3>Start with a description</h3>
+        <p>AI searches across all candidates in our network — not just those who applied. Type anything from skills to seniority to availability.</p>
+      </div>
+
+      <!-- Results header -->
+      <div class="search-results-head" id="resultsHead" hidden>
+        <h2><span id="resultsCount">0</span> matches</h2>
+        <span class="results-sub" id="resultsSub">AI-ranked by closeness to your query</span>
+      </div>
+
+      <!-- Results list with locked overlay -->
+      <div class="results-wrap" id="resultsWrap" hidden>
+        <div class="talent-list" id="searchResults"></div>
+        <div class="unlock-overlay" id="unlockOverlay" hidden>
+          <h2>Upgrade to unlock <strong>all matches</strong></h2>
+          <p>Free tier shows the top 3 matches. Pro unlocks every candidate in our network — instantly.</p>
+          <button class="unlock-btn" type="button" onclick="location.href='recruit-upgrade.html'">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+            Upgrade to Pro
+          </button>
+        </div>
+      </div>
+
+      <!-- No results state -->
+      <div class="search-empty" id="noResults" hidden>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" width="44" height="44" style="color: var(--text-muted); margin-bottom: 14px;"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg>
+        <h3>No matches yet</h3>
+        <p>Try a broader description — fewer skills, wider location, or longer notice period.</p>
+      </div>
+
+    </div>
+  </main>
+</div>
+  <!-- ============ NOTIFICATIONS SIDE PANEL ============ -->
+  <div class="notif-overlay" id="notifOverlay"></div>
+  <aside class="notif-panel" id="notifPanel" aria-hidden="true" aria-labelledby="notifTitle">
+    <div class="notif-panel-head">
+      <h2 id="notifTitle">Notifications</h2>
+      <div class="notif-head-actions">
+        <label class="notif-unread">
+          Unread only
+          <input type="checkbox" id="notifUnreadOnly">
+          <span class="track"></span>
+        </label>
+        <button class="notif-close" type="button" id="notifCloseBtn" aria-label="Close notifications" onclick="document.getElementById('notifPanel').classList.remove('open'); document.getElementById('notifOverlay').classList.remove('open');">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+        </button>
+      </div>
+    </div>
+    <div class="notif-tabs" role="tablist">
+      <button class="notif-tab active has-unread" data-filter="all" role="tab">All <span class="dot"></span></button>
+      <button class="notif-tab has-unread" data-filter="candidates" role="tab">Candidates <span class="dot"></span></button>
+      <button class="notif-tab has-unread" data-filter="interviews" role="tab">Interviews <span class="dot"></span></button>
+      <button class="notif-tab" data-filter="system" role="tab">System</button>
+    </div>
+    <div class="notif-list" id="notifList"></div>
+  </aside>
+
+  <script>
+    // ===== Notifications panel =====
+    (function () {
+      const overlay = document.getElementById('notifOverlay');
+      const panel = document.getElementById('notifPanel');
+      if (!overlay || !panel) return;
+
+      const list = document.getElementById('notifList');
+      const unreadOnly = document.getElementById('notifUnreadOnly');
+      const tabs = document.querySelectorAll('.notif-tab');
+      let activeFilter = 'all';
+
+      const NOTIFS = [
+        { id: 1, cat: 'candidates', unread: true, av: 'P', avColor: '#0026FF', title: '<strong>Priya Sharma</strong> answered screening', desc: 'AI gave a 92% fit. Review her in the shortlist.', when: '2h ago' },
+        { id: 2, cat: 'interviews', unread: true, av: 'A', avColor: '#1B7FF5', title: '<strong>Arjun Patel</strong> · Round 1 interview completed', desc: 'AI summary + transcript ready. Decide next round.', when: '5h ago' },
+        { id: 4, cat: 'interviews', unread: false, av: 'P', avColor: '#0026FF', title: '<strong>Priya Sharma</strong> confirmed Tomorrow 11:00 IST', desc: 'Calendar invite sent. Video room link is ready.', when: '2d ago' },
+        { id: 5, cat: 'system', unread: false, av: 'ai', title: 'AI summary <strong>improved</strong>', desc: 'We refreshed our scoring model. Past summaries auto-updated.', when: '4d ago' }
+      ];
+
+      function aiAv() {
+        return '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2z"/></svg>';
+      }
+
+      function render() {
+        const filtered = NOTIFS.filter(n => {
+          if (unreadOnly.checked && !n.unread) return false;
+          if (activeFilter !== 'all' && n.cat !== activeFilter) return false;
+          return true;
+        });
+        if (!filtered.length) {
+          list.innerHTML = '<div class="notif-empty">You\'re all caught up.</div>';
+          return;
+        }
+        list.innerHTML = filtered.map(n => `
+          <div class="notif-item ${n.unread ? 'unread' : ''}" data-id="${n.id}">
+            <div class="av ${n.av === 'ai' ? 'ai' : ''}" ${n.av !== 'ai' && n.avColor ? `style="background:${n.avColor};color:#fff;"` : ''}>${n.av === 'ai' ? aiAv() : n.av}</div>
+            <div class="body">
+              <div class="title">${n.title}</div>
+              <div class="desc">${n.desc}</div>
+            </div>
+            <div class="when">${n.when}</div>
+          </div>
+        `).join('');
+        // Mark as read on click
+        list.querySelectorAll('.notif-item').forEach(el => {
+          el.addEventListener('click', () => {
+            const id = +el.dataset.id;
+            const n = NOTIFS.find(x => x.id === id);
+            if (n) n.unread = false;
+            render();
+          });
+        });
+      }
+
+      function open() {
+        overlay.classList.add('open');
+        panel.classList.add('open');
+        panel.setAttribute('aria-hidden', 'false');
+        // Highlight the Notifications nav item
+        document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+        document.querySelector('[data-action="open-notifications"]')?.classList.add('active');
+        render();
+      }
+      function close() {
+        overlay.classList.remove('open');
+        panel.classList.remove('open');
+        panel.setAttribute('aria-hidden', 'true');
+        // Restore which nav item should be active (this page)
+        document.querySelector('[data-action="open-notifications"]')?.classList.remove('active');
+      }
+
+      document.querySelectorAll('[data-action="open-notifications"]').forEach(el => {
+        el.addEventListener('click', e => {
+          e.preventDefault();
+          e.stopPropagation();
+          if (panel.classList.contains('open')) close();
+          else open();
+        });
+      });
+      document.getElementById('notifCloseBtn').addEventListener('click', e => {
+        e.stopPropagation();
+        close();
+      });
+      // Click anywhere outside the panel/trigger closes it
+      document.addEventListener('click', e => {
+        if (!panel.classList.contains('open')) return;
+        if (panel.contains(e.target)) return;
+        if (e.target.closest('[data-action="open-notifications"]')) return;
+        close();
+      });
+      document.addEventListener('keydown', e => { if (e.key === 'Escape' && panel.classList.contains('open')) close(); });
+
+      unreadOnly.addEventListener('change', render);
+      tabs.forEach(t => {
+        t.addEventListener('click', () => {
+          tabs.forEach(x => x.classList.remove('active'));
+          t.classList.add('active');
+          activeFilter = t.dataset.filter;
+          render();
+        });
+      });
+    })();
+  </script>
+
+<script>
+  (function () {
+    // Restore saved state
+    try {
+      if (localStorage.getItem('wm_sidebar_collapsed') === '1') {
+        document.body.classList.add('sidebar-collapsed');
+      }
+    } catch (e) {}
+
+    // Inject the toggle button into the sidebar
+    const sidebar = document.querySelector('.sidebar');
+    if (!sidebar) return;
+    const btn = document.createElement('button');
+    btn.type = 'button';
+    btn.className = 'nav-collapse-btn';
+    btn.setAttribute('aria-label', 'Toggle sidebar');
+    btn.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>';
+    sidebar.appendChild(btn);
+
+    // Swap the brand logo image src based on collapsed state
+    const logoImg = document.querySelector('.brand-logo img');
+    const FULL_LOGO = 'wisemonk_logo_final.png';
+    const CROPPED_LOGO = 'croped%20logo.png';
+    function syncLogo() {
+      if (!logoImg) return;
+      const isCollapsed = document.body.classList.contains('sidebar-collapsed');
+      logoImg.src = isCollapsed ? CROPPED_LOGO : FULL_LOGO;
+    }
+    syncLogo(); // apply on load (in case we restored a collapsed state)
+
+    btn.addEventListener('click', () => {
+      const collapsed = document.body.classList.toggle('sidebar-collapsed');
+      try { localStorage.setItem('wm_sidebar_collapsed', collapsed ? '1' : '0'); } catch (e) {}
+      syncLogo();
+    });
+  })();
+</script>
+
+<script>
+  // ===== AI talent search =====
+  (function () {
+    // Sample talent pool to search against — same shape as the pipeline's talent list
+    const TALENT_POOL = [
+      { id: 'priya', name: 'Priya Sharma', org: 'Razorpay', orgColor: '#02042B', orgInitial: 'R', role: 'Senior Backend Engineer', years: 6, loc: 'Bangalore', salary: '₹38 LPA', notice: '30-day', skills: ['Python', 'Django', 'PostgreSQL', 'AWS', 'Kafka'], ago: '2 days ago' },
+      { id: 'arjun', name: 'Arjun Patel', org: 'FinBox', orgColor: '#0F1E3D', orgInitial: 'F', role: 'Backend Engineer', years: 5, loc: 'Pune', salary: '₹32 LPA', notice: '60-day', skills: ['Python', 'FastAPI', 'PostgreSQL', 'Docker', 'Kubernetes'], ago: '4 days ago' },
+      { id: 'meera', name: 'Meera Iyer', org: 'Stripe', orgColor: '#635BFF', orgInitial: 'S', role: 'Senior Engineer', years: 7, loc: 'Chennai', salary: '₹42 LPA', notice: '15-day', skills: ['Python', 'Go', 'PostgreSQL', 'Redis', 'AWS'], ago: '1 week ago' },
+      { id: 'rohan', name: 'Rohan Kapoor', org: 'Cred', orgColor: '#0A0A0A', orgInitial: 'C', role: 'Backend Engineer', years: 4, loc: 'Delhi NCR', salary: '₹28 LPA', notice: '30-day', skills: ['Python', 'Flask', 'MySQL', 'AWS', 'Redis'], ago: '1 month ago' },
+      { id: 'sanjana', name: 'Sanjana Reddy', org: 'Zerodha', orgColor: '#387ED1', orgInitial: 'Z', role: 'Senior Engineer', years: 5, loc: 'Hyderabad', salary: '₹35 LPA', notice: '45-day', skills: ['Python', 'Django', 'PostgreSQL', 'GCP'], ago: '2 weeks ago' },
+      { id: 'vikram', name: 'Vikram Singh', org: 'PhonePe', orgColor: '#5F259F', orgInitial: 'P', role: 'Staff Engineer', years: 9, loc: 'Bangalore', salary: '₹58 LPA', notice: '90-day', skills: ['Java', 'Spring', 'Kafka', 'AWS', 'GraphQL'], ago: '3 weeks ago' },
+      { id: 'aditya', name: 'Aditya Bhat', org: 'Postman', orgColor: '#FF6C37', orgInitial: 'P', role: 'Backend Engineer', years: 3, loc: 'Bangalore', salary: '₹24 LPA', notice: '30-day', skills: ['Node.js', 'TypeScript', 'PostgreSQL', 'AWS'], ago: '3 weeks ago' },
+      { id: 'neha', name: 'Neha Kulkarni', org: 'Atlassian', orgColor: '#0052CC', orgInitial: 'A', role: 'Senior Engineer', years: 6, loc: 'Bangalore', salary: '₹45 LPA', notice: '60-day', skills: ['Java', 'Spring', 'Postgres', 'Kubernetes', 'GCP'], ago: '4 weeks ago' },
+      { id: 'pranav', name: 'Pranav Desai', org: 'Hotstar', orgColor: '#0F1E3D', orgInitial: 'H', role: 'Backend Developer', years: 4, loc: 'Pune', salary: '₹30 LPA', notice: '30-day', skills: ['Node.js', 'Express', 'MongoDB', 'AWS'], ago: '1 month ago' },
+      { id: 'riya', name: 'Riya Malhotra', org: 'Meesho', orgColor: '#F43397', orgInitial: 'M', role: 'Senior Backend Engineer', years: 6, loc: 'Bangalore', salary: '₹40 LPA', notice: '60-day', skills: ['Python', 'Django', 'PostgreSQL', 'Kafka'], ago: '1 month ago' },
+      { id: 'kavya', name: 'Kavya Iyer', org: 'Figma', orgColor: '#1F5BFF', orgInitial: 'F', role: 'Senior Product Designer', years: 5, loc: 'Bangalore', salary: '₹35 LPA', notice: '30-day', skills: ['Figma', 'Design Systems', 'Prototyping', 'User Research'], ago: '2 weeks ago' },
+      { id: 'aman', name: 'Aman Verma', org: 'Razorpay', orgColor: '#02042B', orgInitial: 'R', role: 'Product Designer', years: 3, loc: 'Bangalore', salary: '₹22 LPA', notice: '30-day', skills: ['Figma', 'Design Systems', 'UI Design', 'Prototyping'], ago: '1 week ago' },
+      { id: 'tanvi', name: 'Tanvi Shah', org: 'Swiggy', orgColor: '#FC8019', orgInitial: 'S', role: 'Product Designer', years: 4, loc: 'Bangalore', salary: '₹28 LPA', notice: '45-day', skills: ['Figma', 'B2B SaaS', 'Mobile Design', 'Design Systems'], ago: '3 weeks ago' },
+      { id: 'devansh', name: 'Devansh Patel', org: 'Cred', orgColor: '#0A0A0A', orgInitial: 'C', role: 'Frontend Engineer', years: 4, loc: 'Mumbai', salary: '₹30 LPA', notice: '30-day', skills: ['React', 'TypeScript', 'Next.js', 'GraphQL'], ago: '2 weeks ago' },
+      { id: 'isha', name: 'Isha Kapoor', org: 'Postman', orgColor: '#FF6C37', orgInitial: 'P', role: 'Senior Frontend Engineer', years: 6, loc: 'Bangalore', salary: '₹42 LPA', notice: '45-day', skills: ['React', 'TypeScript', 'Performance', 'Webpack'], ago: '1 month ago' },
+      { id: 'karan', name: 'Karan Mehra', org: 'Flipkart', orgColor: '#047BD6', orgInitial: 'F', role: 'DevOps Engineer', years: 5, loc: 'Bangalore', salary: '₹36 LPA', notice: '60-day', skills: ['AWS', 'Kubernetes', 'Terraform', 'ArgoCD'], ago: '3 weeks ago' },
+      { id: 'shruti', name: 'Shruti Joshi', org: 'PhonePe', orgColor: '#5F259F', orgInitial: 'P', role: 'SRE', years: 7, loc: 'Bangalore', salary: '₹48 LPA', notice: '90-day', skills: ['Kubernetes', 'Terraform', 'Prometheus', 'AWS'], ago: '4 weeks ago' }
+    ];
+
+    const input = document.getElementById('searchInput');
+    const clearBtn = document.getElementById('clearBtn');
+    const initialEmpty = document.getElementById('initialEmpty');
+    const noResults = document.getElementById('noResults');
+    const resultsHead = document.getElementById('resultsHead');
+    const resultsWrap = document.getElementById('resultsWrap');
+    const resultsList = document.getElementById('searchResults');
+    const resultsCount = document.getElementById('resultsCount');
+    const suggests = document.getElementById('suggests');
+    const unlockOverlay = document.getElementById('unlockOverlay');
+    const FREE_LIMIT = 3;
+
+    // Shortlist set (persists across navigations)
+    function loadShortlist() {
+      try { return new Set(JSON.parse(localStorage.getItem('wisemonk_shortlisted') || '[]')); }
+      catch (e) { return new Set(); }
+    }
+    function saveShortlist(set) {
+      try { localStorage.setItem('wisemonk_shortlisted', JSON.stringify([...set])); } catch (e) {}
+    }
+    const shortlisted = loadShortlist();
+    const dismissed = new Set();
+
+    function score(cand, query) {
+      const q = query.toLowerCase().trim();
+      if (!q) return 0;
+      const tokens = q.split(/\s+/).filter(t => t.length > 1);
+      const haystack = [
+        cand.name, cand.org, cand.role, cand.loc,
+        cand.salary, cand.notice,
+        (cand.skills || []).join(' ')
+      ].join(' ').toLowerCase();
+      let s = 0;
+      tokens.forEach(t => {
+        if (haystack.includes(t)) s += 1;
+        // Bonus for skill exact match
+        if ((cand.skills || []).some(sk => sk.toLowerCase() === t)) s += 2;
+        // Bonus for role keyword
+        if (cand.role.toLowerCase().includes(t)) s += 2;
+        // Years bonus
+        const yMatch = t.match(/^(\d+)\+?$/);
+        if (yMatch && cand.years >= parseInt(yMatch[1], 10)) s += 1;
+      });
+      return s;
+    }
+
+    function rowHtml(c, isLocked) {
+      const isShortlisted = shortlisted.has(c.id);
+      const skills = (c.skills || []).slice(0, 5);
+      const skillsHtml = skills.map(s => `<span class="talent-tag">${s}</span>`).join('');
+      return `
+        <div class="talent-row${isLocked ? ' locked' : ''}" data-id="${c.id}">
+          <div class="talent-logo" style="background:${c.orgColor}">${c.orgInitial}</div>
+          <div class="talent-body">
+            <div class="talent-head"><span class="org">${c.org} (current)</span><span class="dot">·</span><span>${c.ago}</span></div>
+            <div class="talent-title">${c.name} — ${c.role}, ${c.years} yrs</div>
+            <div class="talent-pricing">${c.salary}<span class="sep">·</span>${c.notice} notice<span class="sep">·</span>${c.loc}</div>
+            <div class="talent-tags">${skillsHtml}</div>
+          </div>
+          <div class="talent-actions-stack">
+            <div class="talent-icons">
+              <button class="ic-btn" type="button" title="Save"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg></button>
+              <button class="ic-btn" type="button" title="More"><svg viewBox="0 0 24 24" fill="currentColor"><circle cx="5" cy="12" r="1.6"/><circle cx="12" cy="12" r="1.6"/><circle cx="19" cy="12" r="1.6"/></svg></button>
+            </div>
+            <div class="talent-cta-group">
+              <button class="talent-btn" type="button" data-action="dismiss"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>Dismiss</button>
+              ${isShortlisted
+                ? `<button class="talent-btn shortlisted" type="button" disabled><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>Shortlisted</button>`
+                : `<button class="talent-btn primary" type="button" data-action="shortlist">Shortlist</button>`}
+            </div>
+          </div>
+        </div>
+      `;
+    }
+
+    function render() {
+      const q = input.value.trim();
+      if (!q) {
+        initialEmpty.hidden = false;
+        noResults.hidden = true;
+        resultsHead.hidden = true;
+        resultsWrap.hidden = true;
+        clearBtn.hidden = true;
+        suggests.style.display = '';
+        return;
+      }
+      clearBtn.hidden = false;
+      suggests.style.display = 'none';
+      initialEmpty.hidden = true;
+
+      // Filter and rank
+      const matches = TALENT_POOL
+        .filter(c => !dismissed.has(c.id))
+        .map(c => ({ c, s: score(c, q) }))
+        .filter(x => x.s > 0)
+        .sort((a, b) => b.s - a.s)
+        .map(x => x.c);
+
+      if (!matches.length) {
+        noResults.hidden = false;
+        resultsHead.hidden = true;
+        resultsWrap.hidden = true;
+        return;
+      }
+      noResults.hidden = true;
+      resultsHead.hidden = false;
+      resultsWrap.hidden = false;
+      resultsCount.textContent = matches.length;
+      // Show first FREE_LIMIT clearly; lock all the rest with blur
+      resultsList.innerHTML = matches.map((c, i) => rowHtml(c, i >= FREE_LIMIT)).join('');
+
+      // Overlay only when there are MORE matches than the free limit
+      unlockOverlay.hidden = matches.length <= FREE_LIMIT;
+
+      // Wire actions (only on unlocked rows — locked rows have pointer-events: none)
+      resultsList.querySelectorAll('.talent-row:not(.locked)').forEach(row => {
+        const id = row.dataset.id;
+        row.querySelector('[data-action="dismiss"]')?.addEventListener('click', e => {
+          e.stopPropagation();
+          dismissed.add(id);
+          render();
+        });
+        row.querySelector('[data-action="shortlist"]')?.addEventListener('click', e => {
+          e.stopPropagation();
+          shortlisted.add(id);
+          saveShortlist(shortlisted);
+          render();
+        });
+      });
+    }
+
+    input.addEventListener('input', render);
+    clearBtn.addEventListener('click', () => { input.value = ''; render(); input.focus(); });
+    suggests.querySelectorAll('.ss-chip').forEach(chip => {
+      chip.addEventListener('click', () => {
+        input.value = chip.dataset.q;
+        render();
+        input.focus();
+      });
+    });
+
+    render();
+  })();
+</script>
+</body>
+</html>

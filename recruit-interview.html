@@ -1,0 +1,3360 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Interview — Wisemonk Recruitment</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600;700;800&family=Geist+Mono:wght@400;500;600&family=Caveat:wght@500;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --primary-50: #EEF1FF;
+      --primary-100: #D6DCFF;
+      --primary-500: #0026FF;
+      --primary-600: #001FCC;
+      --neutral-0: #FFFFFF;
+      --neutral-50: #F7F8FA;
+      --neutral-100: #EEF0F4;
+      --neutral-200: #DDE1E9;
+      --neutral-300: #C4CAD6;
+      --neutral-400: #9AA2B2;
+      --neutral-500: #6B7588;
+      --neutral-700: #363D4D;
+      --neutral-800: #222733;
+      --neutral-900: #121620;
+      --ai-grad: linear-gradient(135deg, #7C5CFF, #2684FF);
+      --success-50: #E6F9F0;
+      --success-500: #12B76A;
+      --success-700: #027A48;
+      --warning-50: #FFFAEB;
+      --warning-500: #F79009;
+      --warning-700: #B54708;
+      --danger-50: #FFF1F0;
+      --danger-500: #F04438;
+      --danger-700: #B42318;
+      --border: #EEF0F4;
+      --border-strong: #DDE1E9;
+      --text-primary: #222733;
+      --text-secondary: #363D4D;
+      --text-muted: #9AA2B2;
+      --radius-sm: 6px;
+      --radius-md: 12px;
+      --radius-lg: 16px;
+      --radius-xl: 20px;
+      --radius-full: 100px;
+      --sidebar-w: 280px;
+      --header-h: 60px;
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: 'GT Standard', 'Geist', sans-serif; background: #fff; color: var(--text-primary); min-height: 100vh; }
+    h1, h2, h3, h4, h5, h6 { font-family: 'GT Standard', 'Geist', sans-serif; }
+    a { text-decoration: none; color: inherit; }
+    button { font-family: inherit; border-radius: var(--radius-sm); }
+
+    /* ============ APP LAYOUT (Linear-style chrome) ============ */
+    .app {
+      display: grid;
+      grid-template-columns: var(--sidebar-w) 1fr;
+      grid-template-areas: "sidebar main";
+      min-height: 100vh;
+    }
+
+    /* Sidebar */
+    .sidebar {
+      grid-area: sidebar;
+      background: #FFFFFF;
+      padding: 12px 12px 16px;
+      display: flex; flex-direction: column;
+      position: sticky; top: 0; height: 100vh;
+    }
+    .brand-logo { display: block; padding: 6px 8px; margin-bottom: 24px; cursor: pointer; }
+    .brand-logo { padding: 8px 8px !important; margin-bottom: 32px !important; }
+    .brand-logo img { height: 52px; display: block; clip-path: inset(19px 0 5px 10px); margin-top: -19px; margin-bottom: -5px; margin-left: -10px; mix-blend-mode: multiply; }
+    .ws-switch .ws-logo {
+      width: 28px; height: 28px;
+      border-radius: 7px;
+      background: var(--ai-grad);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 13px; font-weight: 700; color: #fff;
+      flex-shrink: 0;
+    }
+    .ws-switch .ws-body { flex: 1; min-width: 0; }
+    .ws-switch .ws-name { font-size: 13.5px; font-weight: 700; line-height: 1.2; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .ws-switch .ws-sub { font-size: 11.5px; color: var(--text-muted); margin-top: 1px; }
+    .ws-switch .chev { color: var(--text-muted); flex-shrink: 0; }
+    .ws-switch .chev svg { width: 14px; height: 14px; }
+
+    .sidebar-search {
+      display: flex; align-items: center; gap: 8px;
+      padding: 7px 10px;
+      background: var(--neutral-50);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      margin: 4px 0 14px;
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+    .sidebar-search:hover { background: var(--neutral-100); }
+    .sidebar-search svg { width: 14px; height: 14px; color: var(--text-muted); flex-shrink: 0; }
+    .sidebar-search span { flex: 1; font-size: 12.5px; color: var(--text-muted); }
+    .sidebar-search kbd {
+      padding: 1px 5px;
+      background: var(--neutral-0);
+      border: 1px solid var(--border-strong);
+      border-radius: 4px;
+      font-family: 'Geist Mono', monospace; font-weight: 500;
+      font-size: 10px; color: var(--text-muted);
+    }
+
+    .nav-section { display: flex; flex-direction: column; gap: 4px; }
+    .nav-section + .nav-section { margin-top: 16px; }
+    .nav-section-label { font-family: 'Geist Mono', monospace; font-weight: 500; font-size: 11px; letter-spacing: 0.6px; text-transform: uppercase; color: var(--neutral-500); padding: 0 10px; margin-bottom: 4px; }
+    .nav-item { display: flex; align-items: center; gap: 12px; padding: 10px 16px; border-radius: 8px; font-size: 16px; font-weight: 500; color: var(--text-secondary); cursor: pointer; transition: all 0.12s; letter-spacing: -0.1px; background: transparent; border: none; text-align: left; width: 100%; font-family: inherit; }
+    .nav-item:hover { background: var(--neutral-50); color: var(--text-secondary); }
+    .nav-item.active { background: #EEF1FF; color: var(--text-primary); font-weight: 600; box-shadow: 0 1px 2px rgba(34, 39, 51, 0.06); }
+    .nav-item svg { width: 17px; height: 17px; flex-shrink: 0; color: var(--text-secondary); stroke-width: 1.7; }
+    .nav-item.active svg { color: var(--text-primary); }
+    .nav-item .label { flex: 1; }
+    .nav-item .badge { padding: 1px 7px; background: transparent; color: var(--text-secondary); border-radius: var(--radius-full); font-size: 10.5px; font-weight: 600; }
+    .nav-item.active .badge { background: var(--text-primary); color: #fff; }
+    .nav-item .value { font-size: 12.5px; color: var(--text-secondary); font-family: 'Geist Mono', monospace; font-weight: 500; }
+    .ws-switch { background: var(--neutral-0); border-radius: 12px; padding: 4px; margin-bottom: 12px; box-shadow: 0 1px 2px rgba(34, 39, 51, 0.05); }
+    .ws-switch-row { display: flex; align-items: center; gap: 10px; padding: 8px 10px; border-radius: 8px; cursor: pointer; transition: background 0.12s; }
+    .ws-switch-row:hover { background: var(--neutral-50); }
+    .ws-switch-av { width: 32px; height: 32px; border-radius: 50%; background: #FF6B35; color: #fff; display: flex; align-items: center; justify-content: center; font-size: 13px; font-weight: 700; flex-shrink: 0; }
+    .ws-switch-body { flex: 1; min-width: 0; }
+    .ws-switch-name { font-size: 13px; font-weight: 600; color: var(--text-primary); line-height: 1.2; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; letter-spacing: -0.1px; }
+    .ws-switch-sub { font-size: 11.5px; color: var(--text-muted); margin-top: 2px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .ws-switch-chev { color: var(--text-muted); flex-shrink: 0; }
+    .ws-switch-chev svg { width: 14px; height: 14px; }
+    .ws-switch-divider { height: 1px; background: var(--neutral-100); margin: 0 6px; }
+    .ws-switch-score { display: flex; align-items: center; gap: 10px; padding: 8px 10px; border-radius: 8px; cursor: pointer; transition: background 0.12s; }
+    .ws-switch-score:hover { background: var(--neutral-50); }
+    .ws-switch-score .ring { width: 28px; height: 28px; border-radius: 50%; background: conic-gradient(var(--primary-500) 0% 78%, var(--neutral-100) 78% 100%); display: flex; align-items: center; justify-content: center; flex-shrink: 0; position: relative; }
+    .ws-switch-score .ring::after { content: ''; position: absolute; inset: 3px; background: var(--neutral-0); border-radius: 50%; }
+    .ws-switch-score .ring-num { font-size: 11px; font-weight: 700; color: var(--text-primary); position: relative; z-index: 1; }
+    .ws-switch-score .lbl { font-size: 13px; font-weight: 500; color: var(--text-secondary); letter-spacing: -0.1px; }
+    .create-btn { display: flex; align-items: center; justify-content: center; gap: 8px; width: 100%; padding: 11px 16px; background: var(--text-primary); color: #fff; border: none; border-radius: var(--radius-full); font-family: inherit; font-size: 14px; font-weight: 600; cursor: pointer; transition: all 0.15s; margin-bottom: 14px; box-shadow: 0 1px 2px rgba(0,0,0,0.06); letter-spacing: -0.1px; }
+    .create-btn:hover { background: #1a1a1a; transform: translateY(-1px); box-shadow: 0 4px 12px -4px rgba(0,0,0,0.3); }
+    .create-btn svg { width: 14px; height: 14px; }
+    /* Sidebar bottom (profile + utility icons) */
+    .sidebar-bottom { margin-top: auto; padding-top: 12px; display: flex; flex-direction: column; gap: 6px; }
+    .sidebar-utils { display: flex; align-items: center; gap: 4px; padding: 0 4px; }
+    .sb-icon-btn { width: 34px; height: 34px; border-radius: 8px; background: transparent; border: none; cursor: pointer; display: inline-flex; align-items: center; justify-content: center; color: var(--text-muted); transition: all 0.12s; position: relative; }
+    .sb-icon-btn:hover { background: var(--neutral-50); color: var(--text-primary); }
+    .sb-icon-btn svg { width: 17px; height: 17px; }
+    .sb-icon-btn .dot { position: absolute; top: 8px; right: 8px; width: 7px; height: 7px; background: var(--danger-500); border: 1.5px solid var(--neutral-0); border-radius: 50%; }
+    .sb-profile { display: flex; align-items: center; gap: 10px; padding: 8px 10px; border-radius: 8px; cursor: pointer; background: transparent; border: none; width: 100%; transition: background 0.12s; font-family: inherit; }
+    .sb-profile:hover { background: var(--neutral-50); }
+    .sb-profile .av { width: 28px; height: 28px; border-radius: 50%; background: #0026FF; color: #fff; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 600; flex-shrink: 0; }
+    .sb-profile .info { flex: 1; min-width: 0; text-align: left; }
+    .sb-profile .name { font-size: 13px; font-weight: 600; color: var(--text-primary); line-height: 1.2; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; letter-spacing: -0.1px; }
+    .sb-profile .chev { color: var(--text-muted); flex-shrink: 0; }
+    .sb-profile .chev svg { width: 14px; height: 14px; }
+    /* Search talent with AI — same as a regular nav item, only the icon is special */
+    .nav-item.ai-highlight .ai-pill { padding: 1px 7px; background: var(--ai-grad); color: #fff; border-radius: var(--radius-full); font-family: 'Geist Mono', monospace; font-weight: 500; font-size: 9.5px; font-weight: 700; letter-spacing: 0.4px; text-transform: uppercase; }
+
+    .sidebar-bottom { margin-top: auto; display: flex; flex-direction: column; gap: 8px; }
+    .upgrade-card {
+      padding: 12px;
+      background: linear-gradient(135deg, #F5F1FF, #EFF6FF);
+      border: 1px solid #D6CFFF;
+      border-radius: var(--radius-md);
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+    .upgrade-card:hover { transform: translateY(-1px); box-shadow: 0 6px 18px -8px rgba(124, 92, 255, 0.3); }
+    .upgrade-card .uc-head { display: flex; align-items: center; gap: 8px; margin-bottom: 6px; }
+    .upgrade-card .uc-badge {
+      padding: 1px 7px;
+      background: var(--ai-grad); color: #fff;
+      border-radius: 4px;
+      font-size: 10px; font-weight: 600;
+      letter-spacing: 0.4px; text-transform: uppercase;
+    }
+    .upgrade-card .uc-cap { font-size: 11px; font-weight: 600; color: var(--text-muted); }
+    .upgrade-card .uc-title { font-size: 13px; font-weight: 700; color: var(--text-primary); line-height: 1.35; margin-bottom: 8px; }
+    .upgrade-card .uc-cta {
+      display: inline-flex; align-items: center; gap: 4px;
+      font-size: 11.5px; font-weight: 600;
+      color: var(--primary-600);
+    }
+    .upgrade-card .uc-cta svg { width: 11px; height: 11px; }
+
+    .user-card {
+      display: flex; align-items: center; gap: 10px;
+      padding: 8px;
+      border-radius: var(--radius-sm);
+      cursor: pointer;
+      transition: background 0.15s;
+    }
+    .user-card:hover { background: var(--neutral-50); }
+    .user-card .av {
+      width: 28px; height: 28px;
+      border-radius: 50%;
+      background: #0026FF; color: #fff;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 12px; font-weight: 700;
+      flex-shrink: 0;
+    }
+    .user-card .body { flex: 1; min-width: 0; }
+    .user-card .name { font-size: 12.5px; font-weight: 700; line-height: 1.2; }
+    .user-card .email { font-size: 11px; color: var(--text-muted); }
+    .user-card .more svg { width: 14px; height: 14px; color: var(--text-muted); }
+
+    /* Header */
+    .header {
+      grid-area: header;
+      background: var(--neutral-0);
+      border-bottom: 1px solid var(--border);
+      padding: 0 24px;
+      display: flex; align-items: center; justify-content: space-between;
+      gap: 14px;
+      position: sticky; top: 0; z-index: 40;
+    }
+    .breadcrumb {
+      display: flex; align-items: center; gap: 8px;
+      font-size: 14px; color: var(--text-muted);
+      min-width: 0;
+    }
+    .breadcrumb a { color: var(--text-muted); transition: color 0.15s; }
+    .breadcrumb a:hover { color: var(--text-primary); }
+    .breadcrumb .sep { color: var(--neutral-300); }
+    .breadcrumb .current { color: var(--text-primary); font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+
+    .header-actions { display: flex; align-items: center; gap: 8px; }
+    .icon-btn {
+      width: 34px; height: 34px;
+      border-radius: var(--radius-sm);
+      background: transparent;
+      border: none; cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      color: var(--text-secondary);
+      transition: all 0.15s;
+      position: relative;
+    }
+    .icon-btn:hover { background: var(--neutral-50); color: var(--text-primary); }
+    .icon-btn svg { width: 16px; height: 16px; }
+    .icon-btn .dot {
+      position: absolute; top: 7px; right: 8px;
+      width: 7px; height: 7px;
+      background: var(--danger-500);
+      border: 1.5px solid var(--neutral-0);
+      border-radius: 50%;
+    }
+    .new-role-btn {
+      display: inline-flex; align-items: center; gap: 6px;
+      padding: 8px 14px;
+      background: var(--primary-500); color: #fff;
+      border: none; border-radius: var(--radius-full);
+      font-size: 13px; font-weight: 700;
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+    .new-role-btn:hover { background: var(--primary-600); }
+    .new-role-btn svg { width: 13px; height: 13px; }
+
+    main { grid-area: main; padding: 28px 32px 80px; overflow-x: hidden; background: #fff; }
+    .wrapper { max-width: 720px; margin: 0 auto; }
+
+    /* Step machine */
+    .step { display: none; animation: fadeIn 0.3s ease-out; }
+    .step.active { display: block; }
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
+
+    .heading { text-align: center; margin-bottom: 26px; }
+    h1 { font-size: 28px; font-weight: 700; letter-spacing: -0.4px; line-height: 1.2; margin-bottom: 10px; }
+    .subhead { font-size: 15px; color: var(--text-muted); line-height: 1.55; }
+    .subhead strong { color: var(--text-secondary); font-weight: 600; }
+
+    .back-link {
+      display: inline-flex; align-items: center; gap: 6px;
+      padding: 8px 14px 8px 10px;
+      border-radius: var(--radius-full);
+      font-size: 14px; font-weight: 600; color: var(--text-primary);
+      margin-bottom: 12px;
+      transition: background 0.15s;
+      background: none; border: none; cursor: pointer;
+    }
+    .back-link:hover { color: var(--primary-600); background: var(--neutral-100); }
+    .back-link svg { width: 16px; height: 16px; }
+
+    /* ============ SCHEDULE ============ */
+    .candidate-strip {
+      display: flex; align-items: center; gap: 12px;
+      padding: 12px 16px;
+      background: var(--neutral-0);
+      border: 1.5px solid var(--border-strong);
+      border-radius: var(--radius-lg);
+      margin-bottom: 20px;
+    }
+    .candidate-strip .avatar {
+      width: 40px; height: 40px;
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 16px; font-weight: 700;
+      color: #fff;
+      background: #FF6B35;
+      flex-shrink: 0;
+    }
+    .candidate-strip .body { flex: 1; }
+    .candidate-strip .name { font-size: 14.5px; font-weight: 700; }
+    .candidate-strip .sub { font-size: 12.5px; color: var(--text-muted); }
+    .candidate-strip .fit {
+      padding: 4px 10px;
+      background: var(--success-50);
+      color: var(--success-700);
+      border-radius: var(--radius-full);
+      font-size: 12px; font-weight: 700;
+    }
+
+    /* AI suggestion */
+    .ai-suggest {
+      display: flex; align-items: center; gap: 12px;
+      padding: 12px 16px;
+      background: linear-gradient(135deg, #F5F1FF, #EFF6FF);
+      border: 1.5px solid #D6CFFF;
+      border-radius: var(--radius-md);
+      margin-bottom: 18px;
+    }
+    .ai-suggest .orb {
+      width: 28px; height: 28px;
+      border-radius: 8px;
+      background: var(--ai-grad);
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0;
+    }
+    .ai-suggest .orb svg { width: 14px; height: 14px; color: #fff; }
+    .ai-suggest .body { font-size: 13.5px; color: var(--text-secondary); line-height: 1.5; }
+    .ai-suggest .body strong { color: var(--text-primary); font-weight: 700; }
+
+    .date-strip {
+      display: grid; grid-template-columns: repeat(5, 1fr); gap: 8px;
+      margin-bottom: 18px;
+    }
+    .date-btn {
+      padding: 12px 8px;
+      background: var(--neutral-0);
+      border: 1.5px solid var(--border-strong);
+      border-radius: var(--radius-md);
+      cursor: pointer;
+      text-align: center;
+      transition: all 0.15s;
+      font-family: inherit;
+    }
+    .date-btn:hover { border-color: var(--neutral-400); }
+    .date-btn.selected {
+      border-color: var(--primary-500);
+      background: var(--primary-50);
+      box-shadow: 0 0 0 3px rgba(0,38,255,0.08);
+    }
+    .date-btn .dow {
+      font-family: 'Geist Mono', monospace; font-weight: 500;
+      font-size: 11px; letter-spacing: 0.4px; text-transform: uppercase;
+      color: var(--text-muted); margin-bottom: 4px;
+    }
+    .date-btn.selected .dow { color: var(--primary-500); }
+    .date-btn .day { font-size: 20px; font-weight: 700; }
+    .date-btn.selected .day { color: var(--primary-600); }
+    .date-btn.suggested { position: relative; }
+    .date-btn.suggested::after {
+      content: '★'; position: absolute; top: 4px; right: 6px;
+      font-size: 11px; color: var(--ai-grad);
+      background: linear-gradient(135deg, #7C5CFF, #2684FF);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
+
+    .time-slots {
+      display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px;
+      margin-bottom: 18px;
+    }
+    .time-slot {
+      padding: 11px;
+      background: var(--neutral-0);
+      border: 1.5px solid var(--border-strong);
+      border-radius: var(--radius-md);
+      cursor: pointer;
+      text-align: center;
+      font-size: 14px; font-weight: 600;
+      transition: all 0.15s;
+      font-family: inherit;
+      color: var(--text-primary);
+      position: relative;
+    }
+    .time-slot:hover { border-color: var(--primary-500); color: var(--primary-500); background: var(--primary-50); }
+    .time-slot.selected { border-color: var(--primary-500); background: var(--primary-500); color: #fff; }
+    .time-slot.suggested {
+      border-color: #D6CFFF;
+      background: linear-gradient(135deg, #F5F1FF, #EFF6FF);
+      color: #5B4ACF;
+    }
+    .time-slot.suggested.selected { background: var(--primary-500); color: #fff; border-color: var(--primary-500); }
+    .time-slot small {
+      display: block; margin-top: 2px;
+      font-family: 'Geist Mono', monospace; font-weight: 500;
+      font-size: 10px; letter-spacing: 0.3px; text-transform: uppercase;
+    }
+
+    .duration-row { display: flex; gap: 8px; margin-bottom: 26px; align-items: center; }
+    .duration-row .label { font-size: 13px; color: var(--text-secondary); font-weight: 600; margin-right: 4px; }
+    .duration-btn {
+      padding: 7px 14px;
+      background: var(--neutral-0);
+      border: 1.5px solid var(--border-strong);
+      border-radius: var(--radius-full);
+      cursor: pointer;
+      font-size: 13px; font-weight: 600;
+      transition: all 0.15s;
+      color: var(--text-secondary);
+      font-family: inherit;
+    }
+    .duration-btn:hover { border-color: var(--neutral-400); }
+    .duration-btn.selected { background: var(--primary-50); border-color: var(--primary-500); color: var(--primary-600); }
+
+    .cta-button {
+      width: 100%; padding: 16px 24px; border: none;
+      border-radius: var(--radius-full);
+      background: var(--primary-500); color: #fff;
+      font-family: inherit; font-size: 16px; font-weight: 600;
+      cursor: pointer; transition: all 0.15s ease;
+      display: inline-flex; align-items: center; justify-content: center; gap: 10px;
+      box-shadow: 0 6px 16px -6px rgba(0,38,255,0.45);
+    }
+    .cta-button:hover:not(:disabled) { background: var(--primary-600); transform: translateY(-1px); box-shadow: 0 8px 20px -6px rgba(0,38,255,0.55); }
+    .cta-button:disabled { background: var(--neutral-200); color: var(--text-muted); cursor: not-allowed; transform: none; box-shadow: none; }
+    .cta-button svg { width: 18px; height: 18px; }
+
+    /* ============ CONFIRMED ============ */
+    .conf-wrap { text-align: center; padding: 20px 0; }
+    .conf-icon {
+      width: 88px; height: 88px;
+      margin: 0 auto 24px;
+      border-radius: 50%;
+      background: var(--success-50);
+      display: flex; align-items: center; justify-content: center;
+      position: relative;
+    }
+    .conf-icon::before {
+      content: ''; position: absolute; inset: -10px;
+      border-radius: 50%;
+      border: 1.5px dashed var(--success-500);
+      opacity: 0.4;
+    }
+    .conf-icon svg { width: 42px; height: 42px; color: var(--success-500); }
+
+    .conf-card {
+      background: var(--neutral-0);
+      border: 1.5px solid var(--border-strong);
+      border-radius: var(--radius-lg);
+      padding: 22px 24px;
+      margin: 20px 0 24px;
+      text-align: left;
+    }
+    .conf-row { display: flex; align-items: center; gap: 12px; padding: 10px 0; font-size: 14.5px; }
+    .conf-row + .conf-row { border-top: 1px solid var(--border); }
+    .conf-row .ico {
+      width: 32px; height: 32px;
+      border-radius: 8px;
+      background: var(--primary-50);
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0;
+    }
+    .conf-row .ico svg { width: 16px; height: 16px; color: var(--primary-500); }
+    .conf-row .lbl {
+      font-family: 'Geist Mono', monospace; font-weight: 500;
+      font-size: 11.5px; letter-spacing: 0.5px; text-transform: uppercase;
+      color: var(--text-muted);
+      width: 110px; flex-shrink: 0;
+    }
+    .conf-row .val { font-weight: 600; flex: 1; }
+
+    .conf-actions { display: flex; flex-direction: column; gap: 10px; }
+    .ghost-btn {
+      width: 100%; padding: 14px 22px;
+      border-radius: var(--radius-full);
+      border: 1.5px solid var(--border-strong);
+      background: var(--neutral-0);
+      font-family: inherit; font-size: 15px; font-weight: 600;
+      color: var(--text-secondary);
+      cursor: pointer; transition: all 0.15s;
+    }
+    .ghost-btn:hover { border-color: var(--neutral-400); color: var(--text-primary); background: var(--neutral-50); }
+
+    /* ============ INTERVIEW ROOM ============ */
+    .room-shell {
+      background: #0F1117; color: #fff;
+      border-radius: var(--radius-xl);
+      overflow: hidden;
+      position: relative;
+      margin-bottom: 14px;
+    }
+    .room-grid {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 8px;
+      padding: 8px;
+      aspect-ratio: 16/9;
+    }
+    .room-tile {
+      position: relative;
+      border-radius: var(--radius-md);
+      overflow: hidden;
+      background: linear-gradient(135deg, #1a1d29, #0F1117);
+      display: flex; align-items: center; justify-content: center;
+    }
+    .room-tile.you { background: linear-gradient(135deg, #0026FF, #001FCC); }
+    .room-tile.them { background: linear-gradient(135deg, #FF6B35, #C04A1E); }
+    .room-tile .big-letter {
+      font-size: 80px; font-weight: 700;
+      color: rgba(255,255,255,0.2);
+      letter-spacing: -2px;
+    }
+    .room-tile .name {
+      position: absolute; bottom: 12px; left: 12px;
+      padding: 4px 10px;
+      background: rgba(0,0,0,0.5); backdrop-filter: blur(8px);
+      border-radius: var(--radius-full);
+      font-size: 12.5px; font-weight: 700;
+    }
+    .room-tile .mic {
+      position: absolute; bottom: 12px; right: 12px;
+      width: 28px; height: 28px;
+      background: rgba(0,0,0,0.5); backdrop-filter: blur(8px);
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .room-tile .mic svg { width: 14px; height: 14px; color: #7CFFB2; }
+    .room-tile.muted .mic svg { color: var(--danger-500); }
+
+    .room-header {
+      position: absolute; top: 14px; left: 14px;
+      display: flex; align-items: center; gap: 10px;
+      z-index: 2;
+    }
+    .live-dot {
+      display: inline-flex; align-items: center; gap: 6px;
+      padding: 4px 10px;
+      background: rgba(244, 67, 56, 0.9); backdrop-filter: blur(8px);
+      border-radius: var(--radius-full);
+      font-size: 11px; font-weight: 700; letter-spacing: 0.4px; text-transform: uppercase;
+    }
+    .live-dot::before { content: ''; width: 6px; height: 6px; border-radius: 50%; background: #fff; animation: livePulse 1.4s ease-in-out infinite; }
+    @keyframes livePulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.4; } }
+    .timer {
+      padding: 4px 12px;
+      background: rgba(0,0,0,0.5); backdrop-filter: blur(8px);
+      border-radius: var(--radius-full);
+      font-family: 'Geist Mono', monospace; font-weight: 500;
+      font-size: 12.5px;
+      font-variant-numeric: tabular-nums;
+    }
+    .ai-listen {
+      position: absolute; top: 14px; right: 14px;
+      display: inline-flex; align-items: center; gap: 6px;
+      padding: 4px 10px;
+      background: rgba(124, 92, 255, 0.85); backdrop-filter: blur(8px);
+      border-radius: var(--radius-full);
+      font-size: 11px; font-weight: 700; letter-spacing: 0.4px; text-transform: uppercase;
+      z-index: 2;
+    }
+    .ai-listen svg { width: 12px; height: 12px; }
+
+    .room-controls {
+      display: flex; gap: 8px; align-items: center; justify-content: center;
+      padding: 14px 16px;
+      background: #1A1D29;
+    }
+    .ctrl-btn {
+      width: 44px; height: 44px;
+      border-radius: 50%;
+      background: #2A2E3D;
+      border: none;
+      display: inline-flex; align-items: center; justify-content: center;
+      color: #fff;
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+    .ctrl-btn:hover { background: #383D50; }
+    .ctrl-btn.active { background: var(--danger-500); }
+    .ctrl-btn svg { width: 18px; height: 18px; }
+    .ctrl-end {
+      width: auto; padding: 0 22px;
+      border-radius: var(--radius-full);
+      background: var(--danger-500);
+      font-size: 14px; font-weight: 700;
+      display: inline-flex; gap: 8px;
+    }
+    .ctrl-end:hover { background: var(--danger-700); }
+
+    .room-notes {
+      background: var(--neutral-0);
+      border: 1.5px solid var(--border-strong);
+      border-radius: var(--radius-lg);
+      padding: 18px 20px;
+    }
+    .notes-head { display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px; }
+    .notes-head .lbl {
+      font-family: 'Geist Mono', monospace; font-weight: 500;
+      font-size: 11.5px; letter-spacing: 0.5px; text-transform: uppercase;
+      color: var(--text-muted);
+    }
+    .notes-head .ai-tag {
+      display: inline-flex; align-items: center; gap: 4px;
+      background: linear-gradient(135deg, #7C5CFF20, #2684FF20);
+      color: #5B4ACF;
+      padding: 3px 9px;
+      border-radius: 4px;
+      font-size: 11px; font-weight: 700;
+    }
+    .notes-head .ai-tag svg { width: 11px; height: 11px; }
+    .notes-area {
+      width: 100%; min-height: 90px;
+      border: none; resize: vertical;
+      font-family: inherit; font-size: 14px;
+      color: var(--text-primary);
+      outline: none;
+      line-height: 1.5;
+    }
+    .notes-area::placeholder { color: var(--text-muted); }
+
+    /* ============ DECISION ============ */
+    .decision-options {
+      display: grid; grid-template-columns: 1fr; gap: 10px;
+      margin-bottom: 14px;
+    }
+    .decision-card {
+      display: flex; align-items: center; gap: 16px;
+      padding: 18px 20px;
+      background: var(--neutral-0);
+      border: 1.5px solid var(--border-strong);
+      border-radius: var(--radius-md);
+      cursor: pointer;
+      text-align: left;
+      transition: all 0.15s;
+      font-family: inherit;
+      position: relative;
+    }
+    .decision-card:hover { border-color: var(--primary-500); transform: translateY(-1px); box-shadow: 0 6px 18px -8px rgba(0, 38, 255, 0.18); }
+    .decision-card .ico {
+      width: 44px; height: 44px;
+      border-radius: 12px;
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0;
+    }
+    .decision-card .ico svg { width: 22px; height: 22px; }
+    .decision-card.offer .ico { background: var(--success-50); color: var(--success-500); }
+    .decision-card.next .ico { background: var(--primary-50); color: var(--primary-500); }
+    .decision-card.reject .ico { background: var(--danger-50); color: var(--danger-500); }
+    .decision-card .body { flex: 1; }
+    .decision-card .title { font-size: 16px; font-weight: 700; }
+    .decision-card .sub { font-size: 13px; color: var(--text-muted); margin-top: 2px; }
+    .decision-card .arrow svg { width: 18px; height: 18px; color: var(--text-muted); }
+    .decision-card .ai-recommend {
+      position: absolute; top: 10px; right: 14px;
+      display: inline-flex; align-items: center; gap: 4px;
+      padding: 2px 8px;
+      background: linear-gradient(135deg, #7C5CFF, #2684FF);
+      border-radius: 4px;
+      font-size: 10px; font-weight: 700;
+      color: #fff;
+      letter-spacing: 0.4px; text-transform: uppercase;
+    }
+    .decision-card .ai-recommend svg { width: 10px; height: 10px; }
+
+    /* ============ OFFER ============ */
+    /* Constrain offer-step content to a comfortable reading width */
+    .step[data-step="offer"] .heading,
+    .step[data-step="offer"] .offer-source-tabs,
+    .step[data-step="offer"] .offer-card,
+    .step[data-step="offer"] .offer-uploaded,
+    .step[data-step="offer"] .offer-drop,
+    .step[data-step="offer"] .offer-ai-editor,
+    .step[data-step="offer"] .back-link {
+      max-width: 800px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+    .step[data-step="offer"] .back-link { width: 100%; }
+    .offer-card {
+      background: var(--neutral-0);
+      border: 1.5px solid var(--border-strong);
+      border-radius: var(--radius-lg);
+      padding: 28px 32px;
+      margin-bottom: 18px;
+      /* Container stays compact; content scrolls invisibly */
+      max-height: 720px;
+      overflow-y: auto;
+      scroll-behavior: smooth;
+      /* Hide scrollbar */
+      scrollbar-width: none;
+      -ms-overflow-style: none;
+    }
+    .offer-card::-webkit-scrollbar { width: 0; height: 0; display: none; }
+    /* Letterhead — company (left) + contact (right) */
+    .offer-letterhead {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      padding-bottom: 12px;
+    }
+    .offer-letterhead .ol-left {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      min-width: 0;
+    }
+    .offer-letterhead .ol-logo {
+      width: 40px; height: 40px;
+      border-radius: 8px;
+      background: var(--neutral-100) !important;
+      color: var(--text-muted) !important;
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0;
+    }
+    .offer-letterhead .ol-logo svg { width: 22px; height: 22px; color: var(--text-muted) !important; stroke: currentColor; }
+    .offer-letterhead .ol-info { min-width: 0; }
+    .offer-letterhead .ol-name { font-size: 16px; font-weight: 700; color: var(--text-primary); letter-spacing: -0.2px; line-height: 1.2; }
+    .offer-letterhead .ol-sub { font-size: 11.5px; color: var(--text-muted); margin-top: 2px; }
+    .offer-letterhead .ol-right { text-align: right; flex-shrink: 0; }
+    .offer-letterhead .ol-contact {
+      font-size: 12px;
+      color: var(--text-primary);
+      font-weight: 500;
+      line-height: 1.6;
+    }
+
+    /* Gradient divider under the letterhead */
+    .offer-divider {
+      height: 2px;
+      background: linear-gradient(90deg, #0026FF, #1B7FF5, #7C5CFF);
+      border-radius: 2px;
+      margin-bottom: 20px;
+    }
+
+    /* "Job Offer Letter" title centered below */
+    .offer-title {
+      font-size: 22px;
+      font-weight: 700;
+      color: var(--text-primary);
+      text-align: center;
+      margin: 8px 0 24px;
+      letter-spacing: -0.3px;
+      outline: none;
+      padding: 2px 6px;
+      border-radius: 6px;
+      transition: background 0.12s;
+    }
+    .offer-title:hover { background: var(--neutral-50); }
+    .offer-title:focus { background: #fff; box-shadow: inset 0 0 0 1px var(--primary-500), 0 0 0 3px rgba(0, 38, 255, 0.08); }
+
+    .offer-letter h3 { font-size: 18px; font-weight: 700; margin-bottom: 6px; }
+    .offer-letter p { font-size: 14px; line-height: 1.65; color: var(--text-secondary); margin-bottom: 14px; }
+    .offer-letter p strong { color: var(--text-primary); }
+
+    /* Date stamp at top of letter */
+    .offer-date {
+      font-size: 12.5px;
+      color: var(--text-muted);
+      margin-bottom: 18px;
+      padding: 1px 4px;
+      margin-left: -4px;
+      border-radius: 4px;
+      transition: background 0.12s;
+      outline: none;
+    }
+    .offer-date:hover { background: var(--neutral-50); }
+    .offer-date:focus { background: #fff; box-shadow: inset 0 0 0 1px var(--primary-500), 0 0 0 3px rgba(0, 38, 255, 0.08); }
+
+    /* Numbered offer sections */
+    .offer-section {
+      position: relative;
+      margin: 24px 0 8px;
+      padding: 16px 30px 14px 0;
+      border-top: 1px solid var(--border);
+    }
+    .offer-section:first-of-type { border-top: none; padding-top: 8px; }
+    .offer-section .os-title {
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--text-primary);
+      margin: 0 0 10px;
+      letter-spacing: -0.1px;
+      padding: 1px 4px;
+      margin-left: -4px;
+      border-radius: 4px;
+      transition: background 0.12s;
+      outline: none;
+    }
+    .offer-section .os-title:hover { background: var(--neutral-50); }
+    .offer-section .os-title:focus { background: #fff; box-shadow: inset 0 0 0 1px var(--primary-500), 0 0 0 3px rgba(0, 38, 255, 0.08); }
+    .offer-section .os-intro, .offer-section .os-foot {
+      font-size: 13px;
+      line-height: 1.6;
+      color: var(--text-secondary);
+      margin-bottom: 10px;
+      padding: 1px 4px;
+      margin-left: -4px;
+      border-radius: 4px;
+      transition: background 0.12s;
+      outline: none;
+    }
+    .offer-section .os-intro:hover, .offer-section .os-foot:hover { background: var(--neutral-50); }
+    .offer-section .os-intro:focus, .offer-section .os-foot:focus { background: #fff; box-shadow: inset 0 0 0 1px var(--primary-500), 0 0 0 3px rgba(0, 38, 255, 0.08); }
+    .offer-section .os-foot { margin-top: 12px; margin-bottom: 0; font-size: 12.5px; color: var(--text-muted); }
+    .offer-section .os-foot strong { color: var(--text-secondary); }
+    .offer-section .os-remove {
+      position: absolute;
+      right: 0; top: 14px;
+      width: 24px; height: 24px;
+      border-radius: 50%;
+      border: none;
+      background: transparent;
+      color: var(--text-muted);
+      font-size: 18px;
+      line-height: 1;
+      cursor: pointer;
+      opacity: 0;
+      transition: all 0.12s;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .offer-section:hover .os-remove { opacity: 1; }
+    .offer-section .os-remove:hover { background: var(--danger-50); color: var(--danger-500); }
+
+    /* Compensation breakdown table */
+    .comp-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 8px 0;
+      font-size: 13px;
+    }
+    .comp-table th, .comp-table td {
+      padding: 8px 10px;
+      text-align: left;
+      vertical-align: top;
+      border-bottom: 1px solid var(--border);
+    }
+    .comp-table th {
+      font-family: 'Geist Mono', monospace;
+      font-size: 11px;
+      font-weight: 500;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.4px;
+      background: var(--neutral-50);
+    }
+    .comp-table td:nth-child(2), .comp-table td:nth-child(3),
+    .comp-table th:nth-child(2), .comp-table th:nth-child(3) { text-align: right; font-variant-numeric: tabular-nums; }
+    .comp-table td:last-child { width: 24px; text-align: center; padding: 8px 0; }
+    .comp-table td[contenteditable="true"] {
+      outline: none;
+      transition: background 0.12s;
+    }
+    .comp-table td[contenteditable="true"]:hover { background: var(--neutral-50); }
+    .comp-table td[contenteditable="true"]:focus { background: #fff; box-shadow: inset 0 0 0 1px var(--primary-500); }
+    .comp-table .ct-subtotal { background: var(--neutral-50); }
+    .comp-table .ct-subtotal td { color: var(--text-secondary); }
+    .comp-table .ct-total { background: var(--primary-50); }
+    .comp-table .ct-total td { color: var(--primary-600); font-size: 14px; padding-top: 10px; padding-bottom: 10px; }
+    .ct-remove {
+      width: 20px; height: 20px;
+      border-radius: 50%;
+      border: none;
+      background: transparent;
+      color: var(--text-muted);
+      font-size: 14px;
+      line-height: 1;
+      cursor: pointer;
+      opacity: 0;
+      transition: all 0.12s;
+      display: inline-flex; align-items: center; justify-content: center;
+    }
+    .comp-table tr:hover .ct-remove { opacity: 1; }
+    .ct-remove:hover { background: var(--danger-50); color: var(--danger-500); }
+    .comp-add-row {
+      display: inline-flex; align-items: center;
+      padding: 4px 10px;
+      background: transparent;
+      border: 1px dashed var(--border-strong);
+      border-radius: 100px;
+      font-family: inherit;
+      font-size: 11.5px; font-weight: 600;
+      color: var(--text-muted);
+      cursor: pointer;
+      margin: 6px 0 0;
+      transition: all 0.12s;
+    }
+    .comp-add-row:hover { border-color: var(--primary-500); color: var(--primary-500); }
+
+    /* Joining documents list */
+    .docs-list { padding-left: 22px; margin: 8px 0; }
+    .docs-list li {
+      font-size: 13.5px;
+      line-height: 1.6;
+      color: var(--text-secondary);
+      margin-bottom: 4px;
+      padding: 1px 4px;
+      margin-left: -4px;
+      border-radius: 4px;
+      transition: background 0.12s;
+      outline: none;
+    }
+    .docs-list li:hover { background: var(--neutral-50); }
+    .docs-list li:focus { background: #fff; box-shadow: inset 0 0 0 1px var(--primary-500), 0 0 0 3px rgba(0, 38, 255, 0.08); }
+    .offer-letter .editable {
+      background: transparent;
+      color: var(--text-primary);
+      padding: 0;
+      border-radius: 0;
+      font-weight: 700;
+      cursor: text;
+      border-bottom: none;
+      transition: none;
+    }
+    .offer-letter .editable:hover { background: transparent; }
+    .offer-letter ul { margin: 12px 0 16px 20px; }
+    .offer-letter li { font-size: 14px; line-height: 1.7; color: var(--text-secondary); }
+    .offer-letter li strong { color: var(--text-primary); }
+
+    /* Inline editable affordance — subtle until focused */
+    .offer-letter [contenteditable="true"]:not(.ot-label):not(.ot-value):not(h3) {
+      outline: none;
+      border-radius: 4px;
+      padding: 2px 4px;
+      margin: -2px -4px;
+      transition: background 0.12s;
+    }
+    .offer-letter [contenteditable="true"]:not(.ot-label):not(.ot-value):not(h3):hover { background: var(--neutral-50); }
+    .offer-letter [contenteditable="true"]:focus { background: #fff; box-shadow: inset 0 0 0 1px var(--primary-500), 0 0 0 3px rgba(0, 38, 255, 0.08); }
+    .offer-letter h3[contenteditable="true"]:focus { background: #fff; box-shadow: inset 0 0 0 1px var(--primary-500), 0 0 0 3px rgba(0, 38, 255, 0.08); }
+
+    /* Key-terms list */
+    .offer-terms { list-style: disc; padding-left: 22px; margin: 12px 0 8px; }
+    .offer-terms li {
+      position: relative;
+      padding-right: 28px;
+      font-size: 14px;
+      line-height: 1.7;
+      color: var(--text-secondary);
+      margin-bottom: 4px;
+    }
+    .offer-terms .ot-label, .offer-terms .ot-value {
+      outline: none;
+      padding: 1px 4px;
+      margin: -1px -4px;
+      border-radius: 4px;
+      transition: background 0.12s;
+      cursor: text;
+    }
+    .offer-terms .ot-label { font-weight: 700; color: var(--text-primary); }
+    .offer-terms .ot-value { font-weight: 600; color: var(--text-primary); }
+    .offer-terms .ot-label:hover, .offer-terms .ot-value:hover { background: var(--neutral-50); }
+    .offer-terms .ot-label:focus, .offer-terms .ot-value:focus { background: #fff; box-shadow: inset 0 0 0 1px var(--primary-500), 0 0 0 3px rgba(0, 38, 255, 0.08); }
+    .offer-terms .ot-remove {
+      position: absolute;
+      right: 0;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 22px; height: 22px;
+      border-radius: 50%;
+      border: none;
+      background: transparent;
+      color: var(--text-muted);
+      font-size: 18px;
+      line-height: 1;
+      cursor: pointer;
+      opacity: 0;
+      transition: all 0.12s;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .offer-terms li:hover .ot-remove { opacity: 1; }
+    .offer-terms .ot-remove:hover { background: var(--danger-50); color: var(--danger-500); }
+
+    /* "+ Add line" sits below the offer letter card, not inside it */
+    .offer-add-row { margin-top: 12px; margin-bottom: 80px; display: flex; flex-wrap: wrap; gap: 8px; }
+
+    /* AI offer editor — input bar + collapsible guided picker */
+    .offer-ai-edit { margin-top: 14px; margin-bottom: 80px; }
+
+    .ai-input-bar {
+      display: flex; align-items: center; gap: 10px;
+      padding: 6px 6px 6px 8px;
+      background: linear-gradient(180deg, #F5F1FF, #EFF6FF);
+      border: 1px solid #D6CFFF;
+      border-radius: 100px;
+      transition: box-shadow 0.15s, border-color 0.15s;
+    }
+    .ai-input-bar:focus-within { border-color: #7C5CFF; box-shadow: 0 0 0 3px rgba(124, 92, 255, 0.12); }
+    .ai-plus-btn {
+      width: 28px; height: 28px;
+      border-radius: 0;
+      background: transparent;
+      border: none;
+      cursor: pointer;
+      display: inline-flex; align-items: center; justify-content: center;
+      flex-shrink: 0;
+      transition: transform 0.15s;
+      padding: 0;
+      margin-left: 4px;
+    }
+    .ai-plus-btn:hover { transform: scale(1.12); }
+    .ai-plus-btn svg { width: 18px; height: 18px; }
+    .ai-input-field {
+      flex: 1;
+      background: transparent;
+      border: none;
+      outline: none;
+      font-family: inherit;
+      font-size: 14px;
+      color: var(--text-primary);
+      padding: 6px 4px;
+    }
+    .ai-input-field::placeholder { color: var(--text-muted); }
+    .ai-send-btn {
+      width: 32px; height: 32px;
+      border-radius: 50%;
+      background: var(--primary-500);
+      color: #fff;
+      border: none;
+      cursor: pointer;
+      display: inline-flex; align-items: center; justify-content: center;
+      flex-shrink: 0;
+      transition: transform 0.15s, background 0.15s;
+    }
+    .ai-send-btn:hover { background: var(--primary-600); transform: translateY(-1px); }
+    .ai-send-btn svg { width: 14px; height: 14px; }
+
+    .ai-picker-panel {
+      margin-top: 12px;
+      background: var(--neutral-0);
+      border: 1px solid var(--border-strong);
+      border-radius: 14px;
+      padding: 18px 18px 16px;
+    }
+    .apt-step-label {
+      font-family: 'Geist Mono', monospace;
+      font-size: 11px; font-weight: 500;
+      letter-spacing: 0.6px;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      margin-bottom: 12px;
+    }
+    .apt-cats { display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px; }
+    @media (min-width: 640px) { .apt-cats { grid-template-columns: repeat(3, 1fr); } }
+    .apt-cat {
+      display: flex; flex-direction: column; gap: 4px;
+      padding: 14px 14px 12px;
+      background: #fff;
+      border: 1px solid var(--border-strong);
+      border-radius: 12px;
+      cursor: pointer;
+      transition: all 0.12s;
+      font-family: inherit;
+      text-align: left;
+    }
+    .apt-cat:hover { border-color: var(--primary-500); transform: translateY(-1px); box-shadow: 0 4px 12px -6px rgba(0, 38, 255, 0.18); }
+    .apt-cat-ico { font-size: 18px; line-height: 1; }
+    .apt-cat-name { font-size: 13.5px; font-weight: 700; color: var(--text-primary); }
+    .apt-cat-sub { font-size: 11.5px; color: var(--text-muted); line-height: 1.4; }
+
+    .apt-back {
+      display: inline-flex; align-items: center; gap: 6px;
+      padding: 4px 8px 4px 4px;
+      background: none; border: none;
+      cursor: pointer;
+      font-family: inherit;
+      font-size: 12.5px; font-weight: 600;
+      color: var(--text-muted);
+      margin-bottom: 8px;
+      border-radius: 6px;
+      transition: color 0.12s;
+    }
+    .apt-back:hover { color: var(--text-primary); background: var(--neutral-50); }
+    .apt-back svg { width: 13px; height: 13px; }
+    .apt-form-title { font-size: 16px; font-weight: 700; color: var(--text-primary); margin-bottom: 14px; }
+    .apt-form-body { display: flex; flex-direction: column; gap: 12px; margin-bottom: 14px; }
+    .apt-field { display: flex; flex-direction: column; gap: 6px; }
+    .apt-field-label { font-size: 12px; font-weight: 600; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.4px; }
+    .apt-input {
+      width: 100%;
+      padding: 9px 12px;
+      background: #fff;
+      border: 1px solid var(--border-strong);
+      border-radius: 10px;
+      font-family: inherit;
+      font-size: 14px;
+      color: var(--text-primary);
+      outline: none;
+      transition: border-color 0.12s, box-shadow 0.12s;
+    }
+    .apt-input:focus { border-color: var(--primary-500); box-shadow: 0 0 0 3px rgba(0, 38, 255, 0.10); }
+    .apt-textarea { min-height: 80px; resize: vertical; line-height: 1.5; }
+
+    .apt-form-preview {
+      background: linear-gradient(180deg, #F5F1FF, #EFF6FF);
+      border: 1px solid #D6CFFF;
+      border-radius: 10px;
+      padding: 12px 14px;
+      margin-bottom: 14px;
+    }
+    .apt-preview-label {
+      font-family: 'Geist Mono', monospace;
+      font-size: 10.5px; font-weight: 500;
+      letter-spacing: 0.6px;
+      text-transform: uppercase;
+      color: #5B4ACF;
+      margin-bottom: 4px;
+    }
+    .apt-preview-content {
+      font-size: 13.5px; line-height: 1.6;
+      color: var(--text-secondary);
+    }
+
+    .apt-form-actions { display: flex; justify-content: flex-end; gap: 8px; }
+    .apt-btn {
+      padding: 9px 18px;
+      border-radius: 100px;
+      font-family: inherit;
+      font-size: 13.5px; font-weight: 600;
+      cursor: pointer;
+      border: 1.5px solid transparent;
+      transition: all 0.15s;
+    }
+    .apt-btn.ghost { background: #fff; color: var(--text-secondary); border-color: var(--border-strong); }
+    .apt-btn.ghost:hover { border-color: var(--neutral-400); color: var(--text-primary); }
+    .apt-btn.primary { background: var(--primary-500); color: #fff; border-color: var(--primary-500); }
+    .apt-btn.primary:hover { background: var(--primary-600); border-color: var(--primary-600); }
+
+    /* Old free-text input styles — kept for the toast animation only */
+    .oae-input-wrap {
+      display: flex; align-items: center; gap: 10px;
+      padding: 8px 8px 8px 14px;
+      background: linear-gradient(180deg, #F5F1FF, #EFF6FF);
+      border: 1px solid #D6CFFF;
+      border-radius: 100px;
+      transition: box-shadow 0.15s, border-color 0.15s;
+    }
+    .oae-input-wrap:focus-within {
+      border-color: #7C5CFF;
+      box-shadow: 0 0 0 3px rgba(124, 92, 255, 0.15);
+    }
+    .oae-spark {
+      width: 22px; height: 22px;
+      display: inline-flex; align-items: center; justify-content: center;
+      flex-shrink: 0;
+      color: #5B4ACF;
+    }
+    .oae-spark svg { width: 16px; height: 16px; }
+    .oae-input {
+      flex: 1;
+      background: transparent;
+      border: none;
+      outline: none;
+      font-family: inherit;
+      font-size: 14px;
+      color: var(--text-primary);
+      padding: 6px 0;
+    }
+    .oae-input::placeholder { color: var(--text-muted); }
+    .oae-send {
+      width: 34px; height: 34px;
+      border-radius: 50%;
+      background: var(--ai-grad);
+      color: #fff;
+      border: none;
+      cursor: pointer;
+      display: inline-flex; align-items: center; justify-content: center;
+      flex-shrink: 0;
+      transition: transform 0.15s, box-shadow 0.15s;
+      box-shadow: 0 4px 12px -4px rgba(124, 92, 255, 0.5);
+    }
+    .oae-send:hover { transform: translateY(-1px); box-shadow: 0 6px 16px -4px rgba(124, 92, 255, 0.6); }
+    .oae-send svg { width: 14px; height: 14px; }
+    .oae-suggests {
+      display: flex; flex-wrap: wrap; gap: 6px;
+      margin-top: 10px;
+      padding-left: 4px;
+    }
+    .oae-chip {
+      padding: 5px 12px;
+      background: #fff;
+      border: 1px solid var(--border-strong);
+      border-radius: 100px;
+      font-family: inherit;
+      font-size: 12px; font-weight: 500;
+      color: var(--text-secondary);
+      cursor: pointer;
+      transition: all 0.12s;
+    }
+    .oae-chip:hover { border-color: #7C5CFF; color: #5B4ACF; background: #FAFAFF; }
+
+    /* AI edit toast */
+    .oae-toast {
+      position: fixed;
+      bottom: 100px;
+      left: 50%;
+      transform: translateX(-50%) translateY(20px);
+      padding: 10px 16px;
+      background: var(--text-primary);
+      color: #fff;
+      border-radius: 100px;
+      font-size: 13px;
+      font-weight: 500;
+      display: inline-flex; align-items: center; gap: 8px;
+      opacity: 0;
+      transition: opacity 0.2s, transform 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+      z-index: 100;
+      box-shadow: 0 12px 28px -8px rgba(17, 22, 35, 0.4);
+      pointer-events: none;
+    }
+    .oae-toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+    .oae-toast svg { color: #FFD66F; }
+
+    /* Custom clause block inserted into the letter body */
+    .offer-clause {
+      position: relative;
+      padding: 4px 28px 4px 0;
+      margin: 14px 0;
+    }
+    .offer-clause .oc-title {
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--text-primary);
+      margin-bottom: 4px;
+      outline: none;
+      padding: 1px 4px;
+      margin-left: -4px;
+      border-radius: 4px;
+      transition: background 0.12s;
+    }
+    .offer-clause .oc-title:hover { background: var(--neutral-50); }
+    .offer-clause .oc-title:focus { background: #fff; box-shadow: inset 0 0 0 1px var(--primary-500), 0 0 0 3px rgba(0, 38, 255, 0.08); }
+    .offer-clause .oc-body {
+      font-size: 14px;
+      line-height: 1.65;
+      color: var(--text-secondary);
+      outline: none;
+      padding: 2px 4px;
+      margin-left: -4px;
+      border-radius: 4px;
+      transition: background 0.12s;
+    }
+    .offer-clause .oc-body:hover { background: var(--neutral-50); }
+    .offer-clause .oc-body:focus { background: #fff; box-shadow: inset 0 0 0 1px var(--primary-500), 0 0 0 3px rgba(0, 38, 255, 0.08); }
+    .offer-clause .oc-remove {
+      position: absolute;
+      right: 0;
+      top: 4px;
+      width: 22px; height: 22px;
+      border-radius: 50%;
+      border: none;
+      background: transparent;
+      color: var(--text-muted);
+      font-size: 18px;
+      line-height: 1;
+      cursor: pointer;
+      opacity: 0;
+      transition: all 0.12s;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .offer-clause:hover .oc-remove { opacity: 1; }
+    .offer-clause .oc-remove:hover { background: var(--danger-50); color: var(--danger-500); }
+
+    /* Sticky decision bar for the offer step (mirrors recruit-meeting.html pattern) */
+    .offer-decision-bar {
+      position: fixed;
+      bottom: 0;
+      left: var(--sidebar-w);
+      right: 0;
+      padding: 16px 32px;
+      background: var(--neutral-0);
+      border-top: 1px solid var(--border);
+      display: flex; align-items: center; justify-content: flex-end; gap: 14px;
+      box-shadow: 0 -8px 24px -12px rgba(17, 22, 35, 0.18);
+      z-index: 30;
+    }
+    body.sidebar-collapsed .offer-decision-bar { left: var(--sidebar-w); }
+    @media (max-width: 880px) { .offer-decision-bar { left: 0; padding: 14px 18px; } }
+    .offer-decision-bar .dec-btn {
+      padding: 11px 22px;
+      border-radius: var(--radius-full);
+      font-family: inherit;
+      font-size: 13.5px; font-weight: 600;
+      cursor: pointer;
+      transition: all 0.15s;
+      border: 1.5px solid transparent;
+      display: inline-flex; align-items: center; gap: 7px;
+    }
+    .offer-decision-bar .dec-btn.primary {
+      background: var(--primary-500); color: #fff;
+      border-color: var(--primary-500);
+      box-shadow: 0 6px 16px -6px rgba(0,38,255,0.45);
+    }
+    .offer-decision-bar .dec-btn.primary:hover {
+      background: var(--primary-600);
+      border-color: var(--primary-600);
+      transform: translateY(-1px);
+    }
+    .offer-decision-bar .dec-btn svg { width: 14px; height: 14px; }
+    .add-term-btn {
+      display: inline-flex; align-items: center; gap: 6px;
+      padding: 8px 16px;
+      background: #fff;
+      border: 1px dashed var(--border-strong);
+      border-radius: 100px;
+      color: var(--text-secondary);
+      font-family: inherit;
+      font-size: 13px; font-weight: 600;
+      cursor: pointer;
+      transition: all 0.12s;
+    }
+    .add-term-btn:hover { border-color: var(--primary-500); color: var(--primary-500); background: var(--primary-50); }
+    .add-term-btn svg { width: 13px; height: 13px; }
+    .offer-foot { padding-top: 18px; border-top: 1px solid var(--border); font-size: 13px; color: var(--text-muted); line-height: 1.5; }
+
+    /* E-sign block — sticky to the bottom of the scrollable offer card */
+    .esign-block {
+      position: sticky;
+      bottom: -28px; /* offset the card's bottom padding so the block sits flush */
+      margin: 24px -32px -28px; /* extend to the card's edges */
+      padding: 16px 32px 20px;
+      background: var(--neutral-0);
+      border-top: 1px solid var(--border);
+      box-shadow: 0 -8px 16px -10px rgba(17, 22, 35, 0.08);
+      z-index: 2;
+    }
+    .esign-label {
+      font-size: 12px; font-weight: 600;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.4px;
+      margin-bottom: 10px;
+    }
+    .esign-label strong { color: var(--text-primary); text-transform: none; letter-spacing: 0; font-weight: 700; font-size: 13px; }
+
+    /* Two-column signature grid */
+    .esign-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 32px; margin-bottom: 10px; }
+    .esign-col { min-width: 0; }
+    .esign-col.pending { opacity: 0.85; }
+    .esign-placeholder {
+      display: flex; align-items: center; gap: 8px;
+      padding: 12px 8px;
+      border-bottom: 1.5px dashed var(--neutral-300);
+      font-size: 13px;
+      color: var(--text-muted);
+      font-style: italic;
+    }
+    .esign-pending-icon { color: var(--text-muted); display: inline-flex; }
+    .esign-pending-icon svg { width: 14px; height: 14px; }
+    .esign-meta .val.muted { color: var(--text-muted); font-style: italic; font-weight: 500; }
+    @media (max-width: 640px) {
+      .esign-grid { grid-template-columns: 1fr; gap: 18px; }
+    }
+    .esign-input {
+      width: 100%;
+      padding: 8px 4px;
+      background: transparent;
+      border: none;
+      border-bottom: 1.5px solid var(--text-primary);
+      font-family: 'Caveat', 'Brush Script MT', 'GT Standard', cursive;
+      font-size: 26px; font-weight: 500;
+      color: var(--text-primary);
+      letter-spacing: 0.5px;
+      outline: none;
+      transition: border-color 0.12s;
+    }
+    .esign-input:focus { border-bottom-color: var(--text-primary); }
+    .esign-input::placeholder { color: var(--text-muted); font-style: italic; font-size: 16px; letter-spacing: 0; }
+    .esign-meta { font-size: 12.5px; color: var(--text-secondary); line-height: 1.5; min-width: 130px; }
+    .esign-meta-row { display: flex; gap: 8px; }
+    .esign-meta-row .lbl { color: var(--text-muted); width: 36px; }
+    .esign-meta-row .val { font-weight: 600; color: var(--text-primary); }
+    .esign-note { font-size: 12px; color: var(--text-muted); line-height: 1.5; }
+    .esign-input.invalid { border-bottom-color: var(--danger-500); }
+
+    /* Offer source toggle (AI-drafted vs Upload) */
+    .offer-source-tabs {
+      display: inline-flex;
+      gap: 4px;
+      padding: 4px;
+      background: var(--neutral-50);
+      border: 1px solid var(--border);
+      border-radius: 100px;
+      margin-bottom: 18px;
+    }
+    .offer-source-tab {
+      display: inline-flex; align-items: center; gap: 6px;
+      padding: 7px 14px;
+      background: transparent;
+      border: none;
+      border-radius: 100px;
+      font-family: inherit;
+      font-size: 12.5px; font-weight: 600;
+      color: var(--text-muted);
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+    .offer-source-tab:hover { color: var(--text-secondary); }
+    .offer-source-tab.active {
+      background: #fff;
+      color: var(--text-primary);
+      box-shadow: 0 1px 2px rgba(17, 22, 35, 0.08);
+    }
+    .offer-source-tab svg { color: var(--text-muted); }
+    .offer-source-tab.active svg { color: var(--primary-500); }
+
+    /* Upload your own offer */
+    .offer-upload { margin-bottom: 0; }
+    .offer-drop {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      padding: 22px 24px;
+      background: var(--neutral-0);
+      border: 1.5px dashed var(--border-strong);
+      border-radius: 14px;
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+    .offer-drop:hover, .offer-drop.dragover {
+      border-color: var(--primary-500);
+      background: var(--primary-50);
+    }
+    .offer-drop .od-icon {
+      width: 44px; height: 44px;
+      border-radius: 12px;
+      background: var(--neutral-100);
+      display: flex; align-items: center; justify-content: center;
+      color: var(--text-secondary);
+      flex-shrink: 0;
+    }
+    .offer-drop:hover .od-icon, .offer-drop.dragover .od-icon {
+      background: #fff;
+      color: var(--primary-500);
+    }
+    .offer-drop .od-icon svg { width: 22px; height: 22px; }
+    .offer-drop .od-text { flex: 1; min-width: 0; }
+    .offer-drop .od-title { font-size: 14px; font-weight: 700; color: var(--text-primary); }
+    .offer-drop .od-sub { font-size: 12.5px; color: var(--text-muted); margin-top: 3px; line-height: 1.5; }
+
+    .offer-uploaded {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      padding: 16px 20px;
+      background: var(--success-50);
+      border: 1px solid #B6E7D0;
+      border-radius: 12px;
+    }
+    .offer-uploaded[hidden] { display: none !important; }
+    .offer-drop[hidden] { display: none !important; }
+    .offer-uploaded .ou-icon {
+      width: 38px; height: 38px;
+      border-radius: 10px;
+      background: #fff;
+      display: flex; align-items: center; justify-content: center;
+      color: var(--success-700);
+      flex-shrink: 0;
+    }
+    .offer-uploaded .ou-icon svg { width: 18px; height: 18px; }
+    .offer-uploaded .ou-body { flex: 1; min-width: 0; }
+    .offer-uploaded .ou-name { font-size: 14px; font-weight: 700; color: var(--text-primary); }
+    .offer-uploaded .ou-meta { font-size: 12px; color: var(--text-muted); margin-top: 2px; }
+    .offer-uploaded .ou-remove {
+      width: 32px; height: 32px;
+      border-radius: 8px;
+      background: transparent;
+      border: none;
+      color: var(--text-secondary);
+      cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      transition: all 0.12s;
+    }
+    .offer-uploaded .ou-remove:hover { background: #fff; color: var(--danger-500); }
+    .offer-uploaded .ou-remove svg { width: 15px; height: 15px; }
+
+    .offer-upload-note {
+      font-size: 12.5px;
+      color: var(--text-muted);
+      margin-top: 12px;
+      line-height: 1.5;
+    }
+
+    /* ============ SENT ============ */
+    .sent-wrap { text-align: center; padding: 30px 0 8px; }
+    .sent-pill {
+      display: inline-flex; align-items: center; gap: 10px;
+      padding: 10px 18px;
+      background: var(--warning-50);
+      color: var(--warning-700);
+      border: 1px solid #FFE3A8;
+      border-radius: var(--radius-full);
+      font-size: 13.5px; font-weight: 700;
+      margin: 18px 0 24px;
+    }
+    .sent-pill svg { width: 14px; height: 14px; }
+    .sent-pill .spinner {
+      width: 12px; height: 12px;
+      border: 2px solid var(--warning-500);
+      border-top-color: transparent;
+      border-radius: 50%;
+      animation: spin 0.8s linear infinite;
+    }
+    @keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+
+    /* ============ HIRE COMPLETE ============ */
+    .hire-confetti {
+      width: 120px; height: 120px;
+      margin: 16px auto 24px;
+      position: relative;
+    }
+    .hire-confetti .check {
+      width: 100%; height: 100%;
+      border-radius: 50%;
+      background: var(--success-500);
+      display: flex; align-items: center; justify-content: center;
+      box-shadow: 0 16px 40px -10px rgba(18, 183, 106, 0.45);
+    }
+    .hire-confetti .check svg { width: 56px; height: 56px; color: #fff; }
+    .hire-confetti::before, .hire-confetti::after {
+      content: ''; position: absolute;
+      width: 12px; height: 12px;
+      background: var(--success-500);
+      border-radius: 2px;
+    }
+    .hire-confetti::before { top: -8px; left: -16px; background: var(--primary-500); transform: rotate(20deg); }
+    .hire-confetti::after { bottom: -8px; right: -16px; background: var(--warning-500); transform: rotate(-15deg); }
+
+    .hire-stats {
+      display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px;
+      margin: 20px 0 24px;
+    }
+    .hire-stat {
+      padding: 14px;
+      background: var(--neutral-0);
+      border: 1px solid var(--border-strong);
+      border-radius: var(--radius-md);
+      text-align: center;
+    }
+    .hire-stat .num { font-size: 22px; font-weight: 700; color: var(--primary-500); }
+    .hire-stat .lbl {
+      font-family: 'Geist Mono', monospace; font-weight: 500;
+      font-size: 11px; letter-spacing: 0.5px; text-transform: uppercase;
+      color: var(--text-muted); margin-top: 4px;
+    }
+
+    .actions-stack { display: flex; flex-direction: column; gap: 10px; }
+
+    @media (max-width: 880px) {
+      .app { grid-template-columns: 1fr; grid-template-areas: "main"; }
+      .sidebar { display: none; }
+      main { padding: 20px 18px 56px; }
+    }
+    @media (max-width: 720px) {
+      main { padding: 18px 18px 56px; }
+      .date-strip { grid-template-columns: repeat(4, 1fr); }
+      .time-slots { grid-template-columns: repeat(2, 1fr); }
+      .hire-stats { grid-template-columns: 1fr; }
+    }
+      /* ============ NOTIFICATIONS SIDE PANEL ============ */
+    .notif-overlay { display: none; }
+    .notif-panel {
+      position: fixed;
+      top: 0; left: var(--sidebar-w);
+      width: 460px; max-width: calc(100vw - var(--sidebar-w));
+      height: 100vh;
+      background: var(--neutral-0);
+      box-shadow: -2px 0 8px rgba(17, 22, 35, 0.08), 2px 0 8px rgba(17, 22, 35, 0.08);
+      display: flex; flex-direction: column;
+      transform: translateX(calc(-100% - var(--sidebar-w, 280px)));
+      visibility: hidden;
+      z-index: 91;
+    }
+    .notif-panel.open { transform: translateX(0); visibility: visible; }
+    .notif-panel-head {
+      padding: 20px 22px 14px;
+      display: flex; align-items: center; justify-content: space-between;
+      gap: 12px;
+      flex-shrink: 0;
+    }
+    .notif-panel-head h2 { font-size: 20px; font-weight: 700; letter-spacing: -0.2px; }
+    .notif-head-actions { display: flex; align-items: center; gap: 12px; }
+    .notif-unread {
+      display: inline-flex; align-items: center; gap: 8px;
+      font-size: 12.5px; font-weight: 500;
+      color: var(--text-secondary);
+      cursor: pointer;
+    }
+    .notif-unread input { display: none; }
+    .notif-unread .track {
+      width: 28px; height: 16px;
+      background: var(--neutral-200);
+      border-radius: 100px;
+      position: relative;
+      transition: background 0.2s;
+    }
+    .notif-unread .track::after {
+      content: ''; position: absolute;
+      top: 2px; left: 2px;
+      width: 12px; height: 12px;
+      background: #fff; border-radius: 50%;
+      transition: transform 0.2s;
+      box-shadow: 0 1px 2px rgba(0,0,0,0.2);
+    }
+    .notif-unread input:checked + .track { background: var(--primary-500); }
+    .notif-unread input:checked + .track::after { transform: translateX(12px); }
+    .notif-close {
+      width: 32px; height: 32px;
+      border-radius: 8px;
+      background: transparent;
+      border: 1px solid var(--border-strong);
+      color: var(--text-secondary);
+      cursor: pointer;
+      display: inline-flex; align-items: center; justify-content: center;
+      transition: all 0.15s;
+    }
+    .notif-close:hover { background: var(--neutral-50); color: var(--text-primary); }
+    .notif-close svg { width: 14px; height: 14px; pointer-events: none; }
+    .notif-tabs {
+      display: flex; align-items: center; gap: 22px;
+      padding: 0 22px;
+      border-bottom: 1px solid var(--border);
+      flex-shrink: 0;
+    }
+    .notif-tab {
+      padding: 10px 0;
+      background: none; border: none; cursor: pointer;
+      font-family: inherit;
+      font-size: 13.5px; font-weight: 500;
+      color: var(--text-muted);
+      position: relative;
+      display: inline-flex; align-items: center; gap: 6px;
+      transition: color 0.15s;
+    }
+    .notif-tab:hover { color: var(--text-secondary); }
+    .notif-tab.active { color: var(--text-primary); font-weight: 600; }
+    .notif-tab.active::after {
+      content: ''; position: absolute;
+      bottom: -1px; left: 0; right: 0; height: 2px;
+      background: var(--text-primary);
+      border-radius: 2px;
+    }
+    .notif-tab .dot {
+      width: 6px; height: 6px;
+      border-radius: 50%;
+      background: var(--danger-500);
+      display: none;
+    }
+    .notif-tab.has-unread .dot { display: inline-block; }
+    .notif-list { flex: 1; overflow-y: auto; padding: 6px 12px 80px; }
+    .notif-item {
+      display: grid;
+      grid-template-columns: 36px 1fr auto;
+      gap: 12px;
+      padding: 14px 10px;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: background 0.12s;
+      position: relative;
+    }
+    .notif-item:hover { background: var(--neutral-50); }
+    .notif-item .av {
+      width: 36px; height: 36px;
+      border-radius: 50%;
+      background: var(--neutral-100);
+      display: flex; align-items: center; justify-content: center;
+      color: var(--text-primary);
+      font-size: 13px; font-weight: 700;
+      flex-shrink: 0;
+    }
+    .notif-item .av.ai { background: var(--ai-grad); color: #fff; }
+    .notif-item .av svg { width: 16px; height: 16px; }
+    .notif-item .body { min-width: 0; padding-top: 1px; }
+    .notif-item .title {
+      font-size: 13.5px;
+      color: var(--text-primary);
+      font-weight: 500;
+      line-height: 1.45;
+      display: flex; align-items: baseline; gap: 6px;
+    }
+    .notif-item.unread .title::before {
+      content: '';
+      width: 7px; height: 7px;
+      background: var(--danger-500);
+      border-radius: 50%;
+      flex-shrink: 0;
+      align-self: center;
+    }
+    .notif-item .title strong { font-weight: 700; }
+    .notif-item .desc {
+      font-size: 12.5px;
+      color: var(--text-muted);
+      margin-top: 3px;
+      line-height: 1.5;
+    }
+    .notif-item .when {
+      font-size: 11.5px;
+      color: var(--text-muted);
+      font-family: 'Geist Mono', monospace;
+      font-weight: 500;
+      white-space: nowrap;
+      align-self: start;
+      padding-top: 3px;
+    }
+    .notif-empty {
+      padding: 32px 22px;
+      text-align: center;
+      font-size: 13px;
+      color: var(--text-muted);
+    }
+      /* ============ COLLAPSIBLE SIDEBAR ============ */
+    body.sidebar-collapsed { --sidebar-w: 76px; }
+    body.sidebar-collapsed .sidebar { padding: 12px 8px 16px; }
+    body.sidebar-collapsed .brand-logo img { clip-path: none; margin-left: 0; margin-top: 0; margin-bottom: 0; width: 36px; height: auto; }
+    body.sidebar-collapsed .nav-item { justify-content: center; gap: 0; }
+    body.sidebar-collapsed .nav-item .label,
+    body.sidebar-collapsed .nav-item .badge,
+    body.sidebar-collapsed .nav-section-label,
+    body.sidebar-collapsed .sb-profile .info,
+    body.sidebar-collapsed .sb-profile .chev,
+    body.sidebar-collapsed .create-btn span,
+    body.sidebar-collapsed .sidebar-utils { display: none !important; }
+    body.sidebar-collapsed .create-btn { gap: 0; font-size: 0; line-height: 1; width: 42px; height: 42px; min-height: 0; padding: 0; margin: 0 auto 14px; border-radius: 50%; }
+    body.sidebar-collapsed .sb-profile { justify-content: center; padding: 6px 0; }
+    body.sidebar-collapsed .notif-panel { left: var(--sidebar-w); }
+    body.sidebar-collapsed .decision-bar { left: var(--sidebar-w); }
+    body.sidebar-collapsed .cand-panel-overlay,
+    body.sidebar-collapsed .filter-overlay { left: 0; }
+    body.sidebar-collapsed .wrapper { max-width: none; }
+    body.sidebar-collapsed main { padding-left: 24px; padding-right: 24px; }
+    /* Collapse toggle button */
+    .nav-collapse-btn {
+      position: absolute;
+      top: 26px;
+      right: -12px;
+      width: 24px; height: 24px;
+      border-radius: 50%;
+      background: var(--neutral-0);
+      border: 1px solid var(--border-strong);
+      color: var(--text-secondary);
+      cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      box-shadow: 0 2px 6px rgba(17, 22, 35, 0.08);
+      transition: all 0.15s;
+      z-index: 50;
+    }
+    .nav-collapse-btn:hover { color: var(--text-primary); border-color: var(--text-secondary); box-shadow: 0 3px 10px rgba(17, 22, 35, 0.12); }
+    .nav-collapse-btn svg { width: 12px; height: 12px; transition: transform 0.2s; }
+    body.sidebar-collapsed .nav-collapse-btn svg { transform: rotate(180deg); }
+  </style>
+</head>
+<body>
+
+  <div class="app">
+
+    <!-- ============ SIDEBAR ============ -->
+    <aside class="sidebar">
+      <a href="recruit-pipeline.html" class="brand-logo"><img src="wisemonk_logo_final.png" alt="Wisemonk"></a>
+      <!-- Create button -->
+      <button class="create-btn" type="button" onclick="location.href='recruit-role.html'">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+        Create role
+      </button>
+
+
+      <div class="nav-section">
+        <a class="nav-item" href="recruit-pipeline.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg><span class="label">Open roles</span><span class="badge">1</span></a>
+        <a class="nav-item" href="recruit-candidates.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg><span class="label">Shortlisted</span><span class="badge">5</span></a>
+        <a class="nav-item active" href="recruit-interviews.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg><span class="label">Interviews</span><span class="badge">1</span></a>
+        <button class="nav-item" type="button" data-action="open-notifications"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg><span class="label">Notifications</span><span class="badge">3</span></button>
+        <a class="nav-item ai-highlight" href="recruit-search.html"><svg viewBox="0 0 24 24" fill="url(#aiNavGrad4)" stroke="none"><defs><linearGradient id="aiNavGrad4" x1="0" y1="0" x2="24" y2="24" gradientUnits="userSpaceOnUse"><stop offset="0%" stop-color="#7C5CFF"/><stop offset="100%" stop-color="#2684FF"/></linearGradient></defs><path d="M12 2L13.8 9.5 L21 11 L13.8 12.5 L12 22 L10.2 12.5 L3 11 L10.2 9.5 Z"/></svg><span class="label">Search talent with AI</span></a>
+      </div>
+
+      <!-- Sidebar bottom: profile -->
+      <div class="sidebar-bottom">
+        <button class="sb-profile" onclick="location.href='recruit-settings.html'" title="Profile">
+          <div class="av">A</div>
+          <div class="info"><div class="name">Alex Mehta</div></div>
+          <span class="chev"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></span>
+        </button>
+      </div>
+
+    </aside>
+
+  <main>
+    <div class="wrapper">
+
+      <!-- ================ SCHEDULE ================ -->
+      <section class="step active" data-step="schedule">
+        <button type="button" class="back-link" onclick="history.length > 1 ? history.back() : location.href='recruit-pipeline.html'">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+          Back to candidate
+        </button>
+
+        <div class="heading">
+          <h1 id="schedHeading">Schedule the interview</h1>
+          <p class="subhead" id="schedSubhead">Pick a time. <strong>We'll handle calendar invites + video room for both sides.</strong></p>
+        </div>
+
+        <div class="candidate-strip">
+          <div class="avatar" id="candAvatar">P</div>
+          <div class="body">
+            <div class="name" id="candName">Priya Sharma</div>
+            <div class="sub" id="candSub">Senior Backend Engineer · Bangalore</div>
+          </div>
+        </div>
+
+        <div class="date-strip" id="dateStrip"><!-- filled by JS --></div>
+        <div class="time-slots" id="timeSlots"><!-- filled by JS --></div>
+
+        <div class="duration-row">
+          <span class="label">Duration:</span>
+          <button class="duration-btn" type="button" data-dur="30">30 min</button>
+          <button class="duration-btn selected" type="button" data-dur="45">45 min</button>
+          <button class="duration-btn" type="button" data-dur="60">60 min</button>
+          <button class="duration-btn" type="button" data-dur="90" hidden>90 min</button>
+        </div>
+
+        <button class="cta-button" type="button" id="scheduleBtn" disabled>
+          Send invite
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
+        </button>
+      </section>
+
+      <!-- ================ CONFIRMED ================ -->
+      <section class="step" data-step="confirmed">
+        <div class="conf-wrap">
+          <div class="conf-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+          </div>
+          <h1>Interview scheduled</h1>
+          <p class="subhead">We've sent calendar invites and the video room link to both of you.</p>
+
+          <div class="conf-card">
+            <div class="conf-row">
+              <div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><circle cx="12" cy="12" r="10"/></svg></div>
+              <div class="lbl">Candidate</div>
+              <div class="val" id="confCand">Priya Sharma</div>
+            </div>
+            <div class="conf-row">
+              <div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/></svg></div>
+              <div class="lbl">When</div>
+              <div class="val" id="confWhen">Tomorrow · 11:00 IST</div>
+            </div>
+            <div class="conf-row">
+              <div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></div>
+              <div class="lbl">Duration</div>
+              <div class="val" id="confDur">45 minutes</div>
+            </div>
+            <div class="conf-row">
+              <div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="23 7 16 12 23 17 23 7"/><rect x="1" y="5" width="15" height="14" rx="2"/></svg></div>
+              <div class="lbl">Where</div>
+              <div class="val">Built-in video room — wisemonk.io/meet/abc123</div>
+            </div>
+          </div>
+
+          <div class="actions-stack">
+            <button class="cta-button" type="button" id="joinNowBtn">
+              Join interview now (demo)
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polygon points="6 4 20 12 6 20 6 4"/></svg>
+            </button>
+            <button class="ghost-btn" type="button" data-back="schedule">Reschedule</button>
+          </div>
+        </div>
+      </section>
+
+      <!-- ================ INTERVIEW ROOM ================ -->
+      <section class="step" data-step="room">
+        <div class="room-shell">
+          <div class="room-header">
+            <span class="live-dot">Live</span>
+            <span class="timer" id="roomTimer">00:00</span>
+          </div>
+          <div class="ai-listen">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+            AI taking notes
+          </div>
+          <div class="room-grid">
+            <div class="room-tile you">
+              <div class="big-letter">Y</div>
+              <span class="name">You</span>
+              <span class="mic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" y1="19" x2="12" y2="23"/><line x1="8" y1="23" x2="16" y2="23"/></svg></span>
+            </div>
+            <div class="room-tile them">
+              <div class="big-letter" id="themLetter">P</div>
+              <span class="name" id="themName">Priya Sharma</span>
+              <span class="mic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" y1="19" x2="12" y2="23"/><line x1="8" y1="23" x2="16" y2="23"/></svg></span>
+            </div>
+          </div>
+          <div class="room-controls">
+            <button class="ctrl-btn" type="button" id="micBtn" title="Mute">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" y1="19" x2="12" y2="23"/><line x1="8" y1="23" x2="16" y2="23"/></svg>
+            </button>
+            <button class="ctrl-btn" type="button" title="Video">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="23 7 16 12 23 17 23 7"/><rect x="1" y="5" width="15" height="14" rx="2"/></svg>
+            </button>
+            <button class="ctrl-btn" type="button" title="Share screen">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+            </button>
+            <button class="ctrl-btn ctrl-end" type="button" id="endCallBtn">
+              <svg viewBox="0 0 24 24" fill="currentColor"><path d="M3.6 5.6 5.6 3.6a1 1 0 0 1 1.4 0l2 2a1 1 0 0 1 .2 1.1L8 8.7c-.3.6-.2 1.4.3 1.9l5.1 5.1c.5.5 1.3.6 1.9.3l2-1.2a1 1 0 0 1 1.1.2l2 2a1 1 0 0 1 0 1.4l-2 2a4 4 0 0 1-4 1c-6-2-11-7-13-13a4 4 0 0 1 1-4z"/></svg>
+              End interview
+            </button>
+          </div>
+        </div>
+
+        <div class="room-notes">
+          <div class="notes-head">
+            <span class="lbl">Your notes</span>
+            <span class="ai-tag">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9.937 15.5A2 2 0 0 0 8.5 14.063l-6.135-1.582a.5.5 0 0 1 0-.962L8.5 9.936A2 2 0 0 0 9.937 8.5l1.582-6.135a.5.5 0 0 1 .963 0L14.063 8.5A2 2 0 0 0 15.5 9.937l6.135 1.581a.5.5 0 0 1 0 .964L15.5 14.063a2 2 0 0 0-1.437 1.437l-1.582 6.135a.5.5 0 0 1-.963 0z"/></svg>
+              AI auto-transcribes
+            </span>
+          </div>
+          <textarea class="notes-area" placeholder="Type your notes here. AI will also generate a full transcript + summary you can review after."></textarea>
+        </div>
+      </section>
+
+      <!-- ================ OFFER ================ -->
+      <section class="step" data-step="offer">
+        <button type="button" class="back-link" data-back="schedule">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+          Back
+        </button>
+
+        <div class="heading">
+          <h1>Review the offer</h1>
+          <p class="subhead" id="offerSubhead">
+            <span style="display:inline-flex; align-items:center; gap:4px; background:linear-gradient(135deg,#7C5CFF20,#2684FF20); color:#5B4ACF; padding:2px 8px; border-radius:4px; font-size:11px; font-weight:700;">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="10" height="10"><path d="M9.937 15.5A2 2 0 0 0 8.5 14.063l-6.135-1.582a.5.5 0 0 1 0-.962L8.5 9.936A2 2 0 0 0 9.937 8.5l1.582-6.135a.5.5 0 0 1 .963 0L14.063 8.5A2 2 0 0 0 15.5 9.937l6.135 1.581a.5.5 0 0 1 0 .964L15.5 14.063a2 2 0 0 0-1.437 1.437l-1.582 6.135a.5.5 0 0 1-.963 0z"/></svg>
+              AI-drafted
+            </span>
+            Click any text to edit. Add a line for bonus, variable pay, perks — anything. <strong>India payroll, PF, gratuity, ESI handled automatically.</strong>
+          </p>
+        </div>
+
+        <!-- Source toggle: AI-drafted vs upload your own -->
+        <div class="offer-source-tabs" role="tablist">
+          <button class="offer-source-tab active" type="button" data-source="ai" role="tab">
+            <svg viewBox="0 0 24 24" fill="currentColor" width="13" height="13"><path d="M12 2l1.9 5.8L20 9.7l-4.5 3.9L17 20l-5-3-5 3 1.5-6.4L4 9.7l6.1-1.9L12 2z"/></svg>
+            AI-drafted
+          </button>
+          <button class="offer-source-tab" type="button" data-source="upload" role="tab">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="13" height="13"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+            Upload your own
+          </button>
+        </div>
+
+        <!-- AI-drafted offer -->
+        <div class="offer-card" id="offerAi">
+          <div class="offer-letter" id="offerLetter">
+            <!-- Letterhead — company logo + name (left)  ·  contact (right) -->
+            <div class="offer-letterhead">
+              <div class="ol-left">
+                <div class="ol-logo" id="olLogo">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M3 21h18"/>
+                    <path d="M5 21V7l8-4v18"/>
+                    <path d="M19 21V11l-6-4"/>
+                    <path d="M9 9v.01"/>
+                    <path d="M9 12v.01"/>
+                    <path d="M9 15v.01"/>
+                    <path d="M9 18v.01"/>
+                  </svg>
+                </div>
+                <div class="ol-info">
+                  <div class="ol-name" id="olCompany">Acme Inc.</div>
+                  <div class="ol-sub" id="olSub">100 Ward Pl, Bangalore 560001, India</div>
+                </div>
+              </div>
+              <div class="ol-right">
+                <div class="ol-contact" id="olWebsite">www.acme.com</div>
+                <div class="ol-contact" id="olPhone">+91 80 4567 1234</div>
+              </div>
+            </div>
+            <div class="offer-divider"></div>
+            <h2 class="offer-title" contenteditable="true" spellcheck="true">Job Offer Letter</h2>
+
+            <div class="offer-date" contenteditable="true" spellcheck="true">Date: 20 May 2026</div>
+
+            <h3 id="offerHi" contenteditable="true" spellcheck="true">Dear Priya,</h3>
+            <p contenteditable="true" spellcheck="true">We are pleased to offer you the position of <strong>Senior Backend Engineer</strong> at <strong>Acme Inc.</strong>, reporting to <strong>Alex Mehta, Head of Engineering</strong>. This role is based out of <strong>Bangalore (Remote India)</strong> with a tentative joining date of <strong>15 December 2026</strong>.</p>
+
+            <!-- ============ Compensation Breakdown ============ -->
+            <section class="offer-section" data-section="comp">
+              <button class="os-remove" type="button" aria-label="Remove section">×</button>
+              <h4 class="os-title" contenteditable="true" spellcheck="true">1. Compensation breakdown</h4>
+              <p class="os-intro" contenteditable="true" spellcheck="true">Your total annual compensation is structured as below. All amounts are in INR.</p>
+              <table class="comp-table" id="compTable">
+                <thead>
+                  <tr><th>Component</th><th>Monthly</th><th>Annual</th></tr>
+                </thead>
+                <tbody id="compTableBody">
+                  <tr><td contenteditable="true" spellcheck="true">Basic salary</td><td contenteditable="true" spellcheck="true">₹1,25,000</td><td contenteditable="true" spellcheck="true">₹15,00,000</td><td><button class="ct-remove" type="button" aria-label="Remove row">×</button></td></tr>
+                  <tr><td contenteditable="true" spellcheck="true">HRA (40% of Basic)</td><td contenteditable="true" spellcheck="true">₹50,000</td><td contenteditable="true" spellcheck="true">₹6,00,000</td><td><button class="ct-remove" type="button" aria-label="Remove row">×</button></td></tr>
+                  <tr><td contenteditable="true" spellcheck="true">Special allowance</td><td contenteditable="true" spellcheck="true">₹1,00,833</td><td contenteditable="true" spellcheck="true">₹12,10,000</td><td><button class="ct-remove" type="button" aria-label="Remove row">×</button></td></tr>
+                  <tr><td contenteditable="true" spellcheck="true">LTA</td><td contenteditable="true" spellcheck="true">—</td><td contenteditable="true" spellcheck="true">₹50,000</td><td><button class="ct-remove" type="button" aria-label="Remove row">×</button></td></tr>
+                  <tr class="ct-subtotal"><td><strong>Fixed CTC</strong></td><td></td><td contenteditable="true" spellcheck="true"><strong>₹33,60,000</strong></td><td></td></tr>
+                  <tr><td contenteditable="true" spellcheck="true">Employer PF (12% of Basic)</td><td contenteditable="true" spellcheck="true">₹15,000</td><td contenteditable="true" spellcheck="true">₹1,80,000</td><td><button class="ct-remove" type="button" aria-label="Remove row">×</button></td></tr>
+                  <tr><td contenteditable="true" spellcheck="true">Gratuity (4.81% of Basic)</td><td contenteditable="true" spellcheck="true">—</td><td contenteditable="true" spellcheck="true">₹72,150</td><td><button class="ct-remove" type="button" aria-label="Remove row">×</button></td></tr>
+                  <tr><td contenteditable="true" spellcheck="true">Performance bonus (target)</td><td contenteditable="true" spellcheck="true">—</td><td contenteditable="true" spellcheck="true">Up to ₹4,00,000</td><td><button class="ct-remove" type="button" aria-label="Remove row">×</button></td></tr>
+                  <tr class="ct-total"><td><strong>Total CTC</strong></td><td></td><td contenteditable="true" spellcheck="true"><strong>₹40,12,150</strong></td><td></td></tr>
+                </tbody>
+              </table>
+              <p class="os-foot" contenteditable="true" spellcheck="true">In addition, you will be granted <strong>5,000 ESOPs</strong> vesting over 4 years with a 1-year cliff. Detailed ESOP terms are in <strong>Annexure A</strong>.</p>
+            </section>
+
+            <!-- ============ Joining Terms ============ -->
+            <section class="offer-section" data-section="joining">
+              <button class="os-remove" type="button" aria-label="Remove section">×</button>
+              <h4 class="os-title" contenteditable="true" spellcheck="true">2. Joining terms</h4>
+              <ul class="offer-terms" id="offerTerms">
+                <li><span class="ot-label" contenteditable="true" spellcheck="true">Joining date</span>: <span class="ot-value" contenteditable="true" spellcheck="true">15 December 2026</span><button class="ot-remove" type="button" aria-label="Remove line">×</button></li>
+                <li><span class="ot-label" contenteditable="true" spellcheck="true">Probation</span>: <span class="ot-value" contenteditable="true" spellcheck="true">3 months from date of joining</span><button class="ot-remove" type="button" aria-label="Remove line">×</button></li>
+                <li><span class="ot-label" contenteditable="true" spellcheck="true">Notice period</span>: <span class="ot-value" contenteditable="true" spellcheck="true">30 days during probation, 60 days post-confirmation</span><button class="ot-remove" type="button" aria-label="Remove line">×</button></li>
+                <li><span class="ot-label" contenteditable="true" spellcheck="true">Working hours</span>: <span class="ot-value" contenteditable="true" spellcheck="true">Mon–Fri, 9 hours/day. Flexible windows.</span><button class="ot-remove" type="button" aria-label="Remove line">×</button></li>
+                <li><span class="ot-label" contenteditable="true" spellcheck="true">Work location</span>: <span class="ot-value" contenteditable="true" spellcheck="true">Remote-first within India, with optional offsites</span><button class="ot-remove" type="button" aria-label="Remove line">×</button></li>
+              </ul>
+            </section>
+
+            <!-- ============ Benefits ============ -->
+            <section class="offer-section" data-section="benefits">
+              <button class="os-remove" type="button" aria-label="Remove section">×</button>
+              <h4 class="os-title" contenteditable="true" spellcheck="true">3. Benefits</h4>
+              <ul class="offer-terms">
+                <li><span class="ot-label" contenteditable="true" spellcheck="true">Health insurance</span>: <span class="ot-value" contenteditable="true" spellcheck="true">₹10L family floater, includes spouse, kids and parents</span><button class="ot-remove" type="button" aria-label="Remove line">×</button></li>
+                <li><span class="ot-label" contenteditable="true" spellcheck="true">Life insurance</span>: <span class="ot-value" contenteditable="true" spellcheck="true">₹50L group term policy</span><button class="ot-remove" type="button" aria-label="Remove line">×</button></li>
+                <li><span class="ot-label" contenteditable="true" spellcheck="true">Leave</span>: <span class="ot-value" contenteditable="true" spellcheck="true">24 days paid leave (PTO) per year + India public holidays</span><button class="ot-remove" type="button" aria-label="Remove line">×</button></li>
+                <li><span class="ot-label" contenteditable="true" spellcheck="true">Parental leave</span>: <span class="ot-value" contenteditable="true" spellcheck="true">26 weeks maternity, 4 weeks paternity, fully paid</span><button class="ot-remove" type="button" aria-label="Remove line">×</button></li>
+                <li><span class="ot-label" contenteditable="true" spellcheck="true">Learning budget</span>: <span class="ot-value" contenteditable="true" spellcheck="true">₹50,000 per year for courses, books and conferences</span><button class="ot-remove" type="button" aria-label="Remove line">×</button></li>
+                <li><span class="ot-label" contenteditable="true" spellcheck="true">WFH setup</span>: <span class="ot-value" contenteditable="true" spellcheck="true">₹75,000 one-time allowance against bills</span><button class="ot-remove" type="button" aria-label="Remove line">×</button></li>
+              </ul>
+            </section>
+
+            <!-- ============ Legal terms ============ -->
+            <section class="offer-section" data-section="legal">
+              <button class="os-remove" type="button" aria-label="Remove section">×</button>
+              <h4 class="os-title" contenteditable="true" spellcheck="true">4. Confidentiality, IP &amp; conduct</h4>
+              <p contenteditable="true" spellcheck="true"><strong>Confidentiality:</strong> You agree to keep all proprietary information, customer data, source code, business plans and trade secrets strictly confidential during your employment and for 3 years thereafter.</p>
+              <p contenteditable="true" spellcheck="true"><strong>IP assignment:</strong> All inventions, work product, code, designs and intellectual property created in the course of your employment will be the exclusive property of the company. You agree to execute documents needed to assign such IP.</p>
+              <p contenteditable="true" spellcheck="true"><strong>Non-compete &amp; non-solicit:</strong> For 12 months following the end of your employment, you agree not to work with direct competitors, solicit our customers, or hire away employees of the company.</p>
+              <p contenteditable="true" spellcheck="true"><strong>Background verification:</strong> This offer is conditional on successful completion of a standard background check (education, employment, identity and reference verification) by our partner.</p>
+            </section>
+
+            <!-- ============ Joining documents ============ -->
+            <section class="offer-section" data-section="docs">
+              <button class="os-remove" type="button" aria-label="Remove section">×</button>
+              <h4 class="os-title" contenteditable="true" spellcheck="true">5. Documents required at joining</h4>
+              <p class="os-intro" contenteditable="true" spellcheck="true">Please carry the following on your first day. Wisemonk EOR will collect and verify these as part of onboarding.</p>
+              <ul class="docs-list">
+                <li contenteditable="true" spellcheck="true">PAN card &amp; Aadhaar card (with linked mobile number)</li>
+                <li contenteditable="true" spellcheck="true">Educational certificates — 10th, 12th, undergraduate degree (graduation)</li>
+                <li contenteditable="true" spellcheck="true">Relieving letter and last salary slip from your previous employer</li>
+                <li contenteditable="true" spellcheck="true">Last 3 months payslips (or Form 16 if applicable)</li>
+                <li contenteditable="true" spellcheck="true">Bank account proof (cancelled cheque or passbook)</li>
+                <li contenteditable="true" spellcheck="true">Two recent passport-size photographs</li>
+                <li contenteditable="true" spellcheck="true">Address proof (Aadhaar / passport / utility bill)</li>
+              </ul>
+            </section>
+
+            <!-- Anchor: custom clauses are inserted right above this comment -->
+            <div id="customClausesAnchor"></div>
+
+            <p contenteditable="true" spellcheck="true">You will be hired via <strong>Wisemonk's Employer-of-Record</strong> in India, with full compliance for PF, gratuity, ESI and income tax handled on your behalf.</p>
+
+            <p contenteditable="true" spellcheck="true">Please review and e-sign this offer by <strong>22 November 2026</strong>. We're excited to have you on the team.</p>
+
+            <!-- E-sign block — client signs before sending -->
+            <div class="esign-block">
+              <div class="esign-label">Signed by (on behalf of <strong id="esignCompany">Acme Inc.</strong>)</div>
+              <input type="text" class="esign-input" id="esignName" placeholder="Type your full name to sign" value="Alex Mehta" spellcheck="false">
+              <div class="esign-note">By typing your name above, you e-sign this offer and authorize Wisemonk to send it to the candidate on your behalf.</div>
+            </div>
+          </div>
+        </div>
+        <!-- AI editor — input bar + collapsible guided picker -->
+        <div class="offer-ai-edit" id="offerAddRow">
+          <div class="ai-input-bar">
+            <button type="button" id="aiPickerToggle" class="ai-plus-btn" aria-label="Browse AI options">
+              <svg viewBox="0 0 24 24" fill="url(#aiSparkGrad)" stroke="none">
+                <defs><linearGradient id="aiSparkGrad" x1="0" y1="0" x2="24" y2="24" gradientUnits="userSpaceOnUse"><stop offset="0%" stop-color="#7C5CFF"/><stop offset="100%" stop-color="#2684FF"/></linearGradient></defs>
+                <path d="M12 2L13.8 9.5 L21 11 L13.8 12.5 L12 22 L10.2 12.5 L3 11 L10.2 9.5 Z"/>
+              </svg>
+            </button>
+            <input type="text" id="aiEditInput" class="ai-input-field" placeholder="Ask AI to edit — e.g., add a retention bonus, NDA clause, increase salary to ₹45 LPA" autocomplete="off">
+            <button type="button" id="aiEditSend" class="ai-send-btn" aria-label="Apply edit">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+            </button>
+          </div>
+
+          <!-- Picker panel (expands when + is clicked) -->
+          <div class="ai-picker-panel" id="aiPickerPanel" hidden>
+            <!-- Step 1: category grid -->
+            <div class="apt-step" data-step="cat">
+              <div class="apt-step-label">Pick a category</div>
+              <div class="apt-cats">
+                <button class="apt-cat" type="button" data-cat="bonus"><span class="apt-cat-ico">💰</span><span class="apt-cat-name">Bonus</span><span class="apt-cat-sub">Retention, sign-on, performance</span></button>
+                <button class="apt-cat" type="button" data-cat="insurance"><span class="apt-cat-ico">🩺</span><span class="apt-cat-name">Insurance</span><span class="apt-cat-sub">Health, family floater, top-up</span></button>
+                <button class="apt-cat" type="button" data-cat="equity"><span class="apt-cat-ico">📈</span><span class="apt-cat-name">Equity / ESOPs</span><span class="apt-cat-sub">Percentage, vest, cliff</span></button>
+                <button class="apt-cat" type="button" data-cat="leave"><span class="apt-cat-ico">🌴</span><span class="apt-cat-name">Leave</span><span class="apt-cat-sub">PTO, parental, sabbatical</span></button>
+                <button class="apt-cat" type="button" data-cat="learning"><span class="apt-cat-ico">📚</span><span class="apt-cat-name">Learning budget</span><span class="apt-cat-sub">Courses, conferences, books</span></button>
+                <button class="apt-cat" type="button" data-cat="relocation"><span class="apt-cat-ico">📦</span><span class="apt-cat-name">Relocation</span><span class="apt-cat-sub">Reimbursable against bills</span></button>
+                <button class="apt-cat" type="button" data-cat="nda"><span class="apt-cat-ico">🔒</span><span class="apt-cat-name">Confidentiality / NDA</span><span class="apt-cat-sub">Customer data, source code</span></button>
+                <button class="apt-cat" type="button" data-cat="noncompete"><span class="apt-cat-ico">⛔</span><span class="apt-cat-name">Non-compete</span><span class="apt-cat-sub">Post-exit restriction</span></button>
+                <button class="apt-cat" type="button" data-cat="ip"><span class="apt-cat-ico">💡</span><span class="apt-cat-name">IP assignment</span><span class="apt-cat-sub">All work product to the company</span></button>
+                <button class="apt-cat" type="button" data-cat="bgv"><span class="apt-cat-ico">✅</span><span class="apt-cat-name">Background verification</span><span class="apt-cat-sub">Consent + offer conditional on result</span></button>
+                <button class="apt-cat" type="button" data-cat="custom"><span class="apt-cat-ico">✨</span><span class="apt-cat-name">Custom</span><span class="apt-cat-sub">Describe in your own words</span></button>
+              </div>
+            </div>
+
+            <!-- Step 2: details form for the selected category (filled by JS) -->
+            <div class="apt-step" data-step="form" hidden>
+              <button class="apt-back" type="button" id="aptBack">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+                Back
+              </button>
+              <div class="apt-form-title" id="aptFormTitle">Details</div>
+              <div class="apt-form-body" id="aptFormBody"></div>
+              <div class="apt-form-preview" id="aptPreview" hidden>
+                <div class="apt-preview-label">AI draft preview</div>
+                <div class="apt-preview-content" id="aptPreviewContent"></div>
+              </div>
+              <div class="apt-form-actions">
+                <button class="apt-btn ghost" type="button" id="aptCancel">Cancel</button>
+                <button class="apt-btn primary" type="button" id="aptApply">Add to letter</button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <script>
+          // Wire AI offer picker (guided) + existing remove buttons
+          (function () {
+            // Wire ALL × remove buttons on the terms list (across all sections)
+            document.querySelectorAll('.ot-remove').forEach(function (rb) {
+              rb.addEventListener('click', function (e) {
+                e.stopPropagation();
+                rb.closest('li').remove();
+              });
+            });
+            // Wire section remove buttons
+            document.querySelectorAll('.os-remove').forEach(function (rb) {
+              rb.addEventListener('click', function (e) {
+                e.stopPropagation();
+                rb.closest('.offer-section').remove();
+              });
+            });
+            // Wire comp table row remove
+            document.querySelectorAll('.ct-remove').forEach(function (rb) {
+              rb.addEventListener('click', function (e) {
+                e.stopPropagation();
+                rb.closest('tr').remove();
+              });
+            });
+            // Wire "+ Add component" button on the comp table
+            var addRowBtn = document.getElementById('compAddRowBtn');
+            if (addRowBtn) {
+              addRowBtn.addEventListener('click', function () {
+                var tbody = document.getElementById('compTableBody');
+                if (!tbody) return;
+                var tr = document.createElement('tr');
+                tr.innerHTML = '<td contenteditable="true" spellcheck="true">New component</td><td contenteditable="true" spellcheck="true">—</td><td contenteditable="true" spellcheck="true">₹0</td><td><button class="ct-remove" type="button" aria-label="Remove row">×</button></td>';
+                // Insert before the Total row
+                var totalRow = tbody.querySelector('.ct-total');
+                if (totalRow) tbody.insertBefore(tr, totalRow); else tbody.appendChild(tr);
+                tr.querySelector('.ct-remove').addEventListener('click', function (e) {
+                  e.stopPropagation();
+                  tr.remove();
+                });
+                tr.querySelector('td').focus();
+              });
+            }
+
+            var toggle = document.getElementById('aiPickerToggle');
+            var panel = document.getElementById('aiPickerPanel');
+            var stepCat = panel.querySelector('[data-step="cat"]');
+            var stepForm = panel.querySelector('[data-step="form"]');
+            var formTitle = document.getElementById('aptFormTitle');
+            var formBody = document.getElementById('aptFormBody');
+            var preview = document.getElementById('aptPreview');
+            var previewContent = document.getElementById('aptPreviewContent');
+            var backBtn = document.getElementById('aptBack');
+            var cancelBtn = document.getElementById('aptCancel');
+            var applyBtn = document.getElementById('aptApply');
+            if (!toggle || !panel) return;
+
+            var currentCat = null; // current category metadata
+
+            // ===== Category form definitions =====
+            // Each entry: title, fields (input definitions), generate(values) -> { kind: 'term'|'clause', ...payload }
+            var CATS = {
+              bonus: {
+                title: 'Add a bonus',
+                fields: [
+                  { name: 'type', label: 'Type', type: 'select', options: ['Retention bonus', 'Sign-on bonus', 'Performance bonus', 'Quarterly bonus'], default: 'Retention bonus' },
+                  { name: 'amount', label: 'Amount (₹)', type: 'text', default: '5,00,000', placeholder: '5,00,000' },
+                  { name: 'condition', label: 'Payable when', type: 'text', default: 'after 12 months of continuous service', placeholder: 'e.g., after 12 months of continuous service' }
+                ],
+                generate: function (v) {
+                  return { kind: 'term', label: v.type, value: '₹' + v.amount + ', payable ' + v.condition };
+                }
+              },
+              insurance: {
+                title: 'Add health insurance',
+                fields: [
+                  { name: 'cover', label: 'Cover amount (₹L)', type: 'text', default: '10', placeholder: '10' },
+                  { name: 'who', label: 'Includes', type: 'select', options: ['Self only', 'Self + spouse + kids', 'Self + spouse + kids + parents'], default: 'Self + spouse + kids + parents' },
+                  { name: 'topup', label: 'Top-up cover', type: 'select', options: ['None', '₹15L top-up', '₹25L top-up', '₹50L top-up'], default: '₹25L top-up' }
+                ],
+                generate: function (v) {
+                  var value = '₹' + v.cover + 'L family floater';
+                  if (v.who !== 'Self only') value += ', includes ' + v.who.toLowerCase().replace('self + ', '').replace('self', '');
+                  if (v.topup !== 'None') value += ', plus ' + v.topup;
+                  return { kind: 'term', label: 'Health insurance', value: value };
+                }
+              },
+              equity: {
+                title: 'Add equity / ESOPs',
+                fields: [
+                  { name: 'amount', label: 'Grant size', type: 'text', default: '0.05%', placeholder: '0.05% or 10,000 options' },
+                  { name: 'vest', label: 'Vest schedule', type: 'select', options: ['4-year vest, 1-year cliff', '3-year vest, 1-year cliff', '2-year vest, 6-month cliff'], default: '4-year vest, 1-year cliff' },
+                  { name: 'accelerate', label: 'Acceleration', type: 'select', options: ['None', 'Single-trigger on acquisition', 'Double-trigger on acquisition'], default: 'None' }
+                ],
+                generate: function (v) {
+                  var value = v.amount + ' (' + v.vest + ')';
+                  if (v.accelerate !== 'None') value += '; ' + v.accelerate.toLowerCase();
+                  return { kind: 'term', label: 'Equity', value: value };
+                }
+              },
+              leave: {
+                title: 'Add leave / time off',
+                fields: [
+                  { name: 'type', label: 'Type', type: 'select', options: ['Paid leave (PTO)', 'Sick leave', 'Parental leave', 'Sabbatical'], default: 'Paid leave (PTO)' },
+                  { name: 'days', label: 'Days per year', type: 'text', default: '24', placeholder: '24' }
+                ],
+                generate: function (v) {
+                  return { kind: 'term', label: v.type, value: v.days + ' days per year, plus India public holidays' };
+                }
+              },
+              learning: {
+                title: 'Add learning budget',
+                fields: [
+                  { name: 'amount', label: 'Annual budget (₹)', type: 'text', default: '50,000', placeholder: '50,000' },
+                  { name: 'covers', label: 'Reimbursable against', type: 'select', options: ['Courses, books, conferences', 'Courses + certifications only', 'Anything skill-related'], default: 'Courses, books, conferences' }
+                ],
+                generate: function (v) {
+                  return { kind: 'term', label: 'Learning budget', value: '₹' + v.amount + ' per year, reimbursable against ' + v.covers.toLowerCase() };
+                }
+              },
+              relocation: {
+                title: 'Add relocation support',
+                fields: [
+                  { name: 'amount', label: 'Up to (₹)', type: 'text', default: '1,50,000', placeholder: '1,50,000' },
+                  { name: 'covers', label: 'Covers', type: 'select', options: ['Movers + deposit + first month rent', 'Movers + travel only', 'Movers + 1 month temporary stay'], default: 'Movers + deposit + first month rent' }
+                ],
+                generate: function (v) {
+                  return { kind: 'term', label: 'Relocation', value: 'Up to ₹' + v.amount + ' reimbursable against bills (' + v.covers.toLowerCase() + ')' };
+                }
+              },
+              nda: {
+                title: 'Add confidentiality / NDA clause',
+                fields: [
+                  { name: 'duration', label: 'Duration after exit', type: 'select', options: ['1 year', '2 years', '3 years', 'Indefinitely'], default: '3 years' },
+                  { name: 'scope', label: 'Scope', type: 'select', options: ['Customer data + source code + business plans', 'Trade secrets only', 'All non-public company information'], default: 'Customer data + source code + business plans' }
+                ],
+                generate: function (v) {
+                  var body = 'You agree to keep all ' + v.scope.toLowerCase() + ' strictly confidential, both during your employment and ';
+                  body += (v.duration === 'Indefinitely') ? 'for an indefinite period after your employment ends.' : 'for ' + v.duration + ' after your employment ends.';
+                  body += ' Breach may result in immediate termination and legal action.';
+                  return { kind: 'clause', title: 'Confidentiality (NDA)', body: body };
+                }
+              },
+              noncompete: {
+                title: 'Add non-compete clause',
+                fields: [
+                  { name: 'duration', label: 'Duration after exit', type: 'select', options: ['6 months', '12 months', '18 months', '24 months'], default: '12 months' },
+                  { name: 'scope', label: 'Restriction scope', type: 'select', options: ['Direct competitors + customer solicitation', 'Direct competitors only', 'Direct competitors + customer + employee solicitation'], default: 'Direct competitors + customer + employee solicitation' }
+                ],
+                generate: function (v) {
+                  var body = 'For a period of ' + v.duration + ' following the end of your employment, you agree not to: ';
+                  if (v.scope.indexOf('customer') !== -1) body += 'work with direct competitors, solicit our customers';
+                  else body += 'work with direct competitors';
+                  if (v.scope.indexOf('employee') !== -1) body += ', or hire away employees of the company';
+                  body += '.';
+                  return { kind: 'clause', title: 'Non-compete', body: body };
+                }
+              },
+              ip: {
+                title: 'Add IP assignment clause',
+                fields: [],
+                generate: function () {
+                  return {
+                    kind: 'clause',
+                    title: 'IP assignment',
+                    body: 'All inventions, work product, code, designs and intellectual property created in the course of your employment will be the exclusive property of the company. You agree to execute documents needed to assign such IP, and you confirm that nothing in this offer conflicts with prior IP agreements.'
+                  };
+                }
+              },
+              bgv: {
+                title: 'Add background verification clause',
+                fields: [],
+                generate: function () {
+                  return {
+                    kind: 'clause',
+                    title: 'Background verification',
+                    body: 'This offer is conditional on successful completion of a standard background verification (education, employment, identity and reference checks). You consent to our third-party verification partner conducting these checks.'
+                  };
+                }
+              },
+              custom: {
+                title: 'Custom clause',
+                fields: [
+                  { name: 'title', label: 'Clause title', type: 'text', default: 'Additional terms', placeholder: 'e.g., Garden leave, Remote work policy' },
+                  { name: 'body', label: 'Clause text', type: 'textarea', default: '', placeholder: 'Type the clause text. AI will polish the wording when you click Generate.' }
+                ],
+                generate: function (v) {
+                  return { kind: 'clause', title: v.title || 'Additional terms', body: v.body || '' };
+                }
+              }
+            };
+
+            function showCatGrid() {
+              stepCat.hidden = false;
+              stepForm.hidden = true;
+              preview.hidden = true;
+              currentCat = null;
+            }
+            function openForm(catKey) {
+              var cat = CATS[catKey];
+              if (!cat) return;
+              currentCat = catKey;
+              stepCat.hidden = true;
+              stepForm.hidden = false;
+              formTitle.textContent = cat.title;
+              formBody.innerHTML = '';
+              cat.fields.forEach(function (f) {
+                var fieldEl = document.createElement('div');
+                fieldEl.className = 'apt-field';
+                var label = document.createElement('label');
+                label.className = 'apt-field-label';
+                label.textContent = f.label;
+                fieldEl.appendChild(label);
+                var inp;
+                if (f.type === 'select') {
+                  inp = document.createElement('select');
+                  inp.className = 'apt-input';
+                  f.options.forEach(function (opt) {
+                    var o = document.createElement('option');
+                    o.value = opt; o.textContent = opt;
+                    if (opt === f.default) o.selected = true;
+                    inp.appendChild(o);
+                  });
+                } else if (f.type === 'textarea') {
+                  inp = document.createElement('textarea');
+                  inp.className = 'apt-input apt-textarea';
+                  inp.placeholder = f.placeholder || '';
+                  inp.value = f.default || '';
+                  inp.rows = 3;
+                } else {
+                  inp = document.createElement('input');
+                  inp.type = 'text';
+                  inp.className = 'apt-input';
+                  inp.placeholder = f.placeholder || '';
+                  inp.value = f.default || '';
+                }
+                inp.dataset.field = f.name;
+                fieldEl.appendChild(inp);
+                formBody.appendChild(fieldEl);
+              });
+              // Show preview when no fields needed (single-shot insert)
+              if (!cat.fields.length) {
+                var result = cat.generate({});
+                showPreview(result);
+              } else {
+                preview.hidden = true;
+              }
+              // Live preview as user types
+              formBody.querySelectorAll('[data-field]').forEach(function (el) {
+                el.addEventListener('input', updatePreview);
+                el.addEventListener('change', updatePreview);
+              });
+              updatePreview();
+            }
+
+            function readForm() {
+              var values = {};
+              formBody.querySelectorAll('[data-field]').forEach(function (el) {
+                values[el.dataset.field] = el.value;
+              });
+              return values;
+            }
+            function updatePreview() {
+              if (!currentCat) return;
+              var cat = CATS[currentCat];
+              var result;
+              try { result = cat.generate(readForm()); } catch (e) { return; }
+              showPreview(result);
+            }
+            function showPreview(result) {
+              preview.hidden = false;
+              if (result.kind === 'term') {
+                previewContent.innerHTML = '<span style="font-weight:700;color:var(--text-primary);">' + result.label + ':</span> ' + result.value;
+              } else {
+                previewContent.innerHTML = '<div style="font-weight:700;color:var(--text-primary);margin-bottom:4px;">' + result.title + '</div>' + result.body;
+              }
+            }
+
+            // Wire toggle + steps
+            toggle.addEventListener('click', function () {
+              var isOpen = !panel.hidden;
+              panel.hidden = isOpen;
+              if (!panel.hidden) showCatGrid();
+            });
+            panel.querySelectorAll('.apt-cat').forEach(function (btn) {
+              btn.addEventListener('click', function () { openForm(btn.dataset.cat); });
+            });
+            backBtn.addEventListener('click', showCatGrid);
+            cancelBtn.addEventListener('click', function () { panel.hidden = true; });
+            applyBtn.addEventListener('click', function () {
+              if (!currentCat) return;
+              var cat = CATS[currentCat];
+              var result = cat.generate(readForm());
+              if (result.kind === 'term') addTerm(result.label, result.value);
+              else addClause(result.title, result.body);
+              panel.hidden = true;
+              showToast('✨ Added ' + (result.label || result.title));
+            });
+
+            // Helpers: add a term line or a clause block
+            function addTerm(label, value) {
+              var list = document.getElementById('offerTerms');
+              if (!list) return;
+              var li = document.createElement('li');
+              li.innerHTML = '<span class="ot-label" contenteditable="true" spellcheck="true">' + label + '</span>: <span class="ot-value" contenteditable="true" spellcheck="true">' + value + '</span><button class="ot-remove" type="button" aria-label="Remove line">&times;</button>';
+              list.appendChild(li);
+              li.querySelector('.ot-remove').addEventListener('click', function (e) {
+                e.stopPropagation();
+                li.remove();
+              });
+              // Flash to draw attention
+              li.style.background = 'rgba(124, 92, 255, 0.10)';
+              li.style.transition = 'background 1.5s ease-out';
+              setTimeout(function () { li.style.background = 'transparent'; }, 50);
+            }
+            function addClause(title, body) {
+              var anchor = document.getElementById('customClausesAnchor');
+              if (!anchor) return;
+              var wrap = document.createElement('div');
+              wrap.className = 'offer-clause';
+              wrap.innerHTML = '<h4 contenteditable="true" spellcheck="true" class="oc-title">' + title + '</h4>' +
+                '<p contenteditable="true" spellcheck="true" class="oc-body">' + body + '</p>' +
+                '<button class="oc-remove" type="button" aria-label="Remove clause">&times;</button>';
+              anchor.parentNode.insertBefore(wrap, anchor.nextSibling);
+              wrap.querySelector('.oc-remove').addEventListener('click', function (e) {
+                e.stopPropagation();
+                wrap.remove();
+              });
+              wrap.style.background = 'rgba(124, 92, 255, 0.08)';
+              wrap.style.transition = 'background 1.6s ease-out';
+              setTimeout(function () { wrap.style.background = 'transparent'; }, 50);
+            }
+            function updateTerm(labelMatch, newValue) {
+              var rows = document.querySelectorAll('#offerTerms li');
+              for (var i = 0; i < rows.length; i++) {
+                var lbl = rows[i].querySelector('.ot-label');
+                var val = rows[i].querySelector('.ot-value');
+                if (lbl && val && lbl.textContent.toLowerCase().indexOf(labelMatch) !== -1) {
+                  val.textContent = newValue;
+                  rows[i].style.background = 'rgba(124, 92, 255, 0.10)';
+                  rows[i].style.transition = 'background 1.5s ease-out';
+                  setTimeout(function (el) { return function () { el.style.background = 'transparent'; }; }(rows[i]), 50);
+                  return true;
+                }
+              }
+              return false;
+            }
+
+            // Tiny AI: pattern-match the user's request and mutate the letter
+            function applyAi(text) {
+              var t = text.toLowerCase().trim();
+              if (!t) return;
+
+              // Format detection — does the user explicitly want a paragraph/clause or a line?
+              var wantsParagraph = /\b(paragraph|para\b|clause|section|note|policy|statement)\b/i.test(t);
+              var wantsLine = /\b(line\b|row|item|term|bullet|point)\b/i.test(t);
+              // Default to line for short/structured edits, paragraph for longer ones
+
+              // Salary change
+              var salaryMatch = t.match(/(?:salary|ctc).*?(?:to|=|of)\s*[₹$]?\s*([\d.]+)\s*(lpa|lakhs?|crore|cr)?/);
+              if (salaryMatch && /salary|ctc|increase|change/.test(t)) {
+                var amt = salaryMatch[1];
+                var unit = salaryMatch[2] || 'LPA';
+                var display = '₹' + amt + ' ' + unit.toUpperCase();
+                if (updateTerm('annual ctc', '₹' + (parseFloat(amt) * 100000).toLocaleString('en-IN') + ' (₹' + amt + ' LPA)')) return showToast('Updated Annual CTC to ' + display);
+              }
+
+              // Helper: extract amount from text in ₹ format
+              function extractAmount(s) {
+                // Match ₹50,000 or 5L or 5 lakhs or 50000
+                var m = s.match(/[₹$]?\s*([\d,]+(?:\.\d+)?)\s*(l|lakhs?|cr|crore|k)?/i);
+                if (!m) return null;
+                var num = m[1].replace(/,/g, '');
+                var unit = (m[2] || '').toLowerCase();
+                if (unit === 'l' || unit === 'lakh' || unit === 'lakhs') return '₹' + parseFloat(num).toLocaleString('en-IN') + ',00,000';
+                if (unit === 'cr' || unit === 'crore') return '₹' + parseFloat(num).toLocaleString('en-IN') + ',00,00,000';
+                if (unit === 'k') return '₹' + (parseFloat(num) * 1000).toLocaleString('en-IN');
+                // Plain number — assume it's already in rupees with commas
+                return '₹' + m[1];
+              }
+
+              // Retention bonus
+              if (/retention\s*bonus/.test(t)) {
+                var amt2 = extractAmount(t) || '₹5,00,000';
+                var when = /after\s*(\d+)\s*(year|month)/.test(t) ? t.match(/after\s*(\d+)\s*(year|month)\w*/)[0] : 'after 1 year of continuous service';
+                if (wantsParagraph) {
+                  addClause('Retention bonus', 'You will receive a retention bonus of ' + amt2 + ', payable ' + when + '. The bonus is contingent on your continued employment through the qualifying date and is paid net of applicable taxes.');
+                } else {
+                  addTerm('Retention bonus', amt2 + ', payable ' + when);
+                }
+                return showToast('Added retention bonus');
+              }
+
+              // Sign-on / joining bonus
+              if (/(sign[- ]?on|joining|signing)\s*bonus/.test(t)) {
+                var soAmt = extractAmount(t) || '₹2,00,000';
+                if (wantsParagraph) {
+                  addClause('Sign-on bonus', 'You will receive a one-time sign-on bonus of ' + soAmt + ', paid within 30 days of your joining date. The bonus is fully recoverable if you voluntarily resign within 12 months of joining.');
+                } else {
+                  addTerm('Sign-on bonus', soAmt + ', paid within 30 days of joining');
+                }
+                return showToast('Added sign-on bonus');
+              }
+
+              // Performance bonus
+              if (/performance\s*bonus|annual\s*bonus/.test(t)) {
+                var perfAmt = extractAmount(t);
+                var perfValue = perfAmt || 'Up to 15% of annual CTC';
+                if (wantsParagraph) {
+                  addClause('Performance bonus', 'You will be eligible for an annual performance bonus of ' + perfValue.toLowerCase() + ', paid after each annual review based on individual and company performance. The exact payout is at management discretion.');
+                } else {
+                  addTerm('Performance bonus', perfValue + ', paid annually on review');
+                }
+                return showToast('Added performance bonus');
+              }
+
+              // Generic bonus (catch-all)
+              if (/\bbonus\b/.test(t)) {
+                var bAmt = extractAmount(t) || '₹50,000';
+                if (wantsParagraph) {
+                  addClause('Bonus', 'You will be eligible for a bonus of ' + bAmt + ', payable as per company policy. The bonus structure, timing of payouts, and qualifying criteria will be communicated separately and may be revised by the company from time to time.');
+                } else {
+                  addTerm('Bonus', bAmt + ', as per company policy');
+                }
+                return showToast('Added bonus');
+              }
+
+              // Commission / variable pay
+              if (/commission|variable\s*pay|sales\s*incentive/.test(t)) {
+                var pctMatch = t.match(/([\d.]+)\s*%/);
+                var varAmt = pctMatch ? pctMatch[1] + '% of CTC' : extractAmount(t) || 'Up to 20% of annual CTC';
+                if (wantsParagraph) {
+                  addClause('Variable pay', 'You will be eligible for variable pay of ' + varAmt.toLowerCase() + ', paid quarterly based on KPIs and individual performance metrics defined at the start of each quarter.');
+                } else {
+                  addTerm('Variable pay', varAmt + ', paid quarterly on KPIs');
+                }
+                return showToast('Added variable pay');
+              }
+
+              // Allowance (HRA, food, fuel, etc.)
+              if (/allowance|hra|stipend/.test(t)) {
+                var allMatch = t.match(/(hra|food|fuel|travel|conveyance|telephone|internet)/i);
+                var allType = allMatch ? allMatch[1].toUpperCase() + ' allowance' : 'Allowance';
+                var allAmt = extractAmount(t) || '₹10,000 per month';
+                if (wantsParagraph) {
+                  addClause(allType, 'You will receive ' + allType.toLowerCase() + ' of ' + allAmt + ', payable monthly along with your salary. This is subject to applicable tax treatment as per Indian tax law.');
+                } else {
+                  addTerm(allType.charAt(0) + allType.slice(1).toLowerCase(), allAmt);
+                }
+                return showToast('Added ' + allType);
+              }
+
+              // NDA
+              if (/nda|confidential/.test(t)) {
+                addClause('Confidentiality (NDA)', 'You agree to keep all proprietary information, customer data, source code, business plans and trade secrets strictly confidential, both during and for 3 years after your employment. Breach may result in immediate termination and legal action.');
+                return showToast('Added NDA clause');
+              }
+
+              // Non-compete
+              if (/non[- ]?compete/.test(t)) {
+                var months = (t.match(/(\d+)\s*month/) || [])[1] || (t.match(/(\d+)\s*year/) ? (parseInt(t.match(/(\d+)\s*year/)[1], 10) * 12) : 12);
+                addClause('Non-compete', 'For a period of ' + months + ' months following the end of your employment, you agree not to work with direct competitors, solicit our customers, or hire away employees of the company.');
+                return showToast('Added non-compete clause (' + months + ' months)');
+              }
+
+              // IP assignment
+              if (/ip|intellectual\s*property|inventions?/.test(t)) {
+                addClause('IP Assignment', 'All inventions, work product, code, designs and intellectual property created in the course of your employment will be the exclusive property of the company. You agree to execute documents needed to assign such IP.');
+                return showToast('Added IP assignment clause');
+              }
+
+              // Learning budget / training
+              if (/learning|training|education|upskill/.test(t)) {
+                var lb = (t.match(/[₹$]?\s*([\d,]+)\s*(?:k|lakhs?)?/) || [])[1] || '50,000';
+                if (wantsParagraph) {
+                  addClause('Learning & development', 'You will have access to an annual learning budget of ₹' + lb + ', reimbursable against courses, certifications, books, and industry conferences relevant to your role. Pre-approval is required for expenses above ₹10,000.');
+                } else {
+                  addTerm('Learning budget', '₹' + lb + ' per year, reimbursable against courses, books, conferences');
+                }
+                return showToast('Added learning budget');
+              }
+
+              // Insurance
+              if (/insurance|mediclaim|health\s*cover/.test(t)) {
+                var cover = (t.match(/(\d+)\s*l/i) || [])[1] || '10';
+                if (wantsParagraph) {
+                  addClause('Health insurance', 'You and your immediate family (spouse, children, and parents) will be covered under a ₹' + cover + 'L family floater health insurance policy, with an additional ₹25L top-up cover. The policy includes pre-existing conditions, maternity benefits, and OPD allowance.');
+                } else {
+                  addTerm('Health insurance', '₹' + cover + 'L family floater + ₹25L top-up, includes spouse, kids and parents');
+                }
+                return showToast('Added health insurance');
+              }
+
+              // Leave / vacation
+              if (/leave|vacation|pto|holiday/.test(t)) {
+                var days = (t.match(/(\d+)\s*day/) || [])[1] || '30';
+                if (wantsParagraph) {
+                  addClause('Leave policy', 'You will be entitled to ' + days + ' days of paid leave per year (PTO), in addition to all India public holidays. Unused leave can be carried forward up to a maximum of 15 days into the next year. Sick leave and bereavement leave are provided separately as per company policy.');
+                } else {
+                  addTerm('Leave', days + ' days paid leave per year (PTO) + India public holidays');
+                }
+                return showToast('Added leave term');
+              }
+
+              // ESOP / equity
+              if (/esop|equity|stock\s*option/.test(t)) {
+                var pct = (t.match(/([\d.]+)\s*%/) || [])[1];
+                var equity = pct ? pct + '% ESOPs (4-year vest, 1-year cliff)' : '4-year vest, 1-year cliff — band defined per role level';
+                if (!updateTerm('equity', equity)) addTerm('ESOPs', equity);
+                return showToast('Updated equity terms');
+              }
+
+              // Relocation
+              if (/relocat|reloc|moving/.test(t)) {
+                if (wantsParagraph) {
+                  addClause('Relocation support', 'If you are relocating to take up this role, the company will reimburse relocation expenses up to ₹1,50,000 against original bills. Covered expenses include professional movers, security deposit, brokerage, and the first month\'s rent. Reimbursement claims must be submitted within 60 days of joining.');
+                } else {
+                  addTerm('Relocation', 'Up to ₹1,50,000 reimbursable against bills (movers, deposit, first month rent)');
+                }
+                return showToast('Added relocation');
+              }
+
+              // ===== Generic fallback — try to extract a label + value pattern =====
+              // Examples handled here:
+              //  "add notice period of 60 days" → Notice period: 60 days
+              //  "joining date 1 Aug 2026" → Joining date: 1 Aug 2026
+              //  "remote work from anywhere" → Remote work: From anywhere
+
+              // Try amount-with-label pattern: "<label> ... ₹X"
+              var genAmt = extractAmount(text);
+              // Drop common imperative words to find the subject
+              var subject = text
+                .replace(/^(please\s+)?(add|include|put|insert|give|provide|create|set|change|update|make)\s+(an?\s+|the\s+|some\s+)?/i, '')
+                .replace(/\s+(of|for|to|=|:)\s+.*$/i, '')
+                .replace(/\s+(para|line|clause|item|section)\s*/gi, ' ')
+                .replace(/[₹$]?\s*[\d,]+\s*(l|lakhs?|cr|crore|k|days?|years?|months?|%)?/i, '')
+                .trim();
+              if (subject.length >= 2 && subject.length < 40) {
+                var label = subject.charAt(0).toUpperCase() + subject.slice(1).toLowerCase();
+                // Trailing 's' off short labels feels nicer
+                if (label.length > 4 && label.endsWith('s')) label = label.slice(0, -1);
+                // Determine value: amount if found, otherwise pull tail after preposition
+                var value;
+                if (genAmt) {
+                  value = genAmt;
+                  // Append any qualifier (per year, monthly, after X months)
+                  var qualifier = text.match(/(per\s+(year|month|annum)|monthly|annual(ly)?|quarterly|after\s+\d+\s+(year|month)\w*)/i);
+                  if (qualifier) value += ', ' + qualifier[0].toLowerCase();
+                } else {
+                  // Pull the value from after a preposition like "of", "to", "for"
+                  var tail = text.match(/(?:of|to|for|=|:)\s+(.+)$/i);
+                  value = tail ? tail[1].trim() : 'As per discussion';
+                  value = value.charAt(0).toUpperCase() + value.slice(1);
+                }
+                addTerm(label, value);
+                return showToast('Added ' + label.toLowerCase());
+              }
+
+              // Last resort — append as a polished clause (rewrite the input)
+              var polished = text.charAt(0).toUpperCase() + text.slice(1);
+              if (!/[.!?]$/.test(polished)) polished += '.';
+              addClause('Additional clause', polished);
+              showToast('Added a new clause');
+            }
+
+            function showToast(msg) {
+              var t = document.createElement('div');
+              t.className = 'oae-toast';
+              t.innerHTML = '<svg viewBox="0 0 24 24" fill="currentColor" width="14" height="14"><path d="M12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2z"/></svg><span>' + msg + '</span>';
+              document.body.appendChild(t);
+              requestAnimationFrame(function () { t.classList.add('show'); });
+              setTimeout(function () { t.classList.remove('show'); setTimeout(function () { t.remove(); }, 250); }, 2400);
+            }
+
+            // ===== Wire the free-text input bar =====
+            var input = document.getElementById('aiEditInput');
+            var sendBtn = document.getElementById('aiEditSend');
+            function sendInput() {
+              var text = input.value.trim();
+              if (!text) {
+                // Empty submit → open the picker so user can browse
+                showCatGrid();
+                panel.hidden = false;
+                return;
+              }
+              applyAi(text);
+              input.value = '';
+            }
+            if (sendBtn) sendBtn.addEventListener('click', sendInput);
+            if (input) input.addEventListener('keydown', function (e) {
+              if (e.key === 'Enter') { e.preventDefault(); sendInput(); }
+            });
+
+          })();
+        </script>
+
+        <!-- Upload your own offer letter -->
+        <div class="offer-upload" id="offerUpload" hidden>
+          <input type="file" id="offerFileInput" accept=".pdf,.doc,.docx,application/pdf" style="position:absolute;width:1px;height:1px;opacity:0;clip:rect(0 0 0 0);overflow:hidden;left:-9999px">
+          <div class="offer-drop" id="offerDrop" role="button" tabindex="0" onclick="window.wmTriggerFilePicker && window.wmTriggerFilePicker(event)" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();window.wmTriggerFilePicker && window.wmTriggerFilePicker(event);}">
+            <div class="od-icon" style="pointer-events:none">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+            </div>
+            <div class="od-text" style="pointer-events:none">
+              <div class="od-title">Click or drop your offer letter here</div>
+              <div class="od-sub">PDF or DOCX, up to 5 MB. We'll attach an e-sign block automatically.</div>
+            </div>
+          </div>
+          <script>
+            // Global trigger function — guaranteed to find or create the file input on demand
+            window.wmTriggerFilePicker = function (e) {
+              if (e) e.stopPropagation();
+              var input = document.getElementById('offerFileInput');
+              if (!input) {
+                // Fallback: dynamically create a file input if it's somehow missing
+                input = document.createElement('input');
+                input.type = 'file';
+                input.id = 'offerFileInput';
+                input.accept = '.pdf,.doc,.docx,application/pdf';
+                input.style.display = 'none';
+                document.body.appendChild(input);
+              }
+              console.log('[Wisemonk] Triggering file picker, input found:', !!input);
+              // MUST be synchronous — browsers require .click() inside the user-gesture frame
+              input.click();
+            };
+          </script>
+          <div class="offer-uploaded" id="offerUploaded" hidden>
+            <div class="ou-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+            </div>
+            <div class="ou-body">
+              <div class="ou-name" id="offerFileName">offer-letter.pdf</div>
+              <div class="ou-meta" id="offerFileMeta">128 KB · uploaded just now</div>
+            </div>
+            <button type="button" class="ou-remove" id="offerFileRemove" aria-label="Remove file">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+            </button>
+          </div>
+          <p class="offer-upload-note">Uploading your own letter? We'll still handle the e-sign + India payroll, PF, gratuity, ESI compliance once the candidate signs.</p>
+        </div>
+
+        <!-- Sticky bottom bar for the Send offer action -->
+        <div class="offer-decision-bar">
+          <button class="dec-btn primary" type="button" id="sendOfferBtn">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+            Send offer to candidate
+          </button>
+        </div>
+      </section>
+
+      <!-- ================ OFFER SENT (awaiting signature) ================ -->
+      <section class="step" data-step="sent">
+        <div class="sent-wrap">
+          <div class="conf-icon" style="background: var(--warning-50);">
+            <svg viewBox="0 0 24 24" fill="none" stroke="#F79009" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="42" height="42"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+          </div>
+          <h1>Offer sent</h1>
+          <p class="subhead"><strong id="sentName">Priya Sharma</strong> has been sent the offer with an e-sign link. We'll notify you when they sign.</p>
+
+          <div class="sent-pill">
+            <span class="spinner"></span>
+            Awaiting signature
+          </div>
+
+          <div class="actions-stack">
+            <button class="cta-button" type="button" id="simSignedBtn">
+              Simulate candidate signed (demo)
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+            </button>
+            <button class="ghost-btn" type="button" onclick="location.href='recruit-pipeline.html'">Back to pipeline</button>
+          </div>
+        </div>
+      </section>
+
+      <!-- ================ HIRE COMPLETE ================ -->
+      <section class="step" data-step="hired">
+        <div class="sent-wrap">
+          <div class="hire-confetti">
+            <div class="check">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+            </div>
+          </div>
+          <h1>You hired <span id="hiredName">Priya</span> ðŸŽ‰</h1>
+          <p class="subhead">Onboarding handed off to Wisemonk EOR. <strong>Your role is closed.</strong></p>
+
+          <div class="hire-stats">
+            <div class="hire-stat">
+              <div class="num">7 days</div>
+              <div class="lbl">Time to hire</div>
+            </div>
+            <div class="hire-stat">
+              <div class="num">5</div>
+              <div class="lbl">Candidates reviewed</div>
+            </div>
+            <div class="hire-stat">
+              <div class="num">1</div>
+              <div class="lbl">Interview</div>
+            </div>
+          </div>
+
+          <div class="actions-stack">
+            <button class="cta-button" type="button" id="newRoleAfterHire">
+              Open another role
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
+            </button>
+            <button class="ghost-btn" type="button" onclick="location.href='recruit-pipeline.html'">Back to pipeline</button>
+          </div>
+        </div>
+      </section>
+
+    </div>
+  </main>
+
+  </div>
+
+  <script>
+    // ===== State from URL =====
+    const params = new URLSearchParams(location.search);
+    const candName = params.get('name') || 'Priya Sharma';
+    const candFirst = candName.split(' ')[0];
+    const candInitial = candName.charAt(0).toUpperCase();
+
+    // Defensive: each setter only fires if the element exists (legacy IDs may have been removed)
+    const setText = (id, txt) => { const el = document.getElementById(id); if (el) el.textContent = txt; };
+    setText('bcCand', candName);
+    setText('candName', candName);
+    setText('candAvatar', candInitial);
+    setText('confCand', candName);
+    setText('themName', candName);
+    setText('themLetter', candInitial);
+    setText('offerHi', `Hi ${candFirst},`);
+    setText('sentName', candName);
+    setText('hiredName', candFirst);
+
+    // ===== Round-aware prefill =====
+    // Load plan to know totalRounds for "Round X of Y" display
+    const DEFAULT_PLAN = [
+      { name: 'Screening call', interviewer: 'AI Recruiter', duration: 30 },
+      { name: 'Technical round', interviewer: 'Alex Mehta', duration: 45 },
+      { name: 'Hiring manager', interviewer: 'Founder', duration: 30 }
+    ];
+    let savedPlan;
+    try { savedPlan = JSON.parse(localStorage.getItem('wm_interview_plan')) || DEFAULT_PLAN; }
+    catch (e) { savedPlan = DEFAULT_PLAN; }
+    const totalRounds = savedPlan.length;
+    const round = Math.max(1, parseInt(params.get('round') || '1', 10));
+    const roundName = params.get('roundName') || (savedPlan[round - 1]?.name) || `Round ${round}`;
+    const interviewer = params.get('interviewer') || (savedPlan[round - 1]?.interviewer) || 'Alex Mehta';
+    const prefillDuration = parseInt(params.get('duration') || (savedPlan[round - 1]?.duration ?? 45), 10);
+
+    // Update the heading + subhead with round context (guard in case elements missing)
+    setText('schedHeading', `Schedule ${roundName}`);
+    const sh = document.getElementById('schedSubhead');
+    if (sh) sh.innerHTML = `Round ${round} of ${totalRounds} · with <strong>${interviewer}</strong>. We'll handle calendar invites + video room for both sides.`;
+
+    // ===== Step machine =====
+    const stepEls = {};
+    document.querySelectorAll('.step').forEach(s => stepEls[s.dataset.step] = s);
+    function goTo(step) {
+      Object.values(stepEls).forEach(el => el.classList.remove('active'));
+      if (stepEls[step]) stepEls[step].classList.add('active');
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+    document.querySelectorAll('[data-back]').forEach(btn => {
+      btn.addEventListener('click', () => goTo(btn.dataset.back));
+    });
+
+    // Jump to a specific step if requested via ?step=offer (used by "Make offer now")
+    const requestedStep = params.get('step');
+    if (requestedStep && stepEls[requestedStep]) {
+      goTo(requestedStep);
+    }
+
+    // ===== SCHEDULE: date strip =====
+    const today = new Date();
+    const dateStrip = document.getElementById('dateStrip');
+    const days = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
+    let selectedDate = null;
+    let selectedTime = null;
+    let selectedDuration = 45;
+
+    for (let i = 1; i <= 5; i++) {
+      const d = new Date(today); d.setDate(today.getDate() + i);
+      const btn = document.createElement('button');
+      btn.type = 'button';
+      btn.className = 'date-btn' + (i === 1 ? ' suggested' : '');
+      btn.dataset.idx = i;
+      btn.innerHTML = `<div class="dow">${days[d.getDay()]}</div><div class="day">${d.getDate()}</div>`;
+      btn.addEventListener('click', () => {
+        document.querySelectorAll('.date-btn').forEach(b => b.classList.remove('selected'));
+        btn.classList.add('selected');
+        selectedDate = { idx: i, label: i === 1 ? 'Tomorrow' : `${days[d.getDay()]} ${d.getDate()}` };
+        updateScheduleBtn();
+      });
+      dateStrip.appendChild(btn);
+    }
+    // Auto-select first day (AI suggestion). Use firstElementChild to skip whitespace text nodes.
+    if (dateStrip.firstElementChild && typeof dateStrip.firstElementChild.click === 'function') {
+      dateStrip.firstElementChild.click();
+    }
+
+    // Time slots
+    const timeSlotsEl = document.getElementById('timeSlots');
+    const slots = ['10:00','10:30','11:00','11:30','14:00','14:30','15:00','15:30'];
+    slots.forEach(t => {
+      const isSuggested = t === '11:00';
+      const btn = document.createElement('button');
+      btn.type = 'button';
+      btn.className = 'time-slot' + (isSuggested ? ' suggested' : '');
+      btn.innerHTML = `${t}${isSuggested ? '<small>AI pick</small>' : '<small>IST</small>'}`;
+      btn.addEventListener('click', () => {
+        document.querySelectorAll('.time-slot').forEach(b => b.classList.remove('selected'));
+        btn.classList.add('selected');
+        selectedTime = t;
+        updateScheduleBtn();
+      });
+      timeSlotsEl.appendChild(btn);
+    });
+
+    // Duration
+    document.querySelectorAll('.duration-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        document.querySelectorAll('.duration-btn').forEach(b => b.classList.remove('selected'));
+        btn.classList.add('selected');
+        selectedDuration = parseInt(btn.dataset.dur);
+      });
+    });
+
+    // Apply prefilled duration if it matches a button
+    (function applyPrefillDuration() {
+      const allBtns = document.querySelectorAll('.duration-btn');
+      let matched = null;
+      allBtns.forEach(b => { if (parseInt(b.dataset.dur) === prefillDuration) matched = b; });
+      if (matched) {
+        allBtns.forEach(b => b.classList.remove('selected'));
+        matched.classList.add('selected');
+        if (matched.hasAttribute('hidden')) matched.removeAttribute('hidden');
+        selectedDuration = prefillDuration;
+      }
+    })();
+
+    function updateScheduleBtn() {
+      document.getElementById('scheduleBtn').disabled = !(selectedDate && selectedTime);
+    }
+
+    document.getElementById('scheduleBtn').addEventListener('click', () => {
+      document.getElementById('confWhen').textContent = `${selectedDate.label} · ${selectedTime} IST`;
+      document.getElementById('confDur').textContent = `${selectedDuration} minutes`;
+      // Persist this scheduled interview so the Interviews page can show it
+      try {
+        const list = JSON.parse(localStorage.getItem('wm_interviews') || '[]');
+        const todayPlusN = new Date();
+        todayPlusN.setDate(todayPlusN.getDate() + (selectedDate.idx || 1));
+        list.unshift({
+          id: 'iv-' + Date.now(),
+          candName,
+          candInitial,
+          candColor: '#0026FF',
+          roundName: roundName,
+          round: round,
+          totalRounds: totalRounds,
+          time: selectedTime,
+          dateLabel: selectedDate.label,
+          dateIso: todayPlusN.toISOString().slice(0, 10),
+          dayOfMonth: todayPlusN.getDate(),
+          monthShort: todayPlusN.toLocaleString('en-US', { month: 'short' }) + ', ' + todayPlusN.getFullYear(),
+          duration: selectedDuration,
+          interviewer: interviewer,
+          scheduledAt: Date.now()
+        });
+        localStorage.setItem('wm_interviews', JSON.stringify(list));
+      } catch (e) { console.error('Failed to persist interview', e); }
+      goTo('confirmed');
+    });
+
+    // ===== CONFIRMED → ROOM =====
+    document.getElementById('joinNowBtn').addEventListener('click', () => {
+      goTo('room');
+      startTimer();
+    });
+
+    // ===== ROOM =====
+    let timerInterval = null;
+    let elapsed = 0;
+    function startTimer() {
+      elapsed = 0;
+      const el = document.getElementById('roomTimer');
+      timerInterval = setInterval(() => {
+        elapsed++;
+        const m = String(Math.floor(elapsed / 60)).padStart(2, '0');
+        const s = String(elapsed % 60).padStart(2, '0');
+        el.textContent = `${m}:${s}`;
+      }, 1000);
+    }
+    document.getElementById('micBtn').addEventListener('click', () => {
+      const btn = document.getElementById('micBtn');
+      const tile = document.querySelector('.room-tile.you');
+      btn.classList.toggle('active');
+      tile.classList.toggle('muted');
+    });
+    document.getElementById('endCallBtn').addEventListener('click', () => {
+      clearInterval(timerInterval);
+      if (confirm('End the interview? AI will draft a summary and you can decide next steps from the meeting review.')) {
+        // Send the user straight to the meeting summary review screen
+        location.href = `recruit-meeting.html?name=${encodeURIComponent(candName)}&round=${round}`;
+      } else {
+        startTimer();
+      }
+    });
+
+    // ===== OFFER edit inline =====
+    document.querySelectorAll('[data-field]').forEach(el => {
+      el.addEventListener('click', () => {
+        const cur = el.textContent;
+        const v = prompt('Edit:', cur);
+        if (v && v.trim()) el.textContent = v.trim();
+      });
+    });
+
+    // Add/remove offer-line wiring lives in an inline script right next to the button.
+
+    // ===== OFFER SOURCE TOGGLE (AI-drafted vs Upload) =====
+    let offerSource = 'ai';
+    let uploadedOfferFile = null;
+    const offerAi = document.getElementById('offerAi');
+    const offerUpload = document.getElementById('offerUpload');
+    const offerSubhead = document.getElementById('offerSubhead');
+
+    document.querySelectorAll('.offer-source-tab').forEach(tab => {
+      tab.addEventListener('click', () => {
+        document.querySelectorAll('.offer-source-tab').forEach(t => t.classList.remove('active'));
+        tab.classList.add('active');
+        offerSource = tab.dataset.source;
+        const isAi = offerSource === 'ai';
+        offerAi.hidden = !isAi;
+        offerUpload.hidden = isAi;
+        const addRow = document.getElementById('offerAddRow');
+        if (addRow) addRow.hidden = !isAi;
+        // Swap the subhead copy
+        if (offerSubhead) {
+          if (isAi) {
+            offerSubhead.innerHTML = `<span style="display:inline-flex; align-items:center; gap:4px; background:linear-gradient(135deg,#7C5CFF20,#2684FF20); color:#5B4ACF; padding:2px 8px; border-radius:4px; font-size:11px; font-weight:700;">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="10" height="10"><path d="M12 2l1.9 5.8L20 9.7l-4.5 3.9L17 20l-5-3-5 3 1.5-6.4L4 9.7l6.1-1.9L12 2z"/></svg>
+              AI-drafted</span> Click any text to edit. Add a line for bonus, variable pay, perks — anything. <strong>India payroll, PF, gratuity, ESI handled automatically.</strong>`;
+          } else {
+            offerSubhead.innerHTML = `Use your own offer letter. <strong>We'll attach an e-sign block</strong> and handle India payroll, PF, gratuity, ESI once the candidate signs.`;
+          }
+        }
+      });
+    });
+
+    // File picker + drag-and-drop
+    const offerFileInput = document.getElementById('offerFileInput');
+    const offerDrop = document.getElementById('offerDrop');
+    const offerUploaded = document.getElementById('offerUploaded');
+    const offerFileName = document.getElementById('offerFileName');
+    const offerFileMeta = document.getElementById('offerFileMeta');
+    const offerFileRemove = document.getElementById('offerFileRemove');
+
+    function fmtSize(bytes) {
+      if (bytes < 1024) return bytes + ' B';
+      if (bytes < 1024 * 1024) return (bytes / 1024).toFixed(0) + ' KB';
+      return (bytes / (1024 * 1024)).toFixed(1) + ' MB';
+    }
+
+    function showUploaded(file) {
+      uploadedOfferFile = file;
+      offerFileName.textContent = file.name;
+      offerFileMeta.textContent = `${fmtSize(file.size)} · uploaded just now`;
+      offerDrop.hidden = true;
+      offerUploaded.hidden = false;
+    }
+    function clearUploaded() {
+      uploadedOfferFile = null;
+      offerFileInput.value = '';
+      offerDrop.hidden = false;
+      offerUploaded.hidden = true;
+    }
+
+    offerFileInput?.addEventListener('change', e => {
+      const f = e.target.files?.[0];
+      if (f) showUploaded(f);
+    });
+    offerFileRemove?.addEventListener('click', clearUploaded);
+
+    // Drag-and-drop on the drop zone
+    ['dragenter', 'dragover'].forEach(ev => offerDrop?.addEventListener(ev, e => {
+      e.preventDefault();
+      offerDrop.classList.add('dragover');
+    }));
+    ['dragleave', 'drop'].forEach(ev => offerDrop?.addEventListener(ev, e => {
+      e.preventDefault();
+      offerDrop.classList.remove('dragover');
+    }));
+    offerDrop?.addEventListener('drop', e => {
+      const f = e.dataTransfer.files?.[0];
+      if (f) showUploaded(f);
+    });
+
+    // Sync the company name displayed in the e-sign label + the letterhead with the saved company
+    (function syncCompany() {
+      let company = null;
+      try { company = JSON.parse(localStorage.getItem('wm_company')); } catch (e) {}
+      const name = company?.name || 'Acme Inc.';
+      const website = company?.website || '';
+
+      // E-sign block — client side
+      const esignCo = document.getElementById('esignCompany');
+      if (esignCo) esignCo.textContent = name;
+      // E-sign block — candidate side (use the candName from URL params, falling back gracefully)
+      const esignCand = document.getElementById('esignCandidate');
+      if (esignCand && typeof candName === 'string') esignCand.textContent = candName;
+
+      // Letterhead — left side (logo SVG stays; just sync the name + address)
+      const olCompany = document.getElementById('olCompany');
+      const olSub = document.getElementById('olSub');
+      if (olCompany) olCompany.textContent = name;
+      if (olSub) olSub.textContent = '100 Ward Pl, Bangalore 560001, India';
+      // Letterhead — right side (website + phone)
+      const olWebsite = document.getElementById('olWebsite');
+      const olPhone = document.getElementById('olPhone');
+      if (olWebsite) olWebsite.textContent = website ? ('www.' + website.replace(/^https?:\/\//, '').replace(/\/$/, '').replace(/^www\./, '')) : 'www.acme.com';
+      if (olPhone) olPhone.textContent = '+91 80 4567 1234';
+    })();
+
+    document.getElementById('sendOfferBtn').addEventListener('click', () => {
+      if (offerSource === 'upload' && !uploadedOfferFile) {
+        alert('Upload an offer letter first, or switch to the AI-drafted tab.');
+        return;
+      }
+      // E-sign validation — only enforced on AI-drafted letters
+      if (offerSource !== 'upload') {
+        const sigEl = document.getElementById('esignName');
+        const sig = (sigEl?.value || '').trim();
+        if (!sig) {
+          sigEl.classList.add('invalid');
+          sigEl.focus();
+          sigEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
+          // Flash a toast / alert as a hint
+          alert('Type your full name in the signature field to e-sign and send.');
+          return;
+        }
+        sigEl.classList.remove('invalid');
+      }
+      goTo('sent');
+    });
+
+    // ===== SENT → HIRED =====
+    document.getElementById('simSignedBtn').addEventListener('click', () => goTo('hired'));
+
+    // ===== HIRED → start a new role =====
+    document.getElementById('newRoleAfterHire').addEventListener('click', () => {
+      location.href = 'recruit-role.html';
+    });
+
+    // ===== Sidebar nav =====
+    document.querySelectorAll('.nav-item').forEach(n => {
+      n.addEventListener('click', e => {
+        if (n.getAttribute('href') === '#') { e.preventDefault(); alert('Coming soon in the full build'); }
+      });
+    });
+  </script>
+
+  <!-- ============ NOTIFICATIONS SIDE PANEL ============ -->
+  <div class="notif-overlay" id="notifOverlay"></div>
+  <aside class="notif-panel" id="notifPanel" aria-hidden="true" aria-labelledby="notifTitle">
+    <div class="notif-panel-head">
+      <h2 id="notifTitle">Notifications</h2>
+      <div class="notif-head-actions">
+        <label class="notif-unread">
+          Unread only
+          <input type="checkbox" id="notifUnreadOnly">
+          <span class="track"></span>
+        </label>
+        <button class="notif-close" type="button" id="notifCloseBtn" aria-label="Close notifications" onclick="document.getElementById('notifPanel').classList.remove('open'); document.getElementById('notifOverlay').classList.remove('open');">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+        </button>
+      </div>
+    </div>
+    <div class="notif-tabs" role="tablist">
+      <button class="notif-tab active has-unread" data-filter="all" role="tab">All <span class="dot"></span></button>
+      <button class="notif-tab has-unread" data-filter="candidates" role="tab">Candidates <span class="dot"></span></button>
+      <button class="notif-tab has-unread" data-filter="interviews" role="tab">Interviews <span class="dot"></span></button>
+      <button class="notif-tab" data-filter="system" role="tab">System</button>
+    </div>
+    <div class="notif-list" id="notifList"></div>
+  </aside>
+
+  <script>
+    // ===== Notifications panel =====
+    (function () {
+      const overlay = document.getElementById('notifOverlay');
+      const panel = document.getElementById('notifPanel');
+      if (!overlay || !panel) return;
+
+      const list = document.getElementById('notifList');
+      const unreadOnly = document.getElementById('notifUnreadOnly');
+      const tabs = document.querySelectorAll('.notif-tab');
+      let activeFilter = 'all';
+
+      const NOTIFS = [
+        { id: 1, cat: 'candidates', unread: true, av: 'P', avColor: '#0026FF', title: '<strong>Priya Sharma</strong> answered screening', desc: 'AI gave a 92% fit. Review her in the shortlist.', when: '2h ago' },
+        { id: 2, cat: 'interviews', unread: true, av: 'A', avColor: '#1B7FF5', title: '<strong>Arjun Patel</strong> · Round 1 interview completed', desc: 'AI summary + transcript ready. Decide next round.', when: '5h ago' },
+        { id: 4, cat: 'interviews', unread: false, av: 'P', avColor: '#0026FF', title: '<strong>Priya Sharma</strong> confirmed Tomorrow 11:00 IST', desc: 'Calendar invite sent. Video room link is ready.', when: '2d ago' },
+        { id: 5, cat: 'system', unread: false, av: 'ai', title: 'AI summary <strong>improved</strong>', desc: 'We refreshed our scoring model. Past summaries auto-updated.', when: '4d ago' }
+      ];
+
+      function aiAv() {
+        return '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2z"/></svg>';
+      }
+
+      function render() {
+        const filtered = NOTIFS.filter(n => {
+          if (unreadOnly.checked && !n.unread) return false;
+          if (activeFilter !== 'all' && n.cat !== activeFilter) return false;
+          return true;
+        });
+        if (!filtered.length) {
+          list.innerHTML = '<div class="notif-empty">You\'re all caught up.</div>';
+          return;
+        }
+        list.innerHTML = filtered.map(n => `
+          <div class="notif-item ${n.unread ? 'unread' : ''}" data-id="${n.id}">
+            <div class="av ${n.av === 'ai' ? 'ai' : ''}" ${n.av !== 'ai' && n.avColor ? `style="background:${n.avColor};color:#fff;"` : ''}>${n.av === 'ai' ? aiAv() : n.av}</div>
+            <div class="body">
+              <div class="title">${n.title}</div>
+              <div class="desc">${n.desc}</div>
+            </div>
+            <div class="when">${n.when}</div>
+          </div>
+        `).join('');
+        // Mark as read on click
+        list.querySelectorAll('.notif-item').forEach(el => {
+          el.addEventListener('click', () => {
+            const id = +el.dataset.id;
+            const n = NOTIFS.find(x => x.id === id);
+            if (n) n.unread = false;
+            render();
+          });
+        });
+      }
+
+      function open() {
+        overlay.classList.add('open');
+        panel.classList.add('open');
+        panel.setAttribute('aria-hidden', 'false');
+        // Highlight the Notifications nav item
+        document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+        document.querySelector('[data-action="open-notifications"]')?.classList.add('active');
+        render();
+      }
+      function close() {
+        overlay.classList.remove('open');
+        panel.classList.remove('open');
+        panel.setAttribute('aria-hidden', 'true');
+        // Restore which nav item should be active (this page)
+        document.querySelector('[data-action="open-notifications"]')?.classList.remove('active');
+      }
+
+      document.querySelectorAll('[data-action="open-notifications"]').forEach(el => {
+        el.addEventListener('click', e => {
+          e.preventDefault();
+          e.stopPropagation();
+          if (panel.classList.contains('open')) close();
+          else open();
+        });
+      });
+      document.getElementById('notifCloseBtn').addEventListener('click', e => {
+        e.stopPropagation();
+        close();
+      });
+      // Click anywhere outside the panel/trigger closes it
+      document.addEventListener('click', e => {
+        if (!panel.classList.contains('open')) return;
+        if (panel.contains(e.target)) return;
+        if (e.target.closest('[data-action="open-notifications"]')) return;
+        close();
+      });
+      document.addEventListener('keydown', e => { if (e.key === 'Escape' && panel.classList.contains('open')) close(); });
+
+      unreadOnly.addEventListener('change', render);
+      tabs.forEach(t => {
+        t.addEventListener('click', () => {
+          tabs.forEach(x => x.classList.remove('active'));
+          t.classList.add('active');
+          activeFilter = t.dataset.filter;
+          render();
+        });
+      });
+    })();
+  </script>
+
+<script>
+  (function () {
+    // Restore saved state
+    try {
+      if (localStorage.getItem('wm_sidebar_collapsed') === '1') {
+        document.body.classList.add('sidebar-collapsed');
+      }
+    } catch (e) {}
+
+    // Inject the toggle button into the sidebar
+    const sidebar = document.querySelector('.sidebar');
+    if (!sidebar) return;
+    const btn = document.createElement('button');
+    btn.type = 'button';
+    btn.className = 'nav-collapse-btn';
+    btn.setAttribute('aria-label', 'Toggle sidebar');
+    btn.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>';
+    sidebar.appendChild(btn);
+
+    // Swap the brand logo image src based on collapsed state
+    const logoImg = document.querySelector('.brand-logo img');
+    const FULL_LOGO = 'wisemonk_logo_final.png';
+    const CROPPED_LOGO = 'croped%20logo.png';
+    function syncLogo() {
+      if (!logoImg) return;
+      const isCollapsed = document.body.classList.contains('sidebar-collapsed');
+      logoImg.src = isCollapsed ? CROPPED_LOGO : FULL_LOGO;
+    }
+    syncLogo(); // apply on load (in case we restored a collapsed state)
+
+    btn.addEventListener('click', () => {
+      const collapsed = document.body.classList.toggle('sidebar-collapsed');
+      try { localStorage.setItem('wm_sidebar_collapsed', collapsed ? '1' : '0'); } catch (e) {}
+      syncLogo();
+    });
+  })();
+</script>
+</body>
+</html>

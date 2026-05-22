@@ -1,0 +1,1064 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Senior Backend Engineer — Wisemonk</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600;700;800&family=Geist+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --primary-50: #EEF1FF; --primary-100: #D6DCFF; --primary-500: #0026FF; --primary-600: #001FCC;
+      --neutral-0: #FFFFFF; --neutral-50: #F7F8FA; --neutral-100: #EEF0F4; --neutral-200: #DDE1E9; --neutral-300: #C4CAD6; --neutral-400: #9AA2B2; --neutral-500: #6B7588; --neutral-700: #363D4D; --neutral-800: #222733;
+      --border: #EEF0F4; --border-strong: #DDE1E9;
+      --text-primary: #222733; --text-secondary: #363D4D; --text-muted: #9AA2B2;
+      --radius-sm: 6px; --radius-md: 12px; --radius-lg: 16px; --radius-full: 100px;
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html, body { scrollbar-width: none; }
+    html::-webkit-scrollbar, body::-webkit-scrollbar { width: 0; display: none; }
+    body { font-family: 'GT Standard', 'Geist', sans-serif; background: #fff; color: var(--text-primary); min-height: 100vh; }
+    h1, h2, h3, h4, h5, h6 { font-family: 'GT Standard', 'Geist', sans-serif; }
+    a { text-decoration: none; color: inherit; }
+    button { font-family: inherit; border-radius: var(--radius-sm); }
+
+    /* Outer top utility bar (back link for client preview) */
+    .util-bar {
+      max-width: 980px; margin: 0 auto;
+      padding: 22px 32px 0;
+      display: flex; align-items: center; justify-content: space-between;
+    }
+    .util-bar .back {
+      display: inline-flex; align-items: center; gap: 6px;
+      padding: 6px 10px 6px 6px;
+      background: transparent; border: none; cursor: pointer;
+      font: inherit; font-size: 13px; font-weight: 500;
+      color: var(--text-secondary);
+      transition: color 0.15s;
+      border-radius: 8px;
+    }
+    .util-bar .back:hover { color: var(--text-primary); background: var(--neutral-50); }
+    .util-bar .back svg { width: 15px; height: 15px; }
+    .util-bar .util-action {
+      display: inline-flex; align-items: center; gap: 6px;
+      padding: 7px 14px;
+      background: var(--neutral-0);
+      border: 1px solid var(--border-strong);
+      cursor: pointer;
+      font: inherit;
+      font-size: 13px; font-weight: 600;
+      color: var(--text-primary);
+      border-radius: 100px;
+      transition: all 0.15s;
+    }
+    .util-bar .util-action:hover { border-color: var(--text-primary); background: var(--neutral-50); }
+    .util-bar .util-action svg { width: 13px; height: 13px; color: var(--text-secondary); }
+
+    /* Job post body */
+    .job-post {
+      max-width: 760px;
+      margin: 0 auto;
+      padding: 32px 32px 80px;
+    }
+
+    /* Title + actions row */
+    .jp-title-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 20px;
+      padding-bottom: 24px;
+      margin-bottom: 24px;
+      border-bottom: 1px solid var(--border);
+    }
+    .jp-title-row .jp-title {
+      margin: 0;
+      padding: 0;
+      border: none;
+      flex: 1;
+      min-width: 0;
+    }
+    .jp-title-row .jp-actions {
+      margin-bottom: 0;
+      flex-shrink: 0;
+    }
+
+    /* Apply + Share row */
+    .jp-actions {
+      display: flex; align-items: center; gap: 10px;
+      margin-bottom: 28px;
+    }
+    .jp-apply {
+      display: inline-flex; align-items: center; gap: 6px;
+      padding: 9px 22px;
+      background: var(--text-primary);
+      color: #fff; border: none;
+      border-radius: var(--radius-full);
+      font: inherit; font-size: 13.5px; font-weight: 600;
+      cursor: pointer;
+      transition: background 0.15s, transform 0.15s;
+      box-shadow: 0 4px 12px -4px rgba(17,22,35,0.3);
+    }
+    .jp-apply:hover { background: #1a1a1a; transform: translateY(-1px); }
+    .jp-share {
+      display: inline-flex; align-items: center; gap: 6px;
+      padding: 9px 18px;
+      background: var(--neutral-0);
+      color: var(--text-primary);
+      border: 1.5px solid var(--border-strong);
+      border-radius: var(--radius-full);
+      font: inherit; font-size: 13.5px; font-weight: 600;
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+    .jp-share:hover { background: var(--neutral-50); border-color: var(--neutral-400); }
+    .jp-share svg { width: 14px; height: 14px; }
+
+    /* Title */
+    .jp-title { font-size: 30px; font-weight: 700; letter-spacing: -0.5px; line-height: 1.15; margin-bottom: 20px; padding-bottom: 24px; border-bottom: 1px solid var(--border); }
+
+    /* Author + posted date row */
+    .jp-author {
+      display: flex; align-items: center; gap: 16px;
+      padding-bottom: 24px;
+      margin-bottom: 32px;
+      border-bottom: 1px solid var(--border);
+    }
+    .jp-author .who {
+      display: inline-flex; align-items: center; gap: 8px;
+      font-size: 13.5px; font-weight: 600;
+      color: var(--text-primary);
+    }
+    .jp-author .avatar {
+      width: 28px; height: 28px;
+      border-radius: 50%;
+      background: #0026FF; color: #fff;
+      display: inline-flex; align-items: center; justify-content: center;
+      font-size: 11.5px; font-weight: 600;
+      flex-shrink: 0;
+    }
+    .jp-author .divider { width: 1px; height: 18px; background: var(--neutral-200); }
+    .jp-author .posted {
+      font-size: 13px; color: var(--text-muted); font-weight: 500;
+    }
+
+    /* Body sections */
+    .jp-section { margin-bottom: 36px; }
+    .jp-section h2 {
+      font-size: 20px; font-weight: 700;
+      letter-spacing: -0.3px;
+      margin-bottom: 14px;
+      color: var(--text-primary);
+    }
+    .jp-section p {
+      font-size: 15px; line-height: 1.65;
+      color: var(--text-secondary);
+    }
+    .jp-section p + p { margin-top: 12px; }
+
+    /* Lists */
+    .jp-section ul, .jp-section ol {
+      padding-left: 22px;
+      margin-top: 4px;
+    }
+    .jp-section ul { list-style: disc; }
+    .jp-section ol { list-style: decimal; }
+    .jp-section li {
+      font-size: 15px; line-height: 1.65;
+      color: var(--text-secondary);
+      margin-bottom: 10px;
+    }
+    .jp-section li::marker { color: var(--text-muted); }
+
+    /* Editable JD sections */
+    .jd-editable {
+      padding: 8px 12px;
+      margin: -8px -12px;
+      border-radius: 8px;
+      transition: background 0.12s, box-shadow 0.12s;
+      outline: none;
+    }
+    .jd-editable:hover { background: var(--neutral-50); cursor: text; }
+    .jd-editable:focus, .jd-editable:focus-within {
+      background: #fff;
+      box-shadow: 0 0 0 2px rgba(0, 38, 255, 0.12), inset 0 0 0 1px var(--primary-500);
+    }
+    .jd-editable[contenteditable="true"]:empty::before {
+      content: attr(data-placeholder);
+      color: var(--text-muted);
+    }
+    .jp-section li strong { color: var(--text-primary); font-weight: 700; }
+    .jp-section ul ul, .jp-section ul ol, .jp-section ol ul, .jp-section ol ol {
+      margin-top: 8px;
+      margin-bottom: 4px;
+    }
+    .jp-section ul li > ul, .jp-section ol li > ol { padding-left: 20px; }
+
+    /* Meta bar with quick facts under title */
+    .jp-quick-meta {
+      display: flex; gap: 20px;
+      margin-bottom: 32px;
+      flex-wrap: wrap;
+    }
+    .jp-quick-meta .item {
+      display: inline-flex; align-items: center; gap: 6px;
+      font-size: 13.5px; color: var(--text-secondary); font-weight: 500;
+    }
+    .jp-quick-meta svg { width: 15px; height: 15px; color: var(--text-muted); }
+    .salary-eye {
+      display: inline-flex; align-items: center; justify-content: center;
+      width: 22px; height: 22px;
+      margin-left: 4px;
+      padding: 0;
+      background: transparent;
+      border: none;
+      border-radius: 4px;
+      color: var(--text-muted);
+      cursor: pointer;
+      transition: all 0.12s;
+    }
+    .salary-eye:hover { background: var(--neutral-50); color: var(--text-primary); }
+    .salary-eye svg { width: 14px !important; height: 14px !important; color: inherit !important; }
+    .jp-quick-meta .item.salary-hidden { color: var(--text-muted); font-style: italic; }
+
+    /* Tabs */
+    .jp-tabs {
+      display: flex;
+      gap: 4px;
+      border-bottom: 1px solid var(--border);
+      margin-bottom: 28px;
+    }
+    /* When tabs are at the top of the article */
+    .job-post > .jp-tabs:first-child {
+      margin: -8px 0 28px;
+    }
+    .jp-tab {
+      padding: 12px 4px;
+      margin-right: 24px;
+      background: none;
+      border: none;
+      cursor: pointer;
+      font-family: inherit;
+      font-size: 14px; font-weight: 500;
+      color: var(--text-muted);
+      position: relative;
+      transition: color 0.15s;
+    }
+    .jp-tab:hover { color: var(--text-secondary); }
+    .jp-tab.active { color: var(--text-primary); font-weight: 600; }
+    .jp-tab.active::after {
+      content: '';
+      position: absolute;
+      bottom: -1px; left: 0; right: 0;
+      height: 2px; background: var(--text-primary);
+      border-radius: 2px;
+    }
+    .jp-tab .ct {
+      display: inline-flex; align-items: center; justify-content: center;
+      min-width: 18px; height: 18px; padding: 0 6px;
+      margin-left: 6px;
+      background: var(--neutral-100);
+      color: var(--text-secondary);
+      border-radius: 9px;
+      font-size: 11px; font-weight: 600;
+    }
+    .jp-tab.active .ct { background: var(--text-primary); color: #fff; }
+    .jp-pane { display: none; }
+    .jp-pane.active { display: block; }
+
+    /* Screening questions (editable) */
+    .qs-item {
+      display: grid;
+      grid-template-columns: 26px 1fr 28px;
+      gap: 14px;
+      align-items: start;
+      padding: 14px 16px;
+      background: var(--neutral-0);
+      border: 1px solid var(--border-strong);
+      border-radius: 12px;
+      margin-bottom: 10px;
+      transition: border-color 0.12s;
+    }
+    .qs-item:hover { border-color: var(--neutral-300); }
+    .qs-item .num {
+      width: 26px; height: 26px;
+      border-radius: 50%;
+      background: var(--neutral-100);
+      color: var(--text-primary);
+      display: flex; align-items: center; justify-content: center;
+      font-family: 'Geist Mono', monospace;
+      font-size: 12px; font-weight: 700;
+      margin-top: 2px;
+    }
+    .qs-item textarea.qtext {
+      width: 100%;
+      border: 1px solid transparent;
+      background: transparent;
+      padding: 6px 8px;
+      font-family: inherit;
+      font-size: 14.5px; line-height: 1.55;
+      color: var(--text-secondary);
+      resize: none;
+      border-radius: 6px;
+      transition: all 0.12s;
+      min-height: 28px;
+      overflow: hidden;
+    }
+    .qs-item textarea.qtext:hover { border-color: var(--border); }
+    .qs-item textarea.qtext:focus { outline: none; border-color: var(--primary-500); background: #fff; color: var(--text-primary); }
+    .row-remove {
+      width: 28px; height: 28px;
+      border-radius: 7px;
+      background: transparent;
+      border: none;
+      color: var(--text-muted);
+      cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      transition: all 0.12s;
+      margin-top: 1px;
+    }
+    .row-remove:hover { background: var(--danger-50); color: var(--danger-500); }
+    .row-remove svg { width: 14px; height: 14px; }
+
+    /* Interview rounds (editable) */
+    .ir-card {
+      display: grid;
+      grid-template-columns: 30px 1.4fr 1fr auto 28px;
+      gap: 12px;
+      align-items: center;
+      padding: 12px 14px;
+      background: var(--neutral-0);
+      border: 1px solid var(--border-strong);
+      border-radius: 12px;
+      margin-bottom: 10px;
+      transition: border-color 0.12s;
+    }
+    .ir-card:hover { border-color: var(--neutral-300); }
+    .ir-card .ir-num {
+      width: 30px; height: 30px;
+      border-radius: 50%;
+      background: var(--neutral-100);
+      color: var(--text-primary);
+      display: flex; align-items: center; justify-content: center;
+      font-family: 'Geist Mono', monospace;
+      font-size: 12.5px; font-weight: 700;
+    }
+    .ir-card input.ir-input,
+    .ir-card .ir-input {
+      border: 1px solid transparent;
+      background: transparent;
+      padding: 7px 9px;
+      font-family: inherit;
+      color: var(--text-primary);
+      border-radius: 7px;
+      width: 100%;
+      transition: all 0.12s;
+    }
+    .ir-card input.ir-input.name { font-size: 15px; font-weight: 700; }
+    .ir-card input.ir-input.interviewer { font-size: 13px; color: var(--text-secondary); }
+    .ir-card input.ir-input:hover { border-color: var(--border); }
+    .ir-card input.ir-input:focus { outline: none; border-color: var(--primary-500); background: #fff; }
+    /* Custom duration dropdown */
+    .ir-dur-wrap { position: relative; flex-shrink: 0; }
+    .ir-dur-btn {
+      display: inline-flex; align-items: center; gap: 6px;
+      padding: 7px 12px 7px 11px;
+      background: var(--neutral-50);
+      border: 1px solid transparent;
+      border-radius: 100px;
+      font-family: inherit;
+      font-size: 12.5px; font-weight: 600;
+      color: var(--text-secondary);
+      cursor: pointer;
+      transition: all 0.12s;
+      white-space: nowrap;
+    }
+    .ir-dur-btn:hover { background: var(--neutral-100); border-color: var(--border); }
+    .ir-dur-btn.open { background: #fff; border-color: var(--primary-500); color: var(--text-primary); box-shadow: 0 0 0 3px rgba(0, 38, 255, 0.08); }
+    .ir-dur-btn .lead-icon { width: 12px; height: 12px; color: var(--text-muted); }
+    .ir-dur-btn .chev { width: 11px; height: 11px; color: var(--text-muted); transition: transform 0.15s; }
+    .ir-dur-btn.open .chev { transform: rotate(180deg); }
+    .ir-dur-menu {
+      position: absolute;
+      top: calc(100% + 6px);
+      right: 0;
+      background: var(--neutral-0);
+      border: 1px solid var(--border-strong);
+      border-radius: 10px;
+      box-shadow: 0 14px 38px -10px rgba(17, 22, 35, 0.22);
+      padding: 4px;
+      min-width: 110px;
+      z-index: 50;
+      display: none;
+    }
+    .ir-dur-menu.open { display: block; }
+    .ir-dur-opt {
+      display: flex; align-items: center; justify-content: space-between;
+      width: 100%;
+      padding: 8px 10px;
+      background: none;
+      border: none;
+      font-family: inherit;
+      font-size: 13px; font-weight: 500;
+      color: var(--text-primary);
+      text-align: left;
+      border-radius: 7px;
+      cursor: pointer;
+      transition: background 0.1s;
+    }
+    .ir-dur-opt:hover { background: var(--neutral-50); }
+    .ir-dur-opt.selected { background: var(--primary-50); color: var(--primary-600); font-weight: 600; }
+    .ir-dur-opt .check { width: 13px; height: 13px; color: var(--primary-500); opacity: 0; }
+    .ir-dur-opt.selected .check { opacity: 1; }
+    .ir-note { font-size: 13px; color: var(--text-muted); margin-bottom: 14px; line-height: 1.5; }
+
+    /* Add-row button */
+    .jp-add-btn {
+      background: none;
+      border: 1px dashed var(--border-strong);
+      cursor: pointer;
+      padding: 11px 16px;
+      border-radius: 10px;
+      color: var(--primary-500);
+      font-family: inherit; font-size: 13.5px; font-weight: 600;
+      display: inline-flex; align-items: center; gap: 6px;
+      margin-top: 6px;
+      transition: all 0.12s;
+    }
+    .jp-add-btn:hover { border-color: var(--primary-500); background: var(--primary-50); }
+    .jp-add-btn svg { width: 14px; height: 14px; }
+
+    @media (max-width: 720px) {
+      .util-bar, .job-post { padding-left: 18px; padding-right: 18px; }
+      .jp-title { font-size: 24px; }
+      .jp-section h2 { font-size: 18px; }
+      .jp-title-row { flex-direction: column; align-items: flex-start; gap: 14px; }
+      .jp-title-row .jp-actions { width: 100%; }
+    }
+  </style>
+</head>
+<body>
+
+<div class="util-bar">
+  <button class="back" onclick="location.href='recruit-pipeline.html'" aria-label="Back to portal">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+    Back to portal
+  </button>
+  <button class="util-action" type="button" id="viewPublicBtn" aria-label="View live job post">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+    View job post
+  </button>
+</div>
+
+<article class="job-post">
+
+  <!-- Tabs (now at top) -->
+  <div class="jp-tabs" role="tablist">
+    <button class="jp-tab active" type="button" data-pane="jd" role="tab">Job description</button>
+    <button class="jp-tab" type="button" data-pane="screening" role="tab">Screening questions <span class="ct" id="screeningCount">3</span></button>
+    <button class="jp-tab" type="button" data-pane="rounds" role="tab">Interview rounds <span class="ct" id="roundsCount">3</span></button>
+  </div>
+
+  <!-- JD header (title + actions + author + meta) — only visible on the JD tab -->
+  <div id="jdHeader">
+    <!-- Title + actions inline -->
+    <div class="jp-title-row">
+      <h1 class="jp-title" id="jpTitle">Senior Backend Engineer</h1>
+      <div class="jp-actions">
+        <button class="jp-apply" type="button">Apply</button>
+        <button class="jp-share" type="button" onclick="navigator.clipboard?.writeText(location.href); this.textContent = 'Copied'; setTimeout(() => location.reload(), 1200);">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>
+          Share
+        </button>
+      </div>
+    </div>
+
+    <!-- Author + posted -->
+    <div class="jp-author">
+      <span class="who">
+        <span class="avatar" id="jpAvatar">A</span>
+        <span id="jpAuthor">Alex Mehta</span>
+      </span>
+      <span class="divider"></span>
+      <span class="posted">Posted <span id="jpDate">May 14, 2026</span></span>
+    </div>
+
+    <!-- Quick meta (location, type, experience) -->
+    <div class="jp-quick-meta">
+      <span class="item">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+        Remote · India
+      </span>
+      <span class="item">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+        Full-time
+      </span>
+      <span class="item">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg>
+        <span id="yearsText">4+ years experience</span>
+      </span>
+      <span class="item" id="salaryChip">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+        <span id="salaryText">₹25–40 LPA</span>
+        <button class="salary-eye" type="button" id="salaryEyeBtn" aria-label="Hide salary from applicants" title="Hide salary from applicants">
+          <svg id="salaryEyeIcon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+        </button>
+      </span>
+    </div>
+  </div>
+
+  <!-- TAB: JD -->
+  <div class="jp-pane active" data-pane="jd">
+    <section class="jp-section">
+      <h2>Overview</h2>
+      <div id="jdOverview"></div>
+    </section>
+
+    <section class="jp-section">
+      <h2>Expectations</h2>
+      <ul id="jdExpectations"></ul>
+    </section>
+
+    <section class="jp-section">
+      <h2>Nice to have</h2>
+      <ul id="jdNiceToHave"></ul>
+    </section>
+
+    <div class="jp-actions" style="margin-top: 40px; padding-top: 24px; border-top: 1px solid var(--border);">
+      <button class="jp-apply" type="button">Apply now</button>
+      <span style="font-size: 13px; color: var(--text-muted);">Replies typically within 48 hours.</span>
+    </div>
+  </div>
+
+  <!-- TAB: SCREENING -->
+  <div class="jp-pane" data-pane="screening">
+    <section class="jp-section">
+      <h2>Screening questions</h2>
+      <p style="margin-bottom: 18px; font-size: 14px; color: var(--text-muted); line-height: 1.55;">Every applicant answers these as part of the application. AI uses their responses to shortlist candidates that fit the role.</p>
+      <div id="screeningList"></div>
+      <button type="button" id="addScreeningBtn" class="jp-add-btn">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+        Add a question
+      </button>
+    </section>
+  </div>
+
+  <!-- TAB: INTERVIEW ROUNDS -->
+  <div class="jp-pane" data-pane="rounds">
+    <section class="jp-section">
+      <h2>Interview rounds</h2>
+      <p class="ir-note">Candidates who pass screening go through these rounds. AI auto-schedules each one when you move them forward.</p>
+      <div id="roundsList"></div>
+      <button type="button" id="addRoundBtn" class="jp-add-btn">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+        Add another round
+      </button>
+    </section>
+  </div>
+</article>
+
+<script>
+  // Read role info from URL params (passed from the role card click)
+  const params = new URLSearchParams(location.search);
+  const title = params.get('title');
+  const author = params.get('author');
+  const date = params.get('date');
+  if (title) { document.getElementById('jpTitle').textContent = title; document.title = `${title} — Wisemonk`; }
+  if (author) {
+    document.getElementById('jpAuthor').textContent = author;
+    document.getElementById('jpAvatar').textContent = author.charAt(0).toUpperCase();
+  }
+  if (date) document.getElementById('jpDate').textContent = date;
+
+  // Years of experience derived from title or saved role
+  (function setYears() {
+    const t = (title || '').toLowerCase();
+    function detectYears(s) {
+      const m = s.match(/(\d+)\s*[-+]?\s*(?:years|yrs|yoe)/i);
+      if (m) return `${m[1]}+ years experience`;
+      if (/(intern|fresher|graduate|entry[- ]level)/i.test(s)) return 'Entry-level';
+      if (/(junior|jr\.|jr\s)/i.test(s)) return '1+ years experience';
+      if (/(mid[- ]level|associate)/i.test(s)) return '2+ years experience';
+      if (/(staff|principal|architect|head\s+of|director)/i.test(s)) return '7+ years experience';
+      if (/(senior|sr\.|sr\s|lead)/i.test(s)) return '4+ years experience';
+      return '3+ years experience';
+    }
+    const yt = document.getElementById('yearsText');
+    if (yt && t) yt.textContent = detectYears(t);
+  })();
+
+  // ===== Render role-specific JD content =====
+  (function renderJD() {
+    const roleTitle = (title || document.getElementById('jpTitle').textContent || 'this role').trim();
+    const t = roleTitle.toLowerCase();
+    let company = 'Acme';
+    try { const c = JSON.parse(localStorage.getItem('wm_company')); if (c?.name) company = c.name; } catch (e) {}
+
+    // Detect role type — keep in sync with the salary detector in recruit-role.html
+    function detect() {
+      if (/(product\s+designer|ux\s+designer|ui\s+designer|design\s+lead|senior\s+designer)/.test(t)) return 'designer';
+      if (/\b(designer|graphic|visual)/.test(t)) return 'designer';
+      if (/(product\s+manager|\bpm\b|group\s+pm)/.test(t)) return 'pm';
+      if (/(engineering\s+manager|\bem\b|director\s+of\s+engineering)/.test(t)) return 'engmgr';
+      if (/(devops|sre|infra|platform\s+engineer|cloud\s+engineer)/.test(t)) return 'devops';
+      if (/(data\s+engineer|ml\s+engineer|machine\s+learning|ai\s+engineer|data\s+scientist|analyst)/.test(t)) return 'data';
+      if (/(mobile|ios|android|flutter|react\s+native)/.test(t)) return 'mobile';
+      if (/(frontend|front-end|react|vue|angular)/.test(t)) return 'frontend';
+      if (/(full[- ]?stack)/.test(t)) return 'fullstack';
+      if (/(sales|account\s+executive|\bae\b|business\s+development|\bbd\b)/.test(t)) return 'sales';
+      if (/(marketing|growth|seo|performance)/.test(t)) return 'marketing';
+      if (/(customer\s+success|cs\s+manager|csm|support|onboarding)/.test(t)) return 'cs';
+      if (/(qa|sdet|test\s+engineer|quality)/.test(t)) return 'qa';
+      if (/(backend|back-end|software\s+engineer|sde|developer|engineer)/.test(t)) return 'backend';
+      return 'generic';
+    }
+
+    const TEMPLATES = {
+      backend: {
+        overview: [
+          `We're looking for a <strong>${roleTitle}</strong> to join ${company}'s core engineering team. You'll own large slices of the production stack — designing services that scale with our user base, balancing latency, reliability and developer velocity.`,
+          `You'll work closely with product, design and infra on a small team where every commit ships, and where the bar for code quality is set by the engineers we hire.`
+        ],
+        expectations: [
+          { head: 'Build & ship', items: ['Design and ship backend services in Python, Go or similar — running on AWS or GCP.', 'Own a vertical end-to-end, from schema design to on-call rotation.', 'Improve reliability and latency through measurable, scoped changes.'] },
+          { head: 'Technical depth', items: ['Strong fundamentals: data modelling, system design, debugging production issues.', 'Comfort with trade-offs between consistency, latency and throughput.', 'Hands-on with observability — tracing, structured logging, latency budgets.'] },
+          { head: 'Ownership', items: ['Write clear design docs and run architecture reviews.', 'Mentor mid-level engineers and code-review their work.'] }
+        ],
+        nice: ['Prior experience at a fintech / SaaS / consumer scale-up.', 'Open-source contributions to backend tooling.', 'Exposure to event streaming (Kafka, Kinesis) or distributed systems.']
+      },
+      frontend: {
+        overview: [
+          `We're hiring a <strong>${roleTitle}</strong> to shape the user-facing surface of ${company}. You'll partner closely with design and product to ship interfaces that feel fast, opinionated and trustworthy.`,
+          `Small, senior team — your decisions on architecture, performance budgets and accessibility set the bar for the whole product.`
+        ],
+        expectations: [
+          { head: 'Build', items: ['Ship production UI in React (or similar) with strong TypeScript discipline.', 'Own performance budgets — bundle size, time-to-interactive, runtime profiling.', 'Implement accessibility-first patterns from day one.'] },
+          { head: 'Collaboration', items: ['Translate Figma into pixel-accurate, motion-aware implementations.', 'Push back on specs when something can be simpler or faster.', 'Code-review front-end PRs across the team.'] }
+        ],
+        nice: ['Worked on design systems or component libraries.', 'Comfortable with build tooling (Vite, Webpack, Turbopack).', 'Some backend / Node experience.']
+      },
+      fullstack: {
+        overview: [
+          `<strong>${roleTitle}</strong> at ${company} — you'll own features end-to-end: API design, schema, frontend implementation, and the small ops bits in between.`,
+          `Ideal for someone who likes shipping product, not specializing into one layer of the stack.`
+        ],
+        expectations: [
+          { head: 'Build features end-to-end', items: ['Design APIs, models, and the UI consuming them.', 'Ship in 1–2 week cycles with PM and design.', 'Operate what you build — own bugs, alerts and performance.'] },
+          { head: 'Stack', items: ['TypeScript / Node + React, or equivalent modern stack.', 'PostgreSQL fluency. AWS / Vercel / Render comfort.', 'Solid debugging and testing instincts.'] }
+        ],
+        nice: ['Prior work at an early-stage startup (0→1 product muscle).', 'Comfort with CI/CD, infra-as-code, basic SRE.']
+      },
+      designer: {
+        overview: [
+          `We're hiring a <strong>${roleTitle}</strong> to help shape ${company}'s product experience. You'll partner with product and engineering from problem framing through to ship — owning the design quality of the work that goes out.`,
+          `Small, senior team. Your work isn't a deliverable handed off — it's a position in conversations about what we should build and why.`
+        ],
+        expectations: [
+          { head: 'Design', items: ['Lead end-to-end product design — discovery, exploration, interaction, visual.', 'Contribute to and evolve our design system.', 'Run user interviews and usability tests when warranted.'] },
+          { head: 'Craft', items: ['Strong typographic and visual sensibility. Opinions on motion and interaction.', 'Figma fluency — components, variants, auto-layout, prototyping.', 'Care about accessibility and edge cases.'] },
+          { head: 'Collaboration', items: ['Communicate trade-offs in writing as well as in pixels.', 'Code-literate enough to pair with engineers on implementation details.'] }
+        ],
+        nice: ['Worked on B2B SaaS or developer tools.', 'Open-source design contributions, dribbble/portfolio of shipped work.', 'Background in research or front-end engineering.']
+      },
+      pm: {
+        overview: [
+          `<strong>${roleTitle}</strong> at ${company} — you'll own the strategy and execution of one product area, end-to-end. From defining the problem and shaping the roadmap to working alongside design and engineering through ship.`,
+          `Small org, high agency. You'll spend more time talking to customers and writing crisp specs than in PM theatre.`
+        ],
+        expectations: [
+          { head: 'Strategy', items: ['Own the roadmap for your area — define the metric, the bet, the trade-offs.', 'Translate qualitative customer signal into prioritized work.', 'Communicate clearly with leadership, the team, and customers.'] },
+          { head: 'Execution', items: ['Write tight PRDs that engineering and design can ship from with low ambiguity.', 'Stay close to delivery — review designs, unblock engineers, ship with the team.'] }
+        ],
+        nice: ['Prior experience as engineer or designer (technical PM).', 'Owned a 0→1 product area before.']
+      },
+      engmgr: {
+        overview: [
+          `<strong>${roleTitle}</strong> at ${company} — you'll lead a small team of engineers, own the hiring bar, and stay close enough to the code to make sound technical calls.`,
+          `Not a pure people-manager role — we expect ~30% IC contribution to keep the right calibration.`
+        ],
+        expectations: [
+          { head: 'Lead the team', items: ['Hire, coach and grow 4–8 engineers.', 'Set quarterly objectives and own delivery against them.', 'Run 1:1s, performance conversations, and team rituals.'] },
+          { head: 'Technical leadership', items: ['Review architecture decisions; weigh in on system design.', 'Maintain the code quality bar via PR reviews and standards.', 'Keep an eye on tech debt and production reliability.'] }
+        ],
+        nice: ['Previously been an EM at a startup or scale-up.', 'Background in distributed systems, infra, or product engineering.']
+      },
+      devops: {
+        overview: [
+          `<strong>${roleTitle}</strong> at ${company} — you'll own infrastructure, deploy pipelines, observability and on-call. Make production a place engineers can trust.`,
+          `Lean team — automation, IaC, and good defaults are how you scale yourself.`
+        ],
+        expectations: [
+          { head: 'Infrastructure', items: ['Own our AWS/GCP footprint — networking, IAM, cost.', 'Manage CI/CD and deployment pipelines (GitHub Actions, ArgoCD, etc.).', 'Author Terraform / Pulumi modules for reusable infra patterns.'] },
+          { head: 'Observability', items: ['Set up tracing, structured logs and dashboards engineers actually use.', 'Define and track SLOs; lead incident response.'] }
+        ],
+        nice: ['Kubernetes / Nomad operational experience.', 'Security-aware: SOC2, IAM least-privilege, secret rotation.']
+      },
+      data: {
+        overview: [
+          `<strong>${roleTitle}</strong> at ${company} — you'll partner with product and engineering to build the data foundations and models that power decisions and product features.`,
+          `Strong opinions on schema design and reproducibility welcome.`
+        ],
+        expectations: [
+          { head: 'Build', items: ['Design pipelines for analytics + ML use cases.', 'Choose the right tools — dbt, Spark, Snowflake, BigQuery, etc.', 'Ship models to production with appropriate monitoring.'] },
+          { head: 'Collaborate', items: ['Translate ambiguous product questions into clean data work.', 'Document datasets and metrics so the rest of the team can self-serve.'] }
+        ],
+        nice: ['Production ML experience.', 'Worked on India-scale data (UPI, e-commerce, fintech).']
+      },
+      mobile: {
+        overview: [
+          `<strong>${roleTitle}</strong> at ${company} — own our mobile experience end-to-end. Native or cross-platform, depending on which platform you specialize in.`,
+          `Small team, high autonomy. You'll set the conventions others follow.`
+        ],
+        expectations: [
+          { head: 'Build', items: ['Ship features in Swift / Kotlin (or React Native / Flutter).', 'Own performance, crash rate, and release process.', 'Work closely with design on motion and platform conventions.'] }
+        ],
+        nice: ['Both native and cross-platform background.', 'App Store / Play Store release experience.']
+      },
+      qa: {
+        overview: [
+          `<strong>${roleTitle}</strong> at ${company} — you'll define how we test, where to invest in automation, and own production-quality confidence as we ship.`
+        ],
+        expectations: [
+          { head: 'Quality strategy', items: ['Define what gets automated vs explored manually.', 'Build and maintain the automation suite (Playwright, Cypress, etc.).', 'Partner with engineers on testability of new features.'] }
+        ],
+        nice: ['SDET or automation-first background.', 'Performance testing experience.']
+      },
+      sales: {
+        overview: [
+          `<strong>${roleTitle}</strong> at ${company} — own a quota, build a pipeline, and close deals. You'll be early enough that the playbook isn't fully written.`,
+          `India-based, with US and EU customer overlap depending on the segment.`
+        ],
+        expectations: [
+          { head: 'Own the funnel', items: ['Build pipeline through outbound, inbound and partner motion.', 'Close deals from discovery through to paperwork.', 'Hit quota and forecast accurately.'] },
+          { head: 'Build the playbook', items: ['Document what works — shareable plays, demos, talk tracks.', 'Surface product / pricing feedback to the team.'] }
+        ],
+        nice: ['SaaS / B2B sales background.', 'Sold to engineering or product orgs.']
+      },
+      marketing: {
+        overview: [
+          `<strong>${roleTitle}</strong> at ${company} — drive demand, brand and content. Small team, high ownership across channels.`
+        ],
+        expectations: [
+          { head: 'Drive growth', items: ['Own one or more channels (content, paid, organic, lifecycle).', 'Set and hit quarterly pipeline / signup targets.', 'Partner with sales and product on positioning.'] }
+        ],
+        nice: ['B2B SaaS or developer tools background.', 'Content / writing chops.']
+      },
+      cs: {
+        overview: [
+          `<strong>${roleTitle}</strong> at ${company} — own the post-sale relationship, drive expansion, and be the voice of the customer internally.`
+        ],
+        expectations: [
+          { head: 'Customer outcomes', items: ['Onboard new accounts and drive adoption to value.', 'Build relationships with champions; identify expansion.', 'Defend renewals and surface churn risk early.'] }
+        ],
+        nice: ['Worked in SaaS CS before.', 'Technical enough to lead onboarding conversations.']
+      },
+      generic: {
+        overview: [
+          `We're looking for a <strong>${roleTitle}</strong> to join ${company}. You'll work closely with a small, senior team — taking ownership of meaningful work from day one.`,
+          `Remote-first within India, with optional travel for offsites.`
+        ],
+        expectations: [
+          { head: 'Own your work', items: ['Take responsibility for outcomes, not just tasks.', 'Communicate clearly with the team and stakeholders.', 'Care about quality and craft.'] }
+        ],
+        nice: ['Prior experience at a startup or scale-up.']
+      }
+    };
+
+    const cat = detect();
+    const tpl = TEMPLATES[cat] || TEMPLATES.generic;
+
+    // Storage key keyed on the role title so each role has its own editable JD
+    const jdKey = 'wm_jd_' + (roleTitle || 'default').toLowerCase().replace(/[^a-z0-9]+/g, '-');
+    let savedJd = null;
+    try { savedJd = JSON.parse(localStorage.getItem(jdKey)); } catch (e) {}
+
+    const overviewEl = document.getElementById('jdOverview');
+    const expectationsEl = document.getElementById('jdExpectations');
+    const niceEl = document.getElementById('jdNiceToHave');
+
+    // Render either saved content or the AI template
+    overviewEl.innerHTML = savedJd?.overview || tpl.overview.map(p => `<p>${p}</p>`).join('');
+    expectationsEl.innerHTML = savedJd?.expectations || tpl.expectations.map(group => `
+      <li><strong>${group.head}</strong>
+        <ul>${group.items.map(i => `<li>${i}</li>`).join('')}</ul>
+      </li>
+    `).join('') + `<li><strong>Submission</strong><ul><li>Apply with your LinkedIn / portfolio and a short note on why this role.</li></ul></li>`;
+    niceEl.innerHTML = savedJd?.nice || tpl.nice.map(i => `<li>${i}</li>`).join('');
+
+    // Make sections editable. Auto-save on blur.
+    [overviewEl, expectationsEl, niceEl].forEach(el => {
+      el.setAttribute('contenteditable', 'true');
+      el.setAttribute('spellcheck', 'true');
+      el.classList.add('jd-editable');
+      el.addEventListener('blur', () => {
+        try {
+          const data = {
+            overview: overviewEl.innerHTML,
+            expectations: expectationsEl.innerHTML,
+            nice: niceEl.innerHTML
+          };
+          localStorage.setItem(jdKey, JSON.stringify(data));
+        } catch (e) {}
+      });
+    });
+  })();
+
+  // "View job post" → opens the live public URL in a new tab
+  (function wireViewPublic() {
+    const btn = document.getElementById('viewPublicBtn');
+    if (!btn) return;
+    // Build a slug from the role title for the public URL preview
+    const slug = (title || document.getElementById('jpTitle').textContent || 'role')
+      .toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
+    let publicUrl = `https://acme.wisemonk.io/${slug}`;
+    try {
+      const comp = JSON.parse(localStorage.getItem('wm_company'));
+      if (comp?.website) {
+        const host = comp.website.replace(/^https?:\/\//, '').replace(/\/.*$/, '');
+        publicUrl = `https://${host.split('.')[0]}.wisemonk.io/${slug}`;
+      }
+    } catch (e) {}
+    btn.addEventListener('click', () => window.open(publicUrl, '_blank', 'noopener'));
+  })();
+
+  // Salary chip — load saved range + visibility, wire the eye toggle for the client
+  (function setupSalary() {
+    const chip = document.getElementById('salaryChip');
+    const textEl = document.getElementById('salaryText');
+    const eyeBtn = document.getElementById('salaryEyeBtn');
+    const eyeIcon = document.getElementById('salaryEyeIcon');
+    if (!chip || !textEl || !eyeBtn) return;
+
+    const EYE_OPEN = '<path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/>';
+    const EYE_OFF = '<path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"/><line x1="1" y1="1" x2="23" y2="23"/>';
+
+    function readSalary() {
+      try { return JSON.parse(localStorage.getItem('wm_salary')); }
+      catch (e) { return null; }
+    }
+    function writeSalary(next) {
+      try { localStorage.setItem('wm_salary', JSON.stringify(next)); } catch (e) {}
+    }
+
+    let salary = readSalary() || { min: 25, max: 40, display: '₹25–40 LPA', showPublic: true };
+    if (!('showPublic' in salary)) salary.showPublic = true;
+
+    function render() {
+      const display = salary.display || `₹${salary.min}–${salary.max} LPA`;
+      if (salary.showPublic === false) {
+        textEl.textContent = 'Not disclosed';
+        chip.classList.add('salary-hidden');
+        eyeIcon.innerHTML = EYE_OFF;
+        eyeBtn.setAttribute('aria-label', 'Show salary to applicants');
+        eyeBtn.title = 'Hidden from applicants — click to show';
+      } else {
+        textEl.textContent = display;
+        chip.classList.remove('salary-hidden');
+        eyeIcon.innerHTML = EYE_OPEN;
+        eyeBtn.setAttribute('aria-label', 'Hide salary from applicants');
+        eyeBtn.title = 'Visible to applicants — click to hide';
+      }
+    }
+
+    eyeBtn.addEventListener('click', () => {
+      salary.showPublic = !(salary.showPublic !== false);
+      writeSalary(salary);
+      render();
+    });
+
+    render();
+  })();
+
+  // ===== Tabs =====
+  const jdHeader = document.getElementById('jdHeader');
+  document.querySelectorAll('.jp-tab').forEach(tab => {
+    tab.addEventListener('click', () => {
+      const target = tab.dataset.pane;
+      document.querySelectorAll('.jp-tab').forEach(t => t.classList.toggle('active', t === tab));
+      document.querySelectorAll('.jp-pane').forEach(p => p.classList.toggle('active', p.dataset.pane === target));
+      // Only show the JD header (title, author, meta) on the JD tab
+      jdHeader.hidden = (target !== 'jd');
+      // Scroll to top of content area
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+  });
+
+  function escapeAttr(s) {
+    return String(s).replace(/[&<>"']/g, c => ({ '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;' }[c]));
+  }
+
+  // ============ INTERVIEW ROUNDS (editable) ============
+  const DEFAULT_PLAN = [
+    { name: 'Screening call', interviewer: 'AI Recruiter', duration: 30 },
+    { name: 'Technical round', interviewer: 'Alex Mehta', duration: 45 },
+    { name: 'Hiring manager', interviewer: 'Founder', duration: 30 }
+  ];
+  let plan;
+  try { plan = JSON.parse(localStorage.getItem('wm_interview_plan')) || DEFAULT_PLAN.slice(); }
+  catch (e) { plan = DEFAULT_PLAN.slice(); }
+
+  const roundsList = document.getElementById('roundsList');
+  const DURATIONS = [15, 30, 45, 60, 90];
+
+  function renderRounds() {
+    roundsList.innerHTML = plan.map((r, i) => `
+      <div class="ir-card" data-i="${i}">
+        <div class="ir-num">${i + 1}</div>
+        <input type="text" class="ir-input name" data-field="name" value="${escapeAttr(r.name)}" placeholder="Round name">
+        <input type="text" class="ir-input interviewer" data-field="interviewer" value="${escapeAttr(r.interviewer)}" placeholder="Interviewer">
+        <div class="ir-dur-wrap">
+          <button type="button" class="ir-dur-btn" data-dur-btn aria-haspopup="listbox">
+            <svg class="lead-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+            <span class="ir-dur-label">${r.duration} min</span>
+            <svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+          </button>
+          <div class="ir-dur-menu" role="listbox">
+            ${DURATIONS.map(d => `
+              <button type="button" class="ir-dur-opt ${d === r.duration ? 'selected' : ''}" data-val="${d}" role="option" aria-selected="${d === r.duration}">
+                <span>${d} min</span>
+                <svg class="check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+              </button>
+            `).join('')}
+          </div>
+        </div>
+        <button type="button" class="row-remove" aria-label="Remove round" ${plan.length === 1 ? 'style="visibility:hidden"' : ''}>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-2 14a2 2 0 0 1-2 2H9a2 2 0 0 1-2-2L5 6"/></svg>
+        </button>
+      </div>
+    `).join('');
+    document.getElementById('roundsCount').textContent = plan.length;
+    wireRoundRows();
+    savePlan();
+  }
+
+  function closeAllDurMenus() {
+    document.querySelectorAll('.ir-dur-menu.open').forEach(m => m.classList.remove('open'));
+    document.querySelectorAll('.ir-dur-btn.open').forEach(b => b.classList.remove('open'));
+  }
+
+  function wireRoundRows() {
+    roundsList.querySelectorAll('.ir-card').forEach(card => {
+      const i = +card.dataset.i;
+      // Text inputs (name, interviewer)
+      card.querySelectorAll('input[data-field]').forEach(el => {
+        el.addEventListener('input', () => {
+          plan[i][el.dataset.field] = el.value;
+          savePlan();
+        });
+      });
+      // Custom duration dropdown
+      const durBtn = card.querySelector('[data-dur-btn]');
+      const durMenu = card.querySelector('.ir-dur-menu');
+      const durLabel = card.querySelector('.ir-dur-label');
+      durBtn.addEventListener('click', e => {
+        e.stopPropagation();
+        const wasOpen = durMenu.classList.contains('open');
+        closeAllDurMenus();
+        if (!wasOpen) {
+          durMenu.classList.add('open');
+          durBtn.classList.add('open');
+        }
+      });
+      durMenu.querySelectorAll('.ir-dur-opt').forEach(opt => {
+        opt.addEventListener('click', e => {
+          e.stopPropagation();
+          const v = parseInt(opt.dataset.val, 10);
+          plan[i].duration = v;
+          durLabel.textContent = `${v} min`;
+          durMenu.querySelectorAll('.ir-dur-opt').forEach(o => {
+            const isSel = parseInt(o.dataset.val, 10) === v;
+            o.classList.toggle('selected', isSel);
+            o.setAttribute('aria-selected', isSel);
+          });
+          closeAllDurMenus();
+          savePlan();
+        });
+      });
+      card.querySelector('.row-remove').addEventListener('click', () => {
+        plan.splice(i, 1);
+        renderRounds();
+      });
+    });
+  }
+  // Close dropdowns when clicking anywhere else
+  document.addEventListener('click', closeAllDurMenus);
+  // Close on Escape
+  document.addEventListener('keydown', e => { if (e.key === 'Escape') closeAllDurMenus(); });
+
+  function savePlan() {
+    try { localStorage.setItem('wm_interview_plan', JSON.stringify(plan)); } catch (e) {}
+  }
+
+  document.getElementById('addRoundBtn').addEventListener('click', () => {
+    plan.push({ name: 'New round', interviewer: 'TBD', duration: 45 });
+    renderRounds();
+  });
+
+  renderRounds();
+
+  // ============ SCREENING QUESTIONS (editable) ============
+  const DEFAULT_QUESTIONS = [
+    "Tell us about a backend system you've designed end-to-end. What were the tradeoffs?",
+    "Walk us through a time you scaled a Python service under load. What broke first?",
+    "What are your salary expectations and notice period?"
+  ];
+  let questions;
+  try { questions = JSON.parse(localStorage.getItem('wm_screening_questions')) || DEFAULT_QUESTIONS.slice(); }
+  catch (e) { questions = DEFAULT_QUESTIONS.slice(); }
+
+  const screeningList = document.getElementById('screeningList');
+
+  function renderQuestions() {
+    screeningList.innerHTML = questions.map((q, i) => `
+      <div class="qs-item" data-i="${i}">
+        <span class="num">${i + 1}</span>
+        <textarea class="qtext" rows="2" placeholder="Type your screening question…">${escapeAttr(q)}</textarea>
+        <button type="button" class="row-remove" aria-label="Remove question" ${questions.length === 1 ? 'style="visibility:hidden"' : ''}>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-2 14a2 2 0 0 1-2 2H9a2 2 0 0 1-2-2L5 6"/></svg>
+        </button>
+      </div>
+    `).join('');
+    document.getElementById('screeningCount').textContent = questions.length;
+    wireQuestionRows();
+    saveQuestions();
+  }
+
+  function wireQuestionRows() {
+    screeningList.querySelectorAll('.qs-item').forEach(item => {
+      const i = +item.dataset.i;
+      const ta = item.querySelector('.qtext');
+      // Auto-resize textarea
+      const resize = () => {
+        ta.style.height = 'auto';
+        ta.style.height = ta.scrollHeight + 'px';
+      };
+      resize();
+      ta.addEventListener('input', () => {
+        questions[i] = ta.value;
+        resize();
+        saveQuestions();
+      });
+      item.querySelector('.row-remove').addEventListener('click', () => {
+        questions.splice(i, 1);
+        renderQuestions();
+      });
+    });
+  }
+
+  function saveQuestions() {
+    try { localStorage.setItem('wm_screening_questions', JSON.stringify(questions)); } catch (e) {}
+  }
+
+  document.getElementById('addScreeningBtn').addEventListener('click', () => {
+    questions.push('');
+    renderQuestions();
+    // Focus the new textarea
+    const items = screeningList.querySelectorAll('.qs-item');
+    items[items.length - 1]?.querySelector('.qtext')?.focus();
+  });
+
+  renderQuestions();
+</script>
+</body>
+</html>

@@ -1,0 +1,1965 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Interview summary — Wisemonk</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600;700;800&family=Geist+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --primary-50: #EEF1FF; --primary-100: #D6DCFF; --primary-200: #B3BEFF; --primary-500: #0026FF; --primary-600: #001FCC;
+      --neutral-0: #FFFFFF; --neutral-50: #F7F8FA; --neutral-100: #EEF0F4; --neutral-200: #DDE1E9; --neutral-300: #C4CAD6; --neutral-400: #9AA2B2; --neutral-500: #6B7588; --neutral-700: #363D4D; --neutral-800: #222733;
+      --ai-grad: linear-gradient(135deg, #7C5CFF, #2684FF);
+      --success-50: #E6F9F0; --success-500: #12B76A; --success-700: #027A48;
+      --warning-50: #FFFAEB; --warning-500: #F79009; --warning-700: #B54708;
+      --danger-50: #FFF1F0; --danger-500: #F04438; --danger-700: #B42318;
+      --border: #EEF0F4; --border-strong: #DDE1E9;
+      --text-primary: #222733; --text-secondary: #363D4D; --text-muted: #9AA2B2;
+      --radius-sm: 6px; --radius-md: 12px; --radius-lg: 16px; --radius-full: 100px;
+      --sidebar-w: 280px; --header-h: 60px;
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: 'GT Standard', 'Geist', sans-serif; background: #fff; color: var(--text-primary); min-height: 100vh; }
+    h1, h2, h3, h4, h5, h6 { font-family: 'GT Standard', 'Geist', sans-serif; }
+    a { text-decoration: none; color: inherit; }
+    button { font-family: inherit; border-radius: var(--radius-sm); }
+    .app { display: grid; grid-template-columns: var(--sidebar-w) 1fr; grid-template-areas: "sidebar main"; min-height: 100vh; }
+
+    /* Sidebar (shared) */
+    .sidebar { grid-area: sidebar; background: #FFFFFF; padding: 12px 12px 16px; display: flex; flex-direction: column; position: sticky; top: 0; height: 100vh; }
+    .brand-logo { display: block; padding: 8px 8px; margin-bottom: 32px; cursor: pointer; }
+    .brand-logo img { height: 52px; display: block; clip-path: inset(19px 0 5px 10px); margin-top: -19px; margin-bottom: -5px; margin-left: -10px; mix-blend-mode: multiply; }
+    .nav-section { display: flex; flex-direction: column; gap: 4px; }
+    .nav-section + .nav-section { margin-top: 16px; }
+    .nav-section-label { font-family: 'Geist Mono', monospace; font-weight: 500; font-size: 11px; letter-spacing: 0.6px; text-transform: uppercase; color: var(--neutral-500); padding: 0 10px; margin-bottom: 4px; }
+    .nav-item { display: flex; align-items: center; gap: 12px; padding: 10px 16px; border-radius: 8px; font-size: 16px; font-weight: 500; color: var(--text-secondary); cursor: pointer; transition: all 0.12s; letter-spacing: -0.1px; background: transparent; border: none; text-align: left; width: 100%; font-family: inherit; }
+    .nav-item:hover { background: var(--neutral-50); color: var(--text-secondary); }
+    .nav-item.active { background: #EEF1FF; color: var(--text-primary); font-weight: 600; box-shadow: 0 1px 2px rgba(34, 39, 51, 0.06); }
+    .nav-item svg { width: 17px; height: 17px; flex-shrink: 0; color: var(--text-secondary); stroke-width: 1.7; }
+    .nav-item.active svg { color: var(--text-primary); }
+    .nav-item .label { flex: 1; }
+    .nav-item .badge { padding: 1px 7px; background: transparent; color: var(--text-secondary); border-radius: var(--radius-full); font-size: 10.5px; font-weight: 600; }
+    .nav-item.active .badge { background: var(--text-primary); color: #fff; }
+    .create-btn { display: flex; align-items: center; justify-content: center; gap: 8px; width: 100%; padding: 11px 16px; background: var(--text-primary); color: #fff; border: none; border-radius: var(--radius-full); font-family: inherit; font-size: 14px; font-weight: 600; cursor: pointer; transition: all 0.15s; margin-bottom: 14px; box-shadow: 0 1px 2px rgba(0,0,0,0.06); letter-spacing: -0.1px; }
+    .create-btn:hover { background: #1a1a1a; transform: translateY(-1px); box-shadow: 0 4px 12px -4px rgba(0,0,0,0.3); }
+    .create-btn svg { width: 14px; height: 14px; }
+    /* Sidebar bottom (profile + utility icons) */
+    .sidebar-bottom { margin-top: auto; padding-top: 12px; display: flex; flex-direction: column; gap: 6px; }
+    .sidebar-utils { display: flex; align-items: center; gap: 4px; padding: 0 4px; }
+    .sb-icon-btn { width: 34px; height: 34px; border-radius: 8px; background: transparent; border: none; cursor: pointer; display: inline-flex; align-items: center; justify-content: center; color: var(--text-muted); transition: all 0.12s; position: relative; }
+    .sb-icon-btn:hover { background: var(--neutral-50); color: var(--text-primary); }
+    .sb-icon-btn svg { width: 17px; height: 17px; }
+    .sb-icon-btn .dot { position: absolute; top: 8px; right: 8px; width: 7px; height: 7px; background: var(--danger-500); border: 1.5px solid var(--neutral-0); border-radius: 50%; }
+    .sb-profile { display: flex; align-items: center; gap: 10px; padding: 8px 10px; border-radius: 8px; cursor: pointer; background: transparent; border: none; width: 100%; transition: background 0.12s; font-family: inherit; }
+    .sb-profile:hover { background: var(--neutral-50); }
+    .sb-profile .av { width: 28px; height: 28px; border-radius: 50%; background: #0026FF; color: #fff; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 600; flex-shrink: 0; }
+    .sb-profile .info { flex: 1; min-width: 0; text-align: left; }
+    .sb-profile .name { font-size: 13px; font-weight: 600; color: var(--text-primary); line-height: 1.2; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; letter-spacing: -0.1px; }
+    .sb-profile .chev { color: var(--text-muted); flex-shrink: 0; }
+    .sb-profile .chev svg { width: 14px; height: 14px; }
+    /* Search talent with AI — same as a regular nav item, only the icon is special */
+    .nav-item.ai-highlight .ai-pill { padding: 1px 7px; background: var(--ai-grad); color: #fff; border-radius: var(--radius-full); font-family: 'Geist Mono', monospace; font-weight: 500; font-size: 9.5px; font-weight: 700; letter-spacing: 0.4px; text-transform: uppercase; }
+
+    main { grid-area: main; padding: 28px 32px 120px; overflow-x: clip; }
+    .wrapper { max-width: 880px; margin: 0 auto; }
+
+    /* Back link */
+    .back-link {
+      display: inline-flex; align-items: center; gap: 6px;
+      padding: 6px 10px 6px 0;
+      background: none; border: none;
+      cursor: pointer;
+      font: inherit; font-size: 13px; font-weight: 600;
+      color: var(--text-secondary);
+      transition: color 0.15s;
+      margin-bottom: 18px;
+    }
+    .back-link:hover { color: var(--primary-500); }
+    .back-link svg { width: 15px; height: 15px; }
+
+    /* Candidate header */
+    .cand-head {
+      display: flex; align-items: center; gap: 16px;
+      margin-bottom: 18px;
+    }
+    .cand-head .av {
+      width: 64px; height: 64px;
+      border-radius: 14px;
+      display: flex; align-items: center; justify-content: center;
+      color: #fff;
+      font-size: 24px; font-weight: 700;
+      flex-shrink: 0;
+    }
+    .cand-head-info { flex: 1; min-width: 0; }
+    .cand-head h1 { font-size: 24px; font-weight: 700; letter-spacing: -0.3px; line-height: 1.2; margin-bottom: 4px; }
+    .cand-head .sub { font-size: 13.5px; color: var(--text-secondary); font-weight: 500; }
+    .cand-head .meta-line { display: flex; gap: 14px; margin-top: 8px; font-size: 12.5px; color: var(--text-muted); flex-wrap: wrap; }
+    .cand-head .meta-line .item { display: inline-flex; align-items: center; gap: 5px; }
+    .cand-head .meta-line svg { width: 13px; height: 13px; }
+    .cand-head .completed-pill {
+      display: inline-flex; align-items: center; gap: 6px;
+      padding: 5px 12px;
+      background: var(--success-50);
+      color: var(--success-700);
+      border-radius: var(--radius-full);
+      font-size: 11.5px; font-weight: 700;
+      flex-shrink: 0;
+    }
+    .cand-head .completed-pill svg { width: 12px; height: 12px; }
+
+    /* Summary / Transcript tabs */
+    .review-tabs {
+      display: flex; align-items: center; gap: 4px;
+      margin-bottom: 22px;
+    }
+    .review-tab {
+      padding: 12px 16px;
+      background: none; border: none; cursor: pointer;
+      font-family: inherit;
+      font-size: 14px; font-weight: 600;
+      color: var(--text-muted);
+      border-bottom: 2px solid transparent;
+      border-radius: 0;
+      transition: all 0.15s;
+    }
+    .review-tab:first-child { padding-left: 0; }
+    .review-tab:hover { color: var(--text-primary); }
+    .review-tab.active { color: var(--primary-500); border-bottom-color: var(--primary-500); }
+
+    /* Transcript view */
+    .transcript-list { display: flex; flex-direction: column; gap: 22px; }
+    .ts-line { display: flex; gap: 16px; align-items: flex-start; }
+    .ts-line .ts-time {
+      flex-shrink: 0;
+      padding: 3px 10px;
+      background: var(--neutral-100);
+      color: var(--text-muted);
+      border-radius: 6px;
+      font-size: 12px;
+      font-weight: 500;
+      font-variant-numeric: tabular-nums;
+      margin-top: 2px;
+    }
+    .ts-line .ts-body { flex: 1; min-width: 0; }
+    .ts-line .ts-speaker {
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--text-primary);
+      margin-bottom: 4px;
+      line-height: 1.3;
+    }
+    .ts-line .ts-text { font-size: 14px; line-height: 1.6; color: var(--text-secondary); }
+    .ts-line .ts-text em { color: var(--text-muted); font-style: italic; }
+    .ts-line .ts-text p + p { margin-top: 10px; }
+
+    /* AI Summary card */
+    .ai-summary-card {
+      border-radius: 14px;
+      background: linear-gradient(135deg, rgba(124,92,255,0.05), rgba(38,132,255,0.05)), var(--neutral-0);
+      border: 1.5px solid var(--primary-100);
+      padding: 20px 22px;
+      margin-bottom: 18px;
+      position: relative;
+      overflow: hidden;
+    }
+    .ai-summary-card::before { content: ''; position: absolute; top: -40%; right: -10%; width: 300px; height: 300px; background: radial-gradient(circle, rgba(124,92,255,0.10), transparent 60%); pointer-events: none; }
+    .ai-summary-head { display: flex; align-items: center; gap: 10px; margin-bottom: 12px; position: relative; }
+    .ai-orb {
+      width: 32px; height: 32px;
+      border-radius: 10px;
+      background: var(--ai-grad);
+      display: inline-flex; align-items: center; justify-content: center;
+      box-shadow: 0 8px 18px -8px rgba(124,92,255,0.45);
+      flex-shrink: 0;
+    }
+    .ai-orb svg { width: 16px; height: 16px; color: #fff; }
+    .ai-summary-title {
+      font-family: 'Geist Mono', monospace; font-weight: 500;
+      font-size: 10.5px; letter-spacing: 0.5px; text-transform: uppercase;
+      color: #5B4ACF;
+      margin-bottom: 2px;
+    }
+    .ai-summary-h2 { font-size: 17px; font-weight: 700; letter-spacing: -0.2px; color: var(--text-primary); }
+    .ai-summary-body { font-size: 13.5px; line-height: 1.6; color: var(--text-secondary); position: relative; }
+    .ai-summary-body strong { color: var(--text-primary); font-weight: 700; }
+
+    /* Recommendation row */
+    .ai-rec-row {
+      display: flex; align-items: center; gap: 12px;
+      padding: 14px 16px;
+      background: var(--success-50);
+      border: 1.5px solid #C9F0DC;
+      border-radius: 12px;
+      margin-bottom: 22px;
+    }
+    .ai-rec-row .rec-orb { width: 28px; height: 28px; border-radius: 50%; background: var(--success-500); display: inline-flex; align-items: center; justify-content: center; flex-shrink: 0; }
+    .ai-rec-row .rec-orb svg { width: 14px; height: 14px; color: #fff; }
+    .ai-rec-row .rec-text { flex: 1; }
+    .ai-rec-row .rec-eyebrow { font-family: 'Geist Mono', monospace; font-weight: 500; font-size: 10.5px; letter-spacing: 0.5px; text-transform: uppercase; color: var(--success-700); margin-bottom: 2px; }
+    .ai-rec-row .rec-action { font-size: 14.5px; font-weight: 700; color: var(--text-primary); letter-spacing: -0.1px; }
+    .ai-rec-row .rec-confidence { font-size: 13px; font-weight: 700; color: var(--success-700); flex-shrink: 0; }
+
+    /* Two-column highlights */
+    .insights-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 22px; }
+    @media (max-width: 720px) { .insights-grid { grid-template-columns: 1fr; } }
+    .insight {
+      border-radius: 12px;
+      padding: 16px 18px;
+      border: 1.5px solid;
+    }
+    .insight h3 {
+      font-family: 'Geist Mono', monospace; font-weight: 500;
+      font-size: 10.5px; letter-spacing: 0.5px; text-transform: uppercase;
+      margin-bottom: 10px;
+      display: flex; align-items: center; gap: 6px;
+    }
+    .insight h3 svg { width: 12px; height: 12px; }
+    .insight ul { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 8px; }
+    .insight li { font-size: 13px; line-height: 1.5; padding-left: 14px; position: relative; color: var(--text-primary); }
+    .insight li::before { content: ''; position: absolute; left: 0; top: 7px; width: 6px; height: 6px; border-radius: 50%; }
+    .insight.strengths { background: var(--success-50); border-color: #C9F0DC; }
+    .insight.strengths h3 { color: var(--success-700); }
+    .insight.strengths li::before { background: var(--success-500); }
+    .insight.concerns { background: var(--warning-50); border-color: #FFE3A8; }
+    .insight.concerns h3 { color: var(--warning-700); }
+    .insight.concerns li::before { background: var(--warning-500); }
+
+    /* Section */
+    .section { margin-bottom: 22px; }
+    .section-title { font-size: 15px; font-weight: 700; color: var(--text-primary); letter-spacing: -0.2px; margin-bottom: 12px; display: flex; align-items: center; gap: 8px; }
+    .ai-tag {
+      display: inline-flex; align-items: center; gap: 3px;
+      padding: 2px 7px;
+      background: linear-gradient(135deg, rgba(124,92,255,0.15), rgba(38,132,255,0.15));
+      color: #5B4ACF;
+      border-radius: var(--radius-full);
+      font-size: 9.5px; font-weight: 600;
+      letter-spacing: 0.4px; text-transform: uppercase;
+      font-family: 'Geist Mono', monospace; font-weight: 500;
+    }
+    .ai-tag svg { width: 9px; height: 9px; }
+
+    /* Transcript moments */
+    .moments { display: flex; flex-direction: column; gap: 12px; }
+    .moment {
+      padding: 14px 16px;
+      background: var(--neutral-50);
+      border-radius: 12px;
+      border-left: 3px solid var(--primary-500);
+    }
+    .moment .q { font-size: 13px; font-weight: 700; color: var(--text-primary); margin-bottom: 6px; }
+    .moment .a { font-size: 13px; color: var(--text-secondary); line-height: 1.55; }
+    .moment .timestamp {
+      display: inline-flex; align-items: center; gap: 4px;
+      font-family: 'Geist Mono', monospace; font-weight: 500;
+      font-size: 11px; color: var(--text-muted);
+      margin-top: 8px;
+    }
+    .moment .timestamp svg { width: 11px; height: 11px; }
+
+    /* Rubric scores */
+    .rubric { display: flex; flex-direction: column; gap: 10px; }
+    .rubric-row { display: flex; align-items: center; gap: 14px; }
+    .rubric-row .label { width: 160px; flex-shrink: 0; font-size: 13px; font-weight: 600; color: var(--text-primary); }
+    .rubric-row .bar { flex: 1; height: 6px; background: var(--neutral-100); border-radius: 3px; overflow: hidden; }
+    .rubric-row .fill { height: 100%; background: var(--primary-500); border-radius: 3px; }
+    .rubric-row .fill.high { background: var(--success-500); }
+    .rubric-row .fill.med { background: var(--warning-500); }
+    .rubric-row .score { width: 36px; text-align: right; font-size: 13px; font-weight: 700; color: var(--text-primary); flex-shrink: 0; }
+
+    /* ====== Scheduled pill on candidate header ====== */
+    .scheduled-pill {
+      display: inline-flex; align-items: center;
+      padding: 4px 10px;
+      background: var(--neutral-100);
+      color: var(--text-muted);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-full);
+      font-size: 11.5px; font-weight: 600;
+      font-family: 'Geist Mono', monospace;
+      text-transform: uppercase; letter-spacing: 0.04em;
+    }
+
+    /* ====== Highlighted "Your turn" panel ====== */
+    .your-turn-panel {
+      margin-top: 28px;
+      padding: 22px 24px 24px;
+      background: linear-gradient(180deg, #F4F6FF 0%, #FAFBFF 100%);
+      border: 1px solid #D8DEFF;
+      border-radius: 16px;
+      box-shadow: 0 10px 28px -16px rgba(0, 38, 255, 0.18), 0 0 0 4px rgba(0, 38, 255, 0.04);
+      position: relative;
+      overflow: hidden;
+    }
+    .your-turn-panel::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 3px;
+      background: linear-gradient(90deg, var(--primary-500) 0%, #6B7CFF 60%, #B6C0FF 100%);
+    }
+    .your-turn-head {
+      display: flex; align-items: center; gap: 12px;
+      margin-bottom: 18px;
+    }
+    .your-turn-icon {
+      width: 36px; height: 36px;
+      border-radius: 10px;
+      background: var(--primary-500);
+      color: #fff;
+      display: inline-flex; align-items: center; justify-content: center;
+      box-shadow: 0 6px 14px -4px rgba(0, 38, 255, 0.4);
+      flex-shrink: 0;
+    }
+    .your-turn-icon svg { width: 18px; height: 18px; }
+    .your-turn-eyebrow {
+      font-family: 'Geist Mono', monospace; font-weight: 600;
+      font-size: 11px;
+      text-transform: uppercase; letter-spacing: 0.06em;
+      color: var(--primary-600, #0026FF);
+      margin-bottom: 2px;
+    }
+    .your-turn-title {
+      font-size: 16px; font-weight: 700;
+      color: var(--text-primary);
+    }
+    .your-turn-section {
+      background: var(--neutral-0);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 18px 18px 16px;
+      margin-top: 14px;
+    }
+    .your-turn-section:first-of-type { margin-top: 0; }
+    .your-turn-section .section-title {
+      font-size: 14px;
+      margin-bottom: 14px;
+    }
+
+    /* ====== Interviewer scorecard ====== */
+    .you-tag {
+      display: inline-flex; align-items: center; gap: 4px;
+      padding: 2px 8px;
+      background: var(--neutral-100);
+      color: var(--text-secondary);
+      border-radius: var(--radius-full);
+      font-size: 10.5px;
+      font-family: 'Geist Mono', monospace; font-weight: 500;
+      text-transform: uppercase; letter-spacing: 0.04em;
+    }
+    .score-card { display: flex; flex-direction: column; gap: 10px; }
+    .score-scale-legend {
+      display: flex;
+      font-family: 'Geist Mono', monospace;
+      font-size: 11px;
+      color: var(--text-muted);
+      padding-left: 174px;
+      margin-bottom: 2px;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      /* Match the chip-area width: 10 chips × 34px + 9 gaps × 6px = 394px */
+      width: calc(174px + 394px);
+      max-width: 100%;
+    }
+    .score-row { display: flex; align-items: center; gap: 14px; }
+    .score-row .label { width: 160px; flex-shrink: 0; font-size: 13px; font-weight: 600; color: var(--text-primary); }
+    .score-chips { display: flex; gap: 6px; flex: 1; flex-wrap: wrap; }
+    .score-chip {
+      width: 34px; height: 34px;
+      border: 1.5px solid var(--border-strong, #D5DAE5);
+      background: var(--neutral-0);
+      color: var(--text-secondary);
+      font-family: 'Geist Mono', monospace; font-weight: 600;
+      font-size: 12.5px;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: all 0.12s;
+      display: inline-flex; align-items: center; justify-content: center;
+      padding: 0;
+      line-height: 1;
+    }
+    .score-chip:hover {
+      border-color: var(--primary-500);
+      color: var(--primary-500);
+      background: #F4F6FF;
+      transform: translateY(-1px);
+    }
+    .score-chip:active { transform: translateY(0); }
+    button.score-chip.active,
+    .score-chip.active {
+      background: var(--primary-500) !important;
+      border-color: var(--primary-500) !important;
+      color: #fff !important;
+      box-shadow: 0 4px 10px -3px rgba(0, 38, 255, 0.45) !important;
+      transform: translateY(0);
+    }
+    .score-chip * { pointer-events: none; }
+    @media (max-width: 720px) {
+      .score-scale-legend { padding-left: 0; }
+      .score-row { flex-direction: column; align-items: flex-start; gap: 8px; }
+      .score-row .label { width: auto; }
+    }
+
+    .reco-row {
+      display: flex; align-items: center; gap: 14px;
+      padding-top: 14px;
+      border-top: 1px dashed var(--border);
+    }
+    .reco-row .label { width: 160px; flex-shrink: 0; font-size: 13px; font-weight: 600; color: var(--text-primary); }
+    .reco-chips { display: inline-flex; gap: 6px; flex-wrap: wrap; }
+    .reco-chip {
+      padding: 7px 12px;
+      border: 1px solid var(--border);
+      background: var(--neutral-0);
+      color: var(--text-secondary);
+      font-size: 12.5px; font-weight: 600;
+      border-radius: var(--radius-full);
+      cursor: pointer;
+      transition: all 0.12s;
+    }
+    .reco-chip:hover { border-color: var(--primary-500); color: var(--primary-500); }
+    .reco-chip.active.strong-yes { background: var(--success-500); border-color: var(--success-500); color: #fff; }
+    .reco-chip.active.yes { background: var(--success-500); border-color: var(--success-500); color: #fff; opacity: 0.85; }
+    .reco-chip.active.lean-yes { background: var(--warning-500); border-color: var(--warning-500); color: #fff; }
+    .reco-chip.active.no { background: var(--danger-500); border-color: var(--danger-500); color: #fff; opacity: 0.85; }
+    .reco-chip.active.strong-no { background: var(--danger-500); border-color: var(--danger-500); color: #fff; }
+
+    .notes-area {
+      width: 100%;
+      min-height: 96px;
+      padding: 12px 14px;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      background: var(--neutral-0);
+      font-family: inherit;
+      font-size: 13.5px; line-height: 1.55;
+      color: var(--text-primary);
+      resize: vertical;
+      box-sizing: border-box;
+      transition: border-color 0.15s;
+    }
+    .notes-area:focus { outline: none; border-color: var(--primary-500); }
+    .notes-hint { font-size: 12px; color: var(--text-muted); margin-top: 6px; }
+    .saved-pill {
+      display: inline-flex; align-items: center; gap: 4px;
+      padding: 2px 8px;
+      background: var(--success-50, #ECFDF5);
+      color: var(--success-600, #059669);
+      border-radius: var(--radius-full);
+      font-size: 11px; font-weight: 600;
+      opacity: 0; transition: opacity 0.2s;
+    }
+    .saved-pill.show { opacity: 1; }
+    .saved-pill svg { width: 11px; height: 11px; }
+
+    /* Previous rounds */
+    .prev-rounds { display: flex; flex-direction: column; gap: 12px; }
+    .prev-card {
+      padding: 14px 16px;
+      background: var(--neutral-50);
+      border-radius: 12px;
+      border: 1px solid var(--border);
+    }
+    .prev-head {
+      display: flex; align-items: center; gap: 10px;
+      margin-bottom: 10px;
+    }
+    .prev-head .round-tag {
+      padding: 2px 8px;
+      background: var(--primary-50, #EEF2FF);
+      color: var(--primary-600, #0026FF);
+      font-size: 11px; font-weight: 700;
+      font-family: 'Geist Mono', monospace;
+      border-radius: var(--radius-full);
+      text-transform: uppercase; letter-spacing: 0.04em;
+    }
+    .prev-head .interviewer { font-size: 13px; font-weight: 700; color: var(--text-primary); }
+    .prev-head .when { font-size: 12px; color: var(--text-muted); margin-left: auto; }
+    .prev-reco {
+      display: inline-flex; align-items: center; gap: 6px;
+      padding: 3px 10px;
+      border-radius: var(--radius-full);
+      font-size: 12px; font-weight: 700;
+      margin-bottom: 10px;
+    }
+    .prev-reco.strong-yes, .prev-reco.yes { background: var(--success-50, #ECFDF5); color: var(--success-600, #059669); }
+    .prev-reco.lean-yes { background: var(--warning-50, #FFFBEB); color: var(--warning-600, #B45309); }
+    .prev-reco.no, .prev-reco.strong-no { background: var(--danger-50, #FEF2F2); color: var(--danger-600, #B91C1C); }
+    .prev-scores {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+      gap: 6px 16px;
+      margin-bottom: 10px;
+    }
+    .prev-score-line {
+      display: flex; justify-content: space-between;
+      font-size: 12.5px;
+      color: var(--text-secondary);
+    }
+    .prev-score-line strong { color: var(--text-primary); font-family: 'Geist Mono', monospace; font-weight: 600; }
+
+    /* Single overall score badge in previous-rounds card */
+    .prev-meta-row {
+      display: flex; align-items: center; gap: 10px;
+      flex-wrap: wrap;
+      margin-bottom: 10px;
+    }
+    .prev-overall {
+      display: inline-flex; align-items: baseline; gap: 4px;
+      padding: 4px 12px;
+      background: var(--neutral-0);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-full);
+    }
+    .prev-overall-num {
+      font-family: 'Geist Mono', monospace;
+      font-size: 16px; font-weight: 700;
+      color: var(--text-primary);
+      line-height: 1;
+    }
+    .prev-overall-suffix {
+      font-family: 'Geist Mono', monospace;
+      font-size: 11px;
+      color: var(--text-muted);
+    }
+    .prev-overall-label {
+      font-size: 11px; font-weight: 600;
+      color: var(--text-muted);
+      text-transform: uppercase; letter-spacing: 0.04em;
+      margin-left: 4px;
+    }
+    .prev-notes {
+      font-size: 13px; line-height: 1.55;
+      color: var(--text-secondary);
+      padding: 10px 12px;
+      background: var(--neutral-0);
+      border-left: 3px solid var(--primary-500);
+      border-radius: 0 8px 8px 0;
+    }
+    .prev-notes-label { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.04em; color: var(--text-muted); margin-bottom: 4px; }
+
+    /* Sticky action bar */
+    .decision-bar {
+      position: fixed;
+      bottom: 0; left: var(--sidebar-w); right: 0;
+      padding: 16px 32px;
+      background: var(--neutral-0);
+      border-top: 1px solid var(--border);
+      display: flex; align-items: center; justify-content: space-between; gap: 14px;
+      box-shadow: 0 -8px 24px -12px rgba(17, 22, 35, 0.18);
+      z-index: 30;
+    }
+    .decision-info { font-size: 13px; color: var(--text-muted); }
+    .decision-info strong { color: var(--text-primary); font-weight: 700; }
+    .decision-actions { display: inline-flex; gap: 10px; }
+    .dec-btn {
+      padding: 11px 22px;
+      border-radius: var(--radius-full);
+      font-family: inherit;
+      font-size: 13.5px; font-weight: 600;
+      cursor: pointer;
+      transition: all 0.15s;
+      border: 1.5px solid transparent;
+      display: inline-flex; align-items: center; gap: 7px;
+    }
+    .dec-btn.primary { background: var(--primary-500); color: #fff; border-color: var(--primary-500); box-shadow: 0 6px 16px -6px rgba(0,38,255,0.45); }
+    .dec-btn.primary:hover { background: var(--primary-600); border-color: var(--primary-600); transform: translateY(-1px); }
+    .dec-btn.ghost { background: var(--neutral-0); color: var(--text-secondary); border-color: var(--border-strong); }
+    .dec-btn.ghost:hover { border-color: var(--danger-500); color: var(--danger-500); background: var(--danger-50); }
+    .dec-btn.outline { background: var(--neutral-0); color: var(--text-primary); border-color: var(--border-strong); }
+    .dec-btn.outline:hover { border-color: var(--neutral-400); }
+    .dec-btn svg { width: 14px; height: 14px; }
+
+    /* Split-action button (Move forward + chevron) */
+    .split-btn { display: inline-flex; align-items: stretch; position: relative; }
+    .split-btn .dec-btn { border-top-right-radius: 0; border-bottom-right-radius: 0; padding-right: 16px; box-shadow: none; }
+    .split-btn .split-chev {
+      padding: 0 12px;
+      border-radius: 0 var(--radius-full) var(--radius-full) 0;
+      background: var(--primary-500);
+      color: #fff;
+      border: 1.5px solid var(--primary-500);
+      border-left: 1.5px solid rgba(255,255,255,0.25);
+      cursor: pointer;
+      transition: all 0.15s;
+      display: inline-flex; align-items: center;
+    }
+    .split-btn .split-chev:hover { background: var(--primary-600); border-color: var(--primary-600); }
+    .split-btn .split-chev svg { width: 13px; height: 13px; }
+    .split-menu {
+      position: absolute;
+      bottom: calc(100% + 8px);
+      right: 0;
+      background: var(--neutral-0);
+      border: 1px solid var(--border-strong);
+      border-radius: 12px;
+      box-shadow: 0 14px 38px -10px rgba(17, 22, 35, 0.25);
+      padding: 6px;
+      min-width: 240px;
+      display: none;
+      z-index: 50;
+    }
+    .split-menu.open { display: block; }
+    .split-menu button {
+      display: flex; align-items: center; gap: 10px;
+      width: 100%;
+      padding: 9px 12px;
+      background: none;
+      border: none;
+      font-family: inherit;
+      font-size: 13.5px; font-weight: 500;
+      color: var(--text-primary);
+      text-align: left;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: background 0.12s;
+    }
+    .split-menu button:hover { background: var(--neutral-50); }
+    .split-menu button svg { width: 14px; height: 14px; color: var(--text-muted); flex-shrink: 0; }
+    .split-menu .menu-divider { height: 1px; background: var(--neutral-100); margin: 4px 6px; }
+
+    @media (max-width: 880px) {
+      .app { grid-template-columns: 1fr; grid-template-areas: "main"; }
+      .sidebar { display: none; }
+      main { padding: 20px 18px 140px; }
+      .decision-bar { left: 0; flex-direction: column; align-items: stretch; gap: 10px; }
+      .decision-info { text-align: center; }
+      .decision-actions { justify-content: stretch; }
+      .decision-actions .dec-btn { flex: 1; justify-content: center; }
+    }
+      /* ============ NOTIFICATIONS SIDE PANEL ============ */
+    .notif-overlay { display: none; }
+    .notif-panel {
+      position: fixed;
+      top: 0; left: var(--sidebar-w);
+      width: 460px; max-width: calc(100vw - var(--sidebar-w));
+      height: 100vh;
+      background: var(--neutral-0);
+      box-shadow: -2px 0 8px rgba(17, 22, 35, 0.08), 2px 0 8px rgba(17, 22, 35, 0.08);
+      display: flex; flex-direction: column;
+      transform: translateX(calc(-100% - var(--sidebar-w, 280px)));
+      visibility: hidden;
+      z-index: 91;
+    }
+    .notif-panel.open { transform: translateX(0); visibility: visible; }
+    .notif-panel-head {
+      padding: 20px 22px 14px;
+      display: flex; align-items: center; justify-content: space-between;
+      gap: 12px;
+      flex-shrink: 0;
+    }
+    .notif-panel-head h2 { font-size: 20px; font-weight: 700; letter-spacing: -0.2px; }
+    .notif-head-actions { display: flex; align-items: center; gap: 12px; }
+    .notif-unread {
+      display: inline-flex; align-items: center; gap: 8px;
+      font-size: 12.5px; font-weight: 500;
+      color: var(--text-secondary);
+      cursor: pointer;
+    }
+    .notif-unread input { display: none; }
+    .notif-unread .track {
+      width: 28px; height: 16px;
+      background: var(--neutral-200);
+      border-radius: 100px;
+      position: relative;
+      transition: background 0.2s;
+    }
+    .notif-unread .track::after {
+      content: ''; position: absolute;
+      top: 2px; left: 2px;
+      width: 12px; height: 12px;
+      background: #fff; border-radius: 50%;
+      transition: transform 0.2s;
+      box-shadow: 0 1px 2px rgba(0,0,0,0.2);
+    }
+    .notif-unread input:checked + .track { background: var(--primary-500); }
+    .notif-unread input:checked + .track::after { transform: translateX(12px); }
+    .notif-close {
+      width: 32px; height: 32px;
+      border-radius: 8px;
+      background: transparent;
+      border: 1px solid var(--border-strong);
+      color: var(--text-secondary);
+      cursor: pointer;
+      display: inline-flex; align-items: center; justify-content: center;
+      transition: all 0.15s;
+    }
+    .notif-close:hover { background: var(--neutral-50); color: var(--text-primary); }
+    .notif-close svg { width: 14px; height: 14px; pointer-events: none; }
+    .notif-tabs {
+      display: flex; align-items: center; gap: 22px;
+      padding: 0 22px;
+      border-bottom: 1px solid var(--border);
+      flex-shrink: 0;
+    }
+    .notif-tab {
+      padding: 10px 0;
+      background: none; border: none; cursor: pointer;
+      font-family: inherit;
+      font-size: 13.5px; font-weight: 500;
+      color: var(--text-muted);
+      position: relative;
+      display: inline-flex; align-items: center; gap: 6px;
+      transition: color 0.15s;
+    }
+    .notif-tab:hover { color: var(--text-secondary); }
+    .notif-tab.active { color: var(--text-primary); font-weight: 600; }
+    .notif-tab.active::after {
+      content: ''; position: absolute;
+      bottom: -1px; left: 0; right: 0; height: 2px;
+      background: var(--text-primary);
+      border-radius: 2px;
+    }
+    .notif-tab .dot {
+      width: 6px; height: 6px;
+      border-radius: 50%;
+      background: var(--danger-500);
+      display: none;
+    }
+    .notif-tab.has-unread .dot { display: inline-block; }
+    .notif-list { flex: 1; overflow-y: auto; padding: 6px 12px 80px; }
+    .notif-item {
+      display: grid;
+      grid-template-columns: 36px 1fr auto;
+      gap: 12px;
+      padding: 14px 10px;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: background 0.12s;
+      position: relative;
+    }
+    .notif-item:hover { background: var(--neutral-50); }
+    .notif-item .av {
+      width: 36px; height: 36px;
+      border-radius: 50%;
+      background: var(--neutral-100);
+      display: flex; align-items: center; justify-content: center;
+      color: var(--text-primary);
+      font-size: 13px; font-weight: 700;
+      flex-shrink: 0;
+    }
+    .notif-item .av.ai { background: var(--ai-grad); color: #fff; }
+    .notif-item .av svg { width: 16px; height: 16px; }
+    .notif-item .body { min-width: 0; padding-top: 1px; }
+    .notif-item .title {
+      font-size: 13.5px;
+      color: var(--text-primary);
+      font-weight: 500;
+      line-height: 1.45;
+      display: flex; align-items: baseline; gap: 6px;
+    }
+    .notif-item.unread .title::before {
+      content: '';
+      width: 7px; height: 7px;
+      background: var(--danger-500);
+      border-radius: 50%;
+      flex-shrink: 0;
+      align-self: center;
+    }
+    .notif-item .title strong { font-weight: 700; }
+    .notif-item .desc {
+      font-size: 12.5px;
+      color: var(--text-muted);
+      margin-top: 3px;
+      line-height: 1.5;
+    }
+    .notif-item .when {
+      font-size: 11.5px;
+      color: var(--text-muted);
+      font-family: 'Geist Mono', monospace;
+      font-weight: 500;
+      white-space: nowrap;
+      align-self: start;
+      padding-top: 3px;
+    }
+    .notif-empty {
+      padding: 32px 22px;
+      text-align: center;
+      font-size: 13px;
+      color: var(--text-muted);
+    }
+      /* ============ COLLAPSIBLE SIDEBAR ============ */
+    body.sidebar-collapsed { --sidebar-w: 76px; }
+    body.sidebar-collapsed .sidebar { padding: 12px 8px 16px; }
+    body.sidebar-collapsed .brand-logo img { clip-path: none; margin-left: 0; margin-top: 0; margin-bottom: 0; width: 36px; height: auto; }
+    body.sidebar-collapsed .nav-item { justify-content: center; gap: 0; }
+    body.sidebar-collapsed .nav-item .label,
+    body.sidebar-collapsed .nav-item .badge,
+    body.sidebar-collapsed .nav-section-label,
+    body.sidebar-collapsed .sb-profile .info,
+    body.sidebar-collapsed .sb-profile .chev,
+    body.sidebar-collapsed .create-btn span,
+    body.sidebar-collapsed .sidebar-utils { display: none !important; }
+    body.sidebar-collapsed .create-btn { gap: 0; font-size: 0; line-height: 1; width: 42px; height: 42px; min-height: 0; padding: 0; margin: 0 auto 14px; border-radius: 50%; }
+    body.sidebar-collapsed .sb-profile { justify-content: center; padding: 6px 0; }
+    body.sidebar-collapsed .notif-panel { left: var(--sidebar-w); }
+    body.sidebar-collapsed .decision-bar { left: var(--sidebar-w); }
+    body.sidebar-collapsed .cand-panel-overlay,
+    body.sidebar-collapsed .filter-overlay { left: 0; }
+    body.sidebar-collapsed .wrapper { max-width: 880px; }
+    /* Collapse toggle button */
+    .nav-collapse-btn {
+      position: absolute;
+      top: 26px;
+      right: -12px;
+      width: 24px; height: 24px;
+      border-radius: 50%;
+      background: var(--neutral-0);
+      border: 1px solid var(--border-strong);
+      color: var(--text-secondary);
+      cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      box-shadow: 0 2px 6px rgba(17, 22, 35, 0.08);
+      transition: all 0.15s;
+      z-index: 50;
+    }
+    .nav-collapse-btn:hover { color: var(--text-primary); border-color: var(--text-secondary); box-shadow: 0 3px 10px rgba(17, 22, 35, 0.12); }
+    .nav-collapse-btn svg { width: 12px; height: 12px; transition: transform 0.2s; }
+    body.sidebar-collapsed .nav-collapse-btn svg { transform: rotate(180deg); }
+
+    /* ============ CONFIRM MODAL ============ */
+    .wm-modal-overlay {
+      position: fixed; inset: 0;
+      background: rgba(17, 22, 35, 0.38);
+      backdrop-filter: blur(2px);
+      opacity: 0; pointer-events: none;
+      transition: opacity 0.18s ease;
+      z-index: 200;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .wm-modal-overlay.open { opacity: 1; pointer-events: auto; }
+    .wm-modal {
+      background: var(--neutral-0);
+      border-radius: 16px;
+      box-shadow: 0 28px 60px -16px rgba(17, 22, 35, 0.35);
+      width: min(440px, calc(100% - 32px));
+      padding: 26px 26px 22px;
+      transform: scale(0.96) translateY(8px);
+      transition: transform 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    .wm-modal-overlay.open .wm-modal { transform: scale(1) translateY(0); }
+    .wm-modal-head { display: flex; align-items: flex-start; gap: 14px; margin-bottom: 18px; }
+    .wm-modal-icon {
+      width: 40px; height: 40px;
+      border-radius: 10px;
+      background: var(--primary-50);
+      color: var(--primary-500);
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0;
+    }
+    .wm-modal-icon.danger { background: var(--danger-50); color: var(--danger-500); }
+    .wm-modal-icon svg { width: 20px; height: 20px; }
+    .wm-modal-body { flex: 1; min-width: 0; }
+    .wm-modal-title { font-size: 16px; font-weight: 700; color: var(--text-primary); line-height: 1.35; margin-bottom: 4px; letter-spacing: -0.2px; }
+    .wm-modal-desc { font-size: 13.5px; color: var(--text-secondary); line-height: 1.5; }
+    .wm-modal-actions { display: flex; justify-content: flex-end; gap: 8px; }
+    .wm-modal-btn {
+      padding: 9px 18px;
+      border-radius: 100px;
+      font-family: inherit;
+      font-size: 13.5px; font-weight: 600;
+      cursor: pointer;
+      border: 1.5px solid transparent;
+      transition: all 0.15s;
+    }
+    .wm-modal-btn.cancel { background: var(--neutral-0); color: var(--text-secondary); border-color: var(--border-strong); }
+    .wm-modal-btn.cancel:hover { border-color: var(--neutral-400); color: var(--text-primary); }
+    .wm-modal-btn.confirm { background: var(--primary-500); color: #fff; border-color: var(--primary-500); }
+    .wm-modal-btn.confirm:hover { background: var(--primary-600); border-color: var(--primary-600); }
+    .wm-modal-btn.confirm.danger { background: var(--danger-500); border-color: var(--danger-500); }
+    .wm-modal-btn.confirm.danger:hover { background: var(--danger-700); border-color: var(--danger-700); }
+
+    /* Round modal — name + date + time */
+    .wm-modal.round-modal { width: min(500px, calc(100% - 32px)); }
+    .wm-field { margin-bottom: 16px; }
+    .wm-field-label {
+      display: block;
+      font-size: 12px; font-weight: 600;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.4px;
+      margin-bottom: 8px;
+    }
+    .wm-field-input {
+      width: 100%;
+      padding: 10px 12px;
+      background: #fff;
+      border: 1px solid var(--border-strong);
+      border-radius: 10px;
+      font-family: inherit;
+      font-size: 14px; font-weight: 500;
+      color: var(--text-primary);
+      outline: none;
+      transition: border-color 0.12s, box-shadow 0.12s;
+    }
+    .wm-field-input:focus { border-color: var(--primary-500); box-shadow: 0 0 0 3px rgba(0, 38, 255, 0.10); }
+
+    .wm-date-strip { display: grid; grid-template-columns: repeat(5, 1fr); gap: 6px; }
+    .wm-date-chip {
+      background: #fff; border: 1px solid var(--border-strong); border-radius: 10px;
+      padding: 8px 4px; cursor: pointer; transition: all 0.12s;
+      font-family: inherit; text-align: center;
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+    }
+    .wm-date-chip:hover { border-color: var(--neutral-400); }
+    .wm-date-chip .dow { font-size: 11px; font-weight: 500; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.3px; }
+    .wm-date-chip .day { font-size: 17px; font-weight: 700; color: var(--text-primary); line-height: 1.1; margin-top: 2px; }
+    .wm-date-chip.selected { background: var(--primary-50); border-color: var(--primary-500); }
+    .wm-date-chip.selected .dow { color: var(--primary-500); font-weight: 600; }
+    .wm-date-chip.selected .day { color: var(--primary-600); }
+
+    .wm-time-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px; }
+    .wm-time-slot {
+      background: #fff; border: 1px solid var(--border-strong); border-radius: 10px;
+      padding: 9px 4px; cursor: pointer; transition: all 0.12s;
+      font-family: inherit; font-size: 13px; font-weight: 600;
+      color: var(--text-primary); text-align: center;
+    }
+    .wm-time-slot:hover { border-color: var(--neutral-400); }
+    .wm-time-slot.selected { background: var(--primary-50); border-color: var(--primary-500); color: var(--primary-600); }
+  </style>
+</head>
+<body>
+<div class="app">
+  <aside class="sidebar">
+    <a href="recruit-pipeline.html" class="brand-logo"><img src="wisemonk_logo_final.png" alt="Wisemonk"></a>
+    <button class="create-btn" type="button" onclick="location.href='recruit-role.html'">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+      Create role
+    </button>
+    <div class="nav-section">
+      <a class="nav-item" href="recruit-pipeline.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg><span class="label">Open roles</span><span class="badge">1</span></a>
+      <a class="nav-item" href="recruit-candidates.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg><span class="label">Shortlisted</span><span class="badge">5</span></a>
+      <a class="nav-item active" href="recruit-interviews.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg><span class="label">Interviews</span><span class="badge">1</span></a>
+      <button class="nav-item" type="button" data-action="open-notifications"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg><span class="label">Notifications</span><span class="badge">3</span></button>
+      <a class="nav-item ai-highlight" href="recruit-search.html"><svg viewBox="0 0 24 24" fill="url(#aiNavGradM)" stroke="none"><defs><linearGradient id="aiNavGradM" x1="0" y1="0" x2="24" y2="24" gradientUnits="userSpaceOnUse"><stop offset="0%" stop-color="#7C5CFF"/><stop offset="100%" stop-color="#2684FF"/></linearGradient></defs><path d="M12 2L13.8 9.5 L21 11 L13.8 12.5 L12 22 L10.2 12.5 L3 11 L10.2 9.5 Z"/></svg><span class="label">Search talent with AI</span></a>
+    </div>
+    <div class="sidebar-bottom">
+      <button class="sb-profile" onclick="location.href='recruit-settings.html'" title="Profile">
+        <div class="av">A</div>
+        <div class="info"><div class="name">Alex Mehta</div></div>
+        <span class="chev"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></span>
+      </button>
+    </div>
+  </aside>
+
+  <main>
+    <div class="wrapper">
+
+      <button class="back-link" onclick="location.href='recruit-interviews.html'">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+        Back to interviews
+      </button>
+
+      <!-- Candidate header -->
+      <div class="cand-head">
+        <div class="av" id="candAv" style="background:#FF6B35">P</div>
+        <div class="cand-head-info">
+          <h1 id="candName">Priya Sharma</h1>
+          <div class="sub" id="candSub">Senior Backend Engineer · Round 1</div>
+          <div class="meta-line">
+            <span class="item" id="metaDate"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/></svg>23 May · 11:00 IST</span>
+            <span class="item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>45 minutes</span>
+            <span class="item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="23 7 16 12 23 17 23 7"/><rect x="1" y="5" width="15" height="14" rx="2"/></svg>Built-in video</span>
+            <span class="scheduled-pill" id="schedPill" hidden>Interview scheduled</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Tabs: Summary / Transcript -->
+      <div class="review-tabs">
+        <button class="review-tab active" type="button" data-tab="summary">Summary</button>
+        <button class="review-tab" type="button" data-tab="transcript">Transcript</button>
+      </div>
+
+      <!-- ============ SUMMARY VIEW ============ -->
+      <div id="summaryView">
+
+      <!-- Previous rounds (only rendered when currentRound > 1) -->
+      <section class="section" id="prevRoundsSection" hidden>
+        <div class="section-title">Previous rounds</div>
+        <div class="prev-rounds" id="prevRoundsList"></div>
+      </section>
+
+      <!-- AI Summary card -->
+      <section class="ai-summary-card">
+        <div class="ai-summary-head">
+          <span class="ai-orb"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l1.9 5.8L20 9.7l-4.5 3.9L17 20l-5-3-5 3 1.5-6.4L4 9.7l6.1-1.9L12 2z"/></svg></span>
+          <div>
+            <div class="ai-summary-title">AI Summary</div>
+            <div class="ai-summary-h2">Strong systems thinker with proven payment-scale experience</div>
+          </div>
+        </div>
+        <div class="ai-summary-body">
+          Priya demonstrated <strong>deep ownership of payment infrastructure at Razorpay</strong>, walking through a UPI handler that scales to 5M TPS with Kafka-based event ordering and merchant-sharded Postgres. Her trade-off analysis was clear and specific — moving from PgBouncer transaction mode to session mode and the contention it caused. <strong>Communication was structured and concrete</strong>; she cited real numbers (P99 90ms, 50K merchants) rather than abstract claims. Two concerns: <strong>no GraphQL exposure</strong>, which matters for the Phase 2 API gateway work, and a slight hesitation when asked about cross-team conflict resolution.
+        </div>
+      </section>
+
+      <!-- Rubric scores -->
+      <section class="section">
+        <div class="section-title">
+          Rubric scores
+          <span class="ai-tag">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l1.9 5.8L20 9.7l-4.5 3.9L17 20l-5-3-5 3 1.5-6.4L4 9.7l6.1-1.9L12 2z"/></svg>
+            AI
+          </span>
+        </div>
+        <div class="rubric">
+          <div class="rubric-row"><span class="label">System design</span><span class="bar"><span class="fill high" style="width:92%"></span></span><span class="score">9.2</span></div>
+          <div class="rubric-row"><span class="label">Coding fundamentals</span><span class="bar"><span class="fill high" style="width:85%"></span></span><span class="score">8.5</span></div>
+          <div class="rubric-row"><span class="label">Communication</span><span class="bar"><span class="fill high" style="width:88%"></span></span><span class="score">8.8</span></div>
+          <div class="rubric-row"><span class="label">Domain knowledge</span><span class="bar"><span class="fill high" style="width:90%"></span></span><span class="score">9.0</span></div>
+          <div class="rubric-row"><span class="label">Collaboration</span><span class="bar"><span class="fill med" style="width:72%"></span></span><span class="score">7.2</span></div>
+        </div>
+      </section>
+
+      <!-- Notable moments -->
+      <section class="section">
+        <div class="section-title">
+          Notable moments
+          <span class="ai-tag">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l1.9 5.8L20 9.7l-4.5 3.9L17 20l-5-3-5 3 1.5-6.4L4 9.7l6.1-1.9L12 2z"/></svg>
+            AI
+          </span>
+        </div>
+        <div class="moments">
+          <div class="moment">
+            <div class="q">Walk me through the trickiest scaling problem you've solved.</div>
+            <div class="a">"At Razorpay, our UPI handler was bottlenecked on the DB connection pool. We moved from PgBouncer transaction mode to session mode, which caused contention. We then sharded Postgres by merchant_id and put Kafka in front for event ordering. Got us to 5M TPS at P99 under 90ms."</div>
+            <span class="timestamp"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>04:12</span>
+          </div>
+          <div class="moment">
+            <div class="q">Tell me about a time you disagreed with a teammate.</div>
+            <div class="a">"Hmm… we had a discussion once on whether to use Kafka or RabbitMQ. I had a strong opinion based on our throughput. We eventually went with Kafka." <em>— short answer, low specificity</em></div>
+            <span class="timestamp"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>22:48</span>
+          </div>
+          <div class="moment">
+            <div class="q">What about GraphQL — have you built any APIs with it?</div>
+            <div class="a">"No, I've mostly worked with REST and gRPC. I'd be happy to learn though — I picked up gRPC in a few weeks last year."</div>
+            <span class="timestamp"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>31:05</span>
+          </div>
+        </div>
+      </section>
+
+      <!-- ============ Highlighted: Your scorecard + Notes (for next interviewer) ============ -->
+      <div class="your-turn-panel">
+        <div class="your-turn-head">
+          <div class="your-turn-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
+          </div>
+          <div>
+            <div class="your-turn-eyebrow">Your turn</div>
+            <div class="your-turn-title">Score this round</div>
+          </div>
+          <span class="saved-pill" id="scSaved" style="margin-left: auto;">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+            Saved
+          </span>
+        </div>
+
+        <!-- Your scorecard -->
+        <section class="section your-turn-section">
+          <div class="section-title">
+            Your scorecard
+          </div>
+          <div class="score-card" id="scoreCard">
+            <div class="score-scale-legend">
+              <span>1 — Poor</span>
+              <span style="margin-left: auto;">10 — Outstanding</span>
+            </div>
+            <div class="score-row" data-dim="System design">
+              <span class="label">System design</span>
+              <div class="score-chips">
+                <button type="button" class="score-chip" data-value="1">1</button>
+                <button type="button" class="score-chip" data-value="2">2</button>
+                <button type="button" class="score-chip" data-value="3">3</button>
+                <button type="button" class="score-chip" data-value="4">4</button>
+                <button type="button" class="score-chip" data-value="5">5</button>
+                <button type="button" class="score-chip" data-value="6">6</button>
+                <button type="button" class="score-chip" data-value="7">7</button>
+                <button type="button" class="score-chip" data-value="8">8</button>
+                <button type="button" class="score-chip" data-value="9">9</button>
+                <button type="button" class="score-chip" data-value="10">10</button>
+              </div>
+            </div>
+            <div class="score-row" data-dim="Coding fundamentals">
+              <span class="label">Coding fundamentals</span>
+              <div class="score-chips">
+                <button type="button" class="score-chip" data-value="1">1</button>
+                <button type="button" class="score-chip" data-value="2">2</button>
+                <button type="button" class="score-chip" data-value="3">3</button>
+                <button type="button" class="score-chip" data-value="4">4</button>
+                <button type="button" class="score-chip" data-value="5">5</button>
+                <button type="button" class="score-chip" data-value="6">6</button>
+                <button type="button" class="score-chip" data-value="7">7</button>
+                <button type="button" class="score-chip" data-value="8">8</button>
+                <button type="button" class="score-chip" data-value="9">9</button>
+                <button type="button" class="score-chip" data-value="10">10</button>
+              </div>
+            </div>
+            <div class="score-row" data-dim="Communication">
+              <span class="label">Communication</span>
+              <div class="score-chips">
+                <button type="button" class="score-chip" data-value="1">1</button>
+                <button type="button" class="score-chip" data-value="2">2</button>
+                <button type="button" class="score-chip" data-value="3">3</button>
+                <button type="button" class="score-chip" data-value="4">4</button>
+                <button type="button" class="score-chip" data-value="5">5</button>
+                <button type="button" class="score-chip" data-value="6">6</button>
+                <button type="button" class="score-chip" data-value="7">7</button>
+                <button type="button" class="score-chip" data-value="8">8</button>
+                <button type="button" class="score-chip" data-value="9">9</button>
+                <button type="button" class="score-chip" data-value="10">10</button>
+              </div>
+            </div>
+            <div class="score-row" data-dim="Domain knowledge">
+              <span class="label">Domain knowledge</span>
+              <div class="score-chips">
+                <button type="button" class="score-chip" data-value="1">1</button>
+                <button type="button" class="score-chip" data-value="2">2</button>
+                <button type="button" class="score-chip" data-value="3">3</button>
+                <button type="button" class="score-chip" data-value="4">4</button>
+                <button type="button" class="score-chip" data-value="5">5</button>
+                <button type="button" class="score-chip" data-value="6">6</button>
+                <button type="button" class="score-chip" data-value="7">7</button>
+                <button type="button" class="score-chip" data-value="8">8</button>
+                <button type="button" class="score-chip" data-value="9">9</button>
+                <button type="button" class="score-chip" data-value="10">10</button>
+              </div>
+            </div>
+            <div class="score-row" data-dim="Collaboration">
+              <span class="label">Collaboration</span>
+              <div class="score-chips">
+                <button type="button" class="score-chip" data-value="1">1</button>
+                <button type="button" class="score-chip" data-value="2">2</button>
+                <button type="button" class="score-chip" data-value="3">3</button>
+                <button type="button" class="score-chip" data-value="4">4</button>
+                <button type="button" class="score-chip" data-value="5">5</button>
+                <button type="button" class="score-chip" data-value="6">6</button>
+                <button type="button" class="score-chip" data-value="7">7</button>
+                <button type="button" class="score-chip" data-value="8">8</button>
+                <button type="button" class="score-chip" data-value="9">9</button>
+                <button type="button" class="score-chip" data-value="10">10</button>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Notes for next interviewer -->
+        <section class="section your-turn-section" id="nextNotesSection">
+          <div class="section-title" id="notesTitle">
+            Notes for the next interviewer
+          </div>
+          <textarea class="notes-area" id="nextNotes" placeholder="Anything the next interviewer should probe on? Red flags to double-check, areas you couldn't cover, or context that frames their conversation…"></textarea>
+          <div class="notes-hint">These notes will be visible to the next round's interviewer at the top of their summary page.</div>
+        </section>
+      </div>
+
+      </div><!-- /#summaryView -->
+
+      <!-- ============ TRANSCRIPT VIEW ============ -->
+      <div id="transcriptView" hidden>
+        <div class="transcript-list">
+          <div class="ts-line">
+            <span class="ts-time">0:42</span>
+            <div class="ts-body">
+              <div class="ts-speaker">Alex Mehta</div>
+              <div class="ts-text">Hi Priya, thanks for making the time. Let's start with a quick intro — walk me through your last 3 years.</div>
+            </div>
+          </div>
+          <div class="ts-line">
+            <span class="ts-time">1:08</span>
+            <div class="ts-body">
+              <div class="ts-speaker">Priya Sharma</div>
+              <div class="ts-text">Sure. I've been at Razorpay for 4 years on the payments core team. Started as a backend engineer, became tech lead 18 months in. My main project has been the UPI handler — it processes about 5M transactions per second at peak.</div>
+            </div>
+          </div>
+          <div class="ts-line">
+            <span class="ts-time">4:12</span>
+            <div class="ts-body">
+              <div class="ts-speaker">Alex Mehta</div>
+              <div class="ts-text">Walk me through the trickiest scaling problem you've solved.</div>
+            </div>
+          </div>
+          <div class="ts-line">
+            <span class="ts-time">4:24</span>
+            <div class="ts-body">
+              <div class="ts-speaker">Priya Sharma</div>
+              <div class="ts-text">At Razorpay, our UPI handler was bottlenecked on the DB connection pool. We moved from PgBouncer transaction mode to session mode, which caused contention. We then sharded Postgres by merchant_id and put Kafka in front for event ordering. Got us to 5M TPS at P99 under 90ms.</div>
+            </div>
+          </div>
+          <div class="ts-line">
+            <span class="ts-time">8:30</span>
+            <div class="ts-body">
+              <div class="ts-speaker">Alex Mehta</div>
+              <div class="ts-text">How did you handle observability across those moving parts?</div>
+            </div>
+          </div>
+          <div class="ts-line">
+            <span class="ts-time">8:45</span>
+            <div class="ts-body">
+              <div class="ts-speaker">Priya Sharma</div>
+              <div class="ts-text">We built a custom tracing layer on top of OpenTelemetry that propagated merchant_id and txn_id through every service. Latency budgets per stage. We could pin a slow P99 down to a single shard in under 2 minutes during incidents.</div>
+            </div>
+          </div>
+          <div class="ts-line">
+            <span class="ts-time">14:55</span>
+            <div class="ts-body">
+              <div class="ts-speaker">Alex Mehta</div>
+              <div class="ts-text">What's a system design call you regret in hindsight?</div>
+            </div>
+          </div>
+          <div class="ts-line">
+            <span class="ts-time">15:10</span>
+            <div class="ts-body">
+              <div class="ts-speaker">Priya Sharma</div>
+              <div class="ts-text">Going with synchronous webhooks early on. We built our reconciliation service assuming sub-second responses from merchants. About 8% of merchants were 5+ seconds. We had to rebuild it with async retries and a delivery state machine 6 months later.</div>
+            </div>
+          </div>
+          <div class="ts-line">
+            <span class="ts-time">22:48</span>
+            <div class="ts-body">
+              <div class="ts-speaker">Alex Mehta</div>
+              <div class="ts-text">Tell me about a time you disagreed with a teammate.</div>
+            </div>
+          </div>
+          <div class="ts-line">
+            <span class="ts-time">22:55</span>
+            <div class="ts-body">
+              <div class="ts-speaker">Priya Sharma</div>
+              <div class="ts-text">Hmm… we had a discussion once on whether to use Kafka or RabbitMQ. I had a strong opinion based on our throughput. We eventually went with Kafka. <em>— short answer, low specificity</em></div>
+            </div>
+          </div>
+          <div class="ts-line">
+            <span class="ts-time">31:05</span>
+            <div class="ts-body">
+              <div class="ts-speaker">Alex Mehta</div>
+              <div class="ts-text">What about GraphQL — have you built any APIs with it?</div>
+            </div>
+          </div>
+          <div class="ts-line">
+            <span class="ts-time">31:14</span>
+            <div class="ts-body">
+              <div class="ts-speaker">Priya Sharma</div>
+              <div class="ts-text">No, I've mostly worked with REST and gRPC. I'd be happy to learn though — I picked up gRPC in a few weeks last year.</div>
+            </div>
+          </div>
+          <div class="ts-line">
+            <span class="ts-time">38:20</span>
+            <div class="ts-body">
+              <div class="ts-speaker">Alex Mehta</div>
+              <div class="ts-text">What's the most important thing for you in your next role?</div>
+            </div>
+          </div>
+          <div class="ts-line">
+            <span class="ts-time">38:30</span>
+            <div class="ts-body">
+              <div class="ts-speaker">Priya Sharma</div>
+              <div class="ts-text">Working on a problem with real scale and a team I can learn from. I'm at a stage where I want to keep building systems but also start mentoring more.</div>
+            </div>
+          </div>
+          <div class="ts-line">
+            <span class="ts-time">41:50</span>
+            <div class="ts-body">
+              <div class="ts-speaker">Alex Mehta</div>
+              <div class="ts-text">Great. Any questions for me?</div>
+            </div>
+          </div>
+        </div>
+      </div><!-- /#transcriptView -->
+
+    </div>
+  </main>
+</div>
+
+<!-- Sticky decision bar -->
+<div class="decision-bar">
+  <div class="decision-actions" style="margin-left: auto;">
+    <button class="dec-btn outline" type="button" id="laterBtn">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+      Decide later
+    </button>
+    <button class="dec-btn ghost" type="button" id="rejectBtn">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+      Reject
+    </button>
+    <div class="split-btn">
+      <button class="dec-btn primary" type="button" id="forwardBtn">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+        <span id="forwardLabel">Move forward</span>
+      </button>
+      <button class="split-chev" type="button" id="forwardChev" aria-label="More options">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+      </button>
+      <div class="split-menu" id="forwardMenu" role="menu">
+        <button type="button" data-action="add-round">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+          Add another round
+        </button>
+        <button type="button" data-action="take-home">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+          Send a take-home task
+        </button>
+        <div class="menu-divider"></div>
+        <button type="button" data-action="skip-offer">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+          Make offer now
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  // Read candidate info from URL params
+  const params = new URLSearchParams(location.search);
+  const candName = params.get('name') || 'Priya Sharma';
+  const candInitial = candName.charAt(0).toUpperCase();
+  const candColor = params.get('color') || '#FF6B35';
+  const candNameEl = document.getElementById('candName');
+  if (candNameEl) candNameEl.textContent = candName;
+  const candAvEl = document.getElementById('candAv');
+  if (candAvEl) {
+    candAvEl.textContent = candInitial;
+    candAvEl.style.background = candColor;
+  }
+  const bcNameEl = document.getElementById('bcName');
+  if (bcNameEl) bcNameEl.textContent = `${candName} · summary`;
+  document.title = `${candName} · interview summary — Wisemonk`;
+
+  // ===== Interview plan + round-aware Move forward =====
+  // Load plan from localStorage (saved by role creation), else use a sensible default
+  const DEFAULT_PLAN = [
+    { name: 'Screening call', interviewer: 'AI Recruiter', duration: 30 },
+    { name: 'Technical round', interviewer: 'Alex Mehta', duration: 45 },
+    { name: 'Hiring manager', interviewer: 'Founder', duration: 30 }
+  ];
+  let plan;
+  try { plan = JSON.parse(localStorage.getItem('wm_interview_plan')) || DEFAULT_PLAN; }
+  catch (e) { plan = DEFAULT_PLAN; }
+
+  // Auto-reject setting (account-level, set in Settings → Automation)
+  const DEFAULT_AR = { enabled: false, days: 7 };
+  let autoReject;
+  try { autoReject = JSON.parse(localStorage.getItem('wm_auto_reject')) || DEFAULT_AR; }
+  catch (e) { autoReject = DEFAULT_AR; }
+
+  // Determine current round from URL (?round=N), defaults to 2 so the
+  // page demos the cross-interviewer hand-off (Round 1 already scored).
+  const currentRound = Math.max(1, parseInt(params.get('round') || '2', 10));
+
+  // ---- Seed a demo Round-1 scorecard so the next interviewer can see it ----
+  // Ensures a Round 1 entry exists (so the "Previous rounds" card always renders
+  // when you land on Round 2+). Preserves any other scorecards already saved.
+  (function seedDemoScorecard() {
+    const k = `wm_scorecards_${candName}`;
+    let arr = [];
+    try {
+      const existing = JSON.parse(localStorage.getItem(k));
+      if (Array.isArray(existing)) arr = existing;
+    } catch (e) { /* fall through */ }
+    const hasRound1 = arr.some(s => s && s.round === 1);
+    if (hasRound1) return;
+    arr.push({
+      round: 1,
+      roundName: 'Screening call',
+      interviewer: 'Maya Krishnan',
+      scores: { 'Overall': 8 },
+      recommendation: 'yes',
+      notes: 'Strong on payments & systems thinking. Pushed back well on PgBouncer trade-offs. Watch for: cross-team conflict resolution (gave a thin example) and GraphQL exposure — please probe both in the technical round.',
+      date: new Date(Date.now() - 2 * 24 * 60 * 60 * 1000).toISOString()
+    });
+    localStorage.setItem(k, JSON.stringify(arr));
+  })();
+  const totalRounds = plan.length;
+  const isLastRound = currentRound >= totalRounds;
+  const nextRound = plan[currentRound]; // 0-indexed next item; undefined if last
+
+  // Update the primary CTA label to reflect what's next
+  const forwardLabel = document.getElementById('forwardLabel');
+  if (isLastRound) {
+    forwardLabel.textContent = 'Make offer';
+  } else if (nextRound) {
+    forwardLabel.textContent = `Schedule ${nextRound.name}`;
+  }
+
+  // Decision info text was removed — the round context now lives on the page heading above.
+
+  // Primary action: route based on context
+  document.getElementById('forwardBtn').addEventListener('click', () => {
+    if (isLastRound) {
+      wmConfirm({
+        title: `Make an offer to ${candName}?`,
+        desc: 'This was their final round. AI will draft the offer letter for your review.',
+        confirmLabel: 'Make offer'
+      }, () => {
+        location.href = `recruit-interview.html?name=${encodeURIComponent(candName)}&step=offer`;
+      });
+    } else {
+      // Schedule the next round with prefilled defaults
+      const qs = new URLSearchParams({
+        name: candName,
+        round: String(currentRound + 1),
+        roundName: nextRound.name,
+        interviewer: nextRound.interviewer,
+        duration: String(nextRound.duration)
+      }).toString();
+      location.href = `recruit-interview.html?${qs}`;
+    }
+  });
+
+  // Chevron menu
+  const chev = document.getElementById('forwardChev');
+  const menu = document.getElementById('forwardMenu');
+  chev.addEventListener('click', e => {
+    e.stopPropagation();
+    menu.classList.toggle('open');
+  });
+  document.addEventListener('click', e => {
+    if (!menu.contains(e.target) && e.target !== chev) menu.classList.remove('open');
+  });
+
+  menu.addEventListener('click', e => {
+    const action = e.target.closest('button')?.dataset.action;
+    if (!action) return;
+    menu.classList.remove('open');
+    if (action === 'skip-offer') {
+      wmConfirm({
+        title: `Make an offer to ${candName} now?`,
+        desc: 'This skips the remaining rounds. AI will draft the offer letter for your review.',
+        confirmLabel: 'Make offer now'
+      }, () => {
+        location.href = `recruit-interview.html?name=${encodeURIComponent(candName)}&step=offer`;
+      });
+    } else if (action === 'add-round') {
+      wmRoundModal({ name: 'Extra round' }, (data) => {
+        const qs = new URLSearchParams({
+          name: candName,
+          round: String(currentRound + 1),
+          roundName: data.name,
+          interviewer: 'TBD',
+          duration: '45',
+          date: data.date,
+          time: data.time
+        }).toString();
+        location.href = `recruit-interview.html?${qs}`;
+      });
+    } else if (action === 'take-home') {
+      alert(`AI will email a take-home task to ${candName.split(' ')[0]}.`);
+      location.href = 'recruit-interviews.html?takehome=' + encodeURIComponent(candName);
+    }
+  });
+
+  document.getElementById('rejectBtn').addEventListener('click', () => {
+    wmConfirm({
+      title: `Reject ${candName}?`,
+      desc: 'AI will send a polite, white-labelled rejection email on your behalf.',
+      confirmLabel: 'Reject',
+      danger: true
+    }, () => {
+      location.href = 'recruit-interviews.html?rejected=' + encodeURIComponent(candName);
+    });
+  });
+  document.getElementById('laterBtn').addEventListener('click', () => {
+    location.href = 'recruit-interviews.html';
+  });
+
+  // ===== Interviewer scorecard + notes for next interviewer =====
+  const RECO_LABELS = {
+    'strong-yes': 'Strong yes',
+    'yes': 'Yes',
+    'lean-yes': 'Lean yes',
+    'no': 'No',
+    'strong-no': 'Strong no'
+  };
+  const scKey = `wm_scorecards_${candName}`;
+  function loadScorecards() {
+    try { return JSON.parse(localStorage.getItem(scKey)) || []; }
+    catch (e) { return []; }
+  }
+  function saveScorecards(arr) {
+    localStorage.setItem(scKey, JSON.stringify(arr));
+  }
+
+  // Identify current interviewer from the plan (best-effort)
+  const currentInterviewer = (plan[currentRound - 1] && plan[currentRound - 1].interviewer) || params.get('interviewer') || 'You';
+  const currentRoundName = (plan[currentRound - 1] && plan[currentRound - 1].name) || params.get('roundName') || `Round ${currentRound}`;
+  const scYouRoundEl = document.getElementById('scYouRound');
+  if (scYouRoundEl) scYouRoundEl.textContent = `${currentRoundName} · ${currentInterviewer}`;
+
+  // Update the sub line to reflect current round name + position in plan
+  const subEl = document.getElementById('candSub') || document.querySelector('.cand-head-info .sub');
+  if (subEl) subEl.textContent = `Senior Backend Engineer · Round ${currentRound} of ${totalRounds} · ${currentRoundName}`;
+
+  // Show the "Interview scheduled" pill when we're past round 1
+  const schedPill = document.getElementById('schedPill');
+  if (schedPill && currentRound > 1) schedPill.hidden = false;
+
+  // ---- Wire up the 1-10 score chips via event delegation (robust) ----
+  const currentScores = {};
+  let currentReco = null;
+  const scoreCardEl = document.getElementById('scoreCard');
+  if (scoreCardEl) {
+    scoreCardEl.addEventListener('click', (e) => {
+      const chip = e.target.closest('.score-chip');
+      if (!chip || !scoreCardEl.contains(chip)) return;
+      const row = chip.closest('.score-row');
+      if (!row) return;
+      const dim = row.dataset.dim;
+      row.querySelectorAll('.score-chip').forEach(c => c.classList.remove('active'));
+      chip.classList.add('active');
+      currentScores[dim] = parseInt(chip.dataset.value, 10);
+      try { persist(); } catch (err) { console.warn('persist failed', err); }
+    });
+  }
+
+  // ---- Recommendation chips via delegation ----
+  const recoWrap = document.getElementById('recoChips');
+  if (recoWrap) {
+    recoWrap.addEventListener('click', (e) => {
+      const chip = e.target.closest('.reco-chip');
+      if (!chip || !recoWrap.contains(chip)) return;
+      recoWrap.querySelectorAll('.reco-chip').forEach(c => {
+        c.classList.remove('active', 'strong-yes', 'yes', 'lean-yes', 'no', 'strong-no');
+      });
+      chip.classList.add('active', chip.dataset.reco);
+      currentReco = chip.dataset.reco;
+      try { persist(); } catch (err) { console.warn('persist failed', err); }
+    });
+  }
+
+  // ---- Notes area persists too ----
+  const notesEl = document.getElementById('nextNotes');
+  let notesDebounce;
+  notesEl.addEventListener('input', () => {
+    clearTimeout(notesDebounce);
+    notesDebounce = setTimeout(persist, 400);
+  });
+
+  function persist() {
+    const arr = loadScorecards();
+    const idx = arr.findIndex(s => s.round === currentRound);
+    const entry = {
+      round: currentRound,
+      roundName: currentRoundName,
+      interviewer: currentInterviewer,
+      scores: { ...currentScores },
+      recommendation: currentReco,
+      notes: notesEl.value || '',
+      date: new Date().toISOString()
+    };
+    if (idx >= 0) arr[idx] = entry; else arr.push(entry);
+    saveScorecards(arr);
+    const pill = document.getElementById('scSaved');
+    pill.classList.add('show');
+    clearTimeout(pill._t);
+    pill._t = setTimeout(() => pill.classList.remove('show'), 1400);
+  }
+
+  // ---- Restore this round's scorecard if interviewer is returning ----
+  (function restore() {
+    const arr = loadScorecards();
+    const mine = arr.find(s => s.round === currentRound);
+    if (!mine) return;
+    if (mine.scores) {
+      Object.entries(mine.scores).forEach(([dim, val]) => {
+        currentScores[dim] = val;
+        const row = document.querySelector(`#scoreCard .score-row[data-dim="${dim}"]`);
+        if (!row) return;
+        const chip = row.querySelector(`.score-chip[data-value="${val}"]`);
+        if (chip) chip.classList.add('active');
+      });
+    }
+    if (mine.recommendation) {
+      currentReco = mine.recommendation;
+      const chip = document.querySelector(`#recoChips .reco-chip[data-reco="${mine.recommendation}"]`);
+      if (chip) chip.classList.add('active', mine.recommendation);
+    }
+    if (mine.notes) notesEl.value = mine.notes;
+  })();
+
+  // ---- Render previous rounds (if any) ----
+  (function renderPrevious() {
+    const arr = loadScorecards().filter(s => s.round < currentRound).sort((a, b) => a.round - b.round);
+    if (!arr.length) return;
+    const section = document.getElementById('prevRoundsSection');
+    const list = document.getElementById('prevRoundsList');
+    section.hidden = false;
+    list.innerHTML = arr.map(s => {
+      // Pick the overall score — prefer the "Overall" key, fall back to first/average
+      let overall = null;
+      if (s.scores && typeof s.scores === 'object') {
+        if (s.scores.Overall != null) overall = s.scores.Overall;
+        else {
+          const vals = Object.values(s.scores).filter(v => typeof v === 'number');
+          if (vals.length) overall = Math.round((vals.reduce((a, b) => a + b, 0) / vals.length) * 10) / 10;
+        }
+      }
+      const overallHtml = overall != null
+        ? `<div class="prev-overall"><span class="prev-overall-num">${overall}</span><span class="prev-overall-suffix">/10</span><span class="prev-overall-label">Overall</span></div>`
+        : '';
+      const recoHtml = s.recommendation
+        ? `<div class="prev-reco ${s.recommendation}">${RECO_LABELS[s.recommendation] || s.recommendation}</div>`
+        : '';
+      const notesHtml = s.notes
+        ? `<div class="prev-notes"><div class="prev-notes-label">Notes for you</div>${escapeHtml(s.notes)}</div>`
+        : '';
+      const when = s.date ? new Date(s.date).toLocaleDateString('en-IN', { day: 'numeric', month: 'short' }) : '';
+      return `
+        <div class="prev-card">
+          <div class="prev-head">
+            <span class="round-tag">Round ${s.round}</span>
+            <span class="interviewer">${escapeHtml(s.interviewer || 'Interviewer')}</span>
+            <span class="when">${escapeHtml(s.roundName || '')}${when ? ' · ' + when : ''}</span>
+          </div>
+          <div class="prev-meta-row">
+            ${overallHtml}
+            ${recoHtml}
+          </div>
+          ${notesHtml}
+        </div>`;
+    }).join('');
+  })();
+
+  function escapeHtml(s) {
+    return String(s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+  }
+
+  // ---- Persist on the major actions too (Move forward / Reject) ----
+  ['forwardBtn', 'rejectBtn'].forEach(id => {
+    const el = document.getElementById(id);
+    if (el) el.addEventListener('click', persist, { capture: true });
+  });
+
+  // Summary / Transcript tab switching
+  document.querySelectorAll('.review-tab').forEach(tab => {
+    tab.addEventListener('click', () => {
+      document.querySelectorAll('.review-tab').forEach(t => t.classList.remove('active'));
+      tab.classList.add('active');
+      const which = tab.dataset.tab;
+      document.getElementById('summaryView').hidden = (which !== 'summary');
+      document.getElementById('transcriptView').hidden = (which !== 'transcript');
+    });
+  });
+</script>
+  <!-- ============ NOTIFICATIONS SIDE PANEL ============ -->
+  <div class="notif-overlay" id="notifOverlay"></div>
+  <aside class="notif-panel" id="notifPanel" aria-hidden="true" aria-labelledby="notifTitle">
+    <div class="notif-panel-head">
+      <h2 id="notifTitle">Notifications</h2>
+      <div class="notif-head-actions">
+        <label class="notif-unread">
+          Unread only
+          <input type="checkbox" id="notifUnreadOnly">
+          <span class="track"></span>
+        </label>
+        <button class="notif-close" type="button" id="notifCloseBtn" aria-label="Close notifications" onclick="document.getElementById('notifPanel').classList.remove('open'); document.getElementById('notifOverlay').classList.remove('open');">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+        </button>
+      </div>
+    </div>
+    <div class="notif-tabs" role="tablist">
+      <button class="notif-tab active has-unread" data-filter="all" role="tab">All <span class="dot"></span></button>
+      <button class="notif-tab has-unread" data-filter="candidates" role="tab">Candidates <span class="dot"></span></button>
+      <button class="notif-tab has-unread" data-filter="interviews" role="tab">Interviews <span class="dot"></span></button>
+      <button class="notif-tab" data-filter="system" role="tab">System</button>
+    </div>
+    <div class="notif-list" id="notifList"></div>
+  </aside>
+
+  <script>
+    // ===== Notifications panel =====
+    (function () {
+      const overlay = document.getElementById('notifOverlay');
+      const panel = document.getElementById('notifPanel');
+      if (!overlay || !panel) return;
+
+      const list = document.getElementById('notifList');
+      const unreadOnly = document.getElementById('notifUnreadOnly');
+      const tabs = document.querySelectorAll('.notif-tab');
+      let activeFilter = 'all';
+
+      const NOTIFS = [
+        { id: 1, cat: 'candidates', unread: true, av: 'P', avColor: '#0026FF', title: '<strong>Priya Sharma</strong> answered screening', desc: 'AI gave a 92% fit. Review her in the shortlist.', when: '2h ago' },
+        { id: 2, cat: 'interviews', unread: true, av: 'A', avColor: '#1B7FF5', title: '<strong>Arjun Patel</strong> · Round 1 interview completed', desc: 'AI summary + transcript ready. Decide next round.', when: '5h ago' },
+        { id: 4, cat: 'interviews', unread: false, av: 'P', avColor: '#0026FF', title: '<strong>Priya Sharma</strong> confirmed Tomorrow 11:00 IST', desc: 'Calendar invite sent. Video room link is ready.', when: '2d ago' },
+        { id: 5, cat: 'system', unread: false, av: 'ai', title: 'AI summary <strong>improved</strong>', desc: 'We refreshed our scoring model. Past summaries auto-updated.', when: '4d ago' }
+      ];
+
+      function aiAv() {
+        return '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2z"/></svg>';
+      }
+
+      function render() {
+        const filtered = NOTIFS.filter(n => {
+          if (unreadOnly.checked && !n.unread) return false;
+          if (activeFilter !== 'all' && n.cat !== activeFilter) return false;
+          return true;
+        });
+        if (!filtered.length) {
+          list.innerHTML = '<div class="notif-empty">You\'re all caught up.</div>';
+          return;
+        }
+        list.innerHTML = filtered.map(n => `
+          <div class="notif-item ${n.unread ? 'unread' : ''}" data-id="${n.id}">
+            <div class="av ${n.av === 'ai' ? 'ai' : ''}" ${n.av !== 'ai' && n.avColor ? `style="background:${n.avColor};color:#fff;"` : ''}>${n.av === 'ai' ? aiAv() : n.av}</div>
+            <div class="body">
+              <div class="title">${n.title}</div>
+              <div class="desc">${n.desc}</div>
+            </div>
+            <div class="when">${n.when}</div>
+          </div>
+        `).join('');
+        // Mark as read on click
+        list.querySelectorAll('.notif-item').forEach(el => {
+          el.addEventListener('click', () => {
+            const id = +el.dataset.id;
+            const n = NOTIFS.find(x => x.id === id);
+            if (n) n.unread = false;
+            render();
+          });
+        });
+      }
+
+      function open() {
+        overlay.classList.add('open');
+        panel.classList.add('open');
+        panel.setAttribute('aria-hidden', 'false');
+        // Highlight the Notifications nav item
+        document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+        document.querySelector('[data-action="open-notifications"]')?.classList.add('active');
+        render();
+      }
+      function close() {
+        overlay.classList.remove('open');
+        panel.classList.remove('open');
+        panel.setAttribute('aria-hidden', 'true');
+        // Restore which nav item should be active (this page)
+        document.querySelector('[data-action="open-notifications"]')?.classList.remove('active');
+      }
+
+      document.querySelectorAll('[data-action="open-notifications"]').forEach(el => {
+        el.addEventListener('click', e => {
+          e.preventDefault();
+          e.stopPropagation();
+          if (panel.classList.contains('open')) close();
+          else open();
+        });
+      });
+      document.getElementById('notifCloseBtn').addEventListener('click', e => {
+        e.stopPropagation();
+        close();
+      });
+      // Click anywhere outside the panel/trigger closes it
+      document.addEventListener('click', e => {
+        if (!panel.classList.contains('open')) return;
+        if (panel.contains(e.target)) return;
+        if (e.target.closest('[data-action="open-notifications"]')) return;
+        close();
+      });
+      document.addEventListener('keydown', e => { if (e.key === 'Escape' && panel.classList.contains('open')) close(); });
+
+      unreadOnly.addEventListener('change', render);
+      tabs.forEach(t => {
+        t.addEventListener('click', () => {
+          tabs.forEach(x => x.classList.remove('active'));
+          t.classList.add('active');
+          activeFilter = t.dataset.filter;
+          render();
+        });
+      });
+    })();
+  </script>
+
+<script>
+  (function () {
+    // Restore saved state
+    try {
+      if (localStorage.getItem('wm_sidebar_collapsed') === '1') {
+        document.body.classList.add('sidebar-collapsed');
+      }
+    } catch (e) {}
+
+    // Inject the toggle button into the sidebar
+    const sidebar = document.querySelector('.sidebar');
+    if (!sidebar) return;
+    const btn = document.createElement('button');
+    btn.type = 'button';
+    btn.className = 'nav-collapse-btn';
+    btn.setAttribute('aria-label', 'Toggle sidebar');
+    btn.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>';
+    sidebar.appendChild(btn);
+
+    // Swap the brand logo image src based on collapsed state
+    const logoImg = document.querySelector('.brand-logo img');
+    const FULL_LOGO = 'wisemonk_logo_final.png';
+    const CROPPED_LOGO = 'croped%20logo.png';
+    function syncLogo() {
+      if (!logoImg) return;
+      const isCollapsed = document.body.classList.contains('sidebar-collapsed');
+      logoImg.src = isCollapsed ? CROPPED_LOGO : FULL_LOGO;
+    }
+    syncLogo(); // apply on load (in case we restored a collapsed state)
+
+    btn.addEventListener('click', () => {
+      const collapsed = document.body.classList.toggle('sidebar-collapsed');
+      try { localStorage.setItem('wm_sidebar_collapsed', collapsed ? '1' : '0'); } catch (e) {}
+      syncLogo();
+    });
+  })();
+</script>
+
+<!-- ============ ROUND MODAL (name + date + time) ============ -->
+<div class="wm-modal-overlay" id="wmRoundOverlay" aria-hidden="true" role="dialog">
+  <div class="wm-modal round-modal" role="alertdialog">
+    <div class="wm-modal-head">
+      <div class="wm-modal-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+      </div>
+      <div class="wm-modal-body">
+        <div class="wm-modal-title">Schedule extra round</div>
+        <div class="wm-modal-desc">Name the round and pick when to meet. AI sends the calendar invite + video room link.</div>
+      </div>
+    </div>
+    <div class="wm-field">
+      <label class="wm-field-label" for="wmRoundName">Round name</label>
+      <input type="text" class="wm-field-input" id="wmRoundName" placeholder="e.g. Architecture deep-dive" value="Extra round">
+    </div>
+    <div class="wm-field">
+      <label class="wm-field-label">Date</label>
+      <div class="wm-date-strip" id="wmRoundDateStrip"></div>
+    </div>
+    <div class="wm-field">
+      <label class="wm-field-label">Time (IST)</label>
+      <div class="wm-time-grid" id="wmRoundTimeGrid"></div>
+    </div>
+    <div class="wm-modal-actions" style="margin-top: 6px;">
+      <button class="wm-modal-btn cancel" type="button" id="wmRoundCancel">Cancel</button>
+      <button class="wm-modal-btn confirm" type="button" id="wmRoundConfirm">Send invite</button>
+    </div>
+  </div>
+</div>
+<script>
+  (function () {
+    const overlay = document.getElementById('wmRoundOverlay');
+    const nameEl = document.getElementById('wmRoundName');
+    const dateStrip = document.getElementById('wmRoundDateStrip');
+    const timeGrid = document.getElementById('wmRoundTimeGrid');
+    const cancelBtn = document.getElementById('wmRoundCancel');
+    const confirmBtn = document.getElementById('wmRoundConfirm');
+    let _onOK = null;
+    let selectedDate = null;
+    let selectedTime = null;
+    const TIME_SLOTS = ['10:00','10:30','11:00','11:30','14:00','14:30','15:00','15:30'];
+    const DOW = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
+
+    function renderDates(defaultIso) {
+      dateStrip.innerHTML = '';
+      const today = new Date();
+      for (let i = 1; i <= 5; i++) {
+        const d = new Date(today); d.setDate(today.getDate() + i);
+        const iso = d.toISOString().slice(0, 10);
+        const btn = document.createElement('button');
+        btn.type = 'button';
+        btn.className = 'wm-date-chip';
+        btn.dataset.iso = iso;
+        btn.innerHTML = `<span class="dow">${DOW[d.getDay()]}</span><span class="day">${d.getDate()}</span>`;
+        btn.addEventListener('click', () => {
+          dateStrip.querySelectorAll('.wm-date-chip').forEach(c => c.classList.remove('selected'));
+          btn.classList.add('selected');
+          selectedDate = iso;
+        });
+        dateStrip.appendChild(btn);
+      }
+      const target = defaultIso ? dateStrip.querySelector(`[data-iso="${defaultIso}"]`) : dateStrip.firstElementChild;
+      (target || dateStrip.firstElementChild).click();
+    }
+    function renderTimes(defaultTime) {
+      timeGrid.innerHTML = '';
+      TIME_SLOTS.forEach(t => {
+        const btn = document.createElement('button');
+        btn.type = 'button';
+        btn.className = 'wm-time-slot';
+        btn.dataset.time = t;
+        btn.textContent = t;
+        btn.addEventListener('click', () => {
+          timeGrid.querySelectorAll('.wm-time-slot').forEach(s => s.classList.remove('selected'));
+          btn.classList.add('selected');
+          selectedTime = t;
+        });
+        timeGrid.appendChild(btn);
+      });
+      const target = defaultTime ? timeGrid.querySelector(`[data-time="${defaultTime}"]`) : timeGrid.children[2];
+      (target || timeGrid.children[2]).click();
+    }
+
+    function close() { overlay.classList.remove('open'); _onOK = null; }
+    cancelBtn.addEventListener('click', close);
+    overlay.addEventListener('click', e => { if (e.target === overlay) close(); });
+    document.addEventListener('keydown', e => { if (e.key === 'Escape' && overlay.classList.contains('open')) close(); });
+    confirmBtn.addEventListener('click', () => {
+      const data = { name: nameEl.value.trim() || 'Extra round', date: selectedDate, time: selectedTime };
+      const cb = _onOK; close(); if (cb) cb(data);
+    });
+    window.wmRoundModal = function (defaults, onOK) {
+      defaults = defaults || {};
+      nameEl.value = defaults.name || 'Extra round';
+      renderDates(defaults.date);
+      renderTimes(defaults.time || '11:00');
+      _onOK = onOK;
+      overlay.classList.add('open');
+      setTimeout(() => nameEl.select(), 60);
+    };
+  })();
+</script>
+
+<!-- ============ CONFIRM MODAL ============ -->
+<div class="wm-modal-overlay" id="wmModalOverlay" aria-hidden="true" role="dialog">
+  <div class="wm-modal" role="alertdialog">
+    <div class="wm-modal-head">
+      <div class="wm-modal-icon" id="wmModalIcon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+      </div>
+      <div class="wm-modal-body">
+        <div class="wm-modal-title" id="wmModalTitle">Confirm</div>
+        <div class="wm-modal-desc" id="wmModalDesc"></div>
+      </div>
+    </div>
+    <div class="wm-modal-actions">
+      <button class="wm-modal-btn cancel" type="button" id="wmModalCancel">Cancel</button>
+      <button class="wm-modal-btn confirm" type="button" id="wmModalConfirm">Confirm</button>
+    </div>
+  </div>
+</div>
+<script>
+  (function () {
+    const overlay = document.getElementById('wmModalOverlay');
+    const iconEl = document.getElementById('wmModalIcon');
+    const titleEl = document.getElementById('wmModalTitle');
+    const descEl = document.getElementById('wmModalDesc');
+    const cancelBtn = document.getElementById('wmModalCancel');
+    const confirmBtn = document.getElementById('wmModalConfirm');
+    let _onOK = null;
+    function close() { overlay.classList.remove('open'); _onOK = null; }
+    cancelBtn.addEventListener('click', close);
+    overlay.addEventListener('click', e => { if (e.target === overlay) close(); });
+    document.addEventListener('keydown', e => { if (e.key === 'Escape' && overlay.classList.contains('open')) close(); });
+    confirmBtn.addEventListener('click', () => { const cb = _onOK; close(); if (cb) cb(); });
+    window.wmConfirm = function (opts, onOK) {
+      opts = opts || {};
+      titleEl.textContent = opts.title || 'Are you sure?';
+      descEl.textContent = opts.desc || '';
+      descEl.hidden = !opts.desc;
+      confirmBtn.textContent = opts.confirmLabel || 'Confirm';
+      iconEl.classList.toggle('danger', !!opts.danger);
+      confirmBtn.classList.toggle('danger', !!opts.danger);
+      _onOK = onOK;
+      overlay.classList.add('open');
+      setTimeout(() => confirmBtn.focus(), 50);
+    };
+  })();
+</script>
+</body>
+</html>

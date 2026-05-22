@@ -1,0 +1,410 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Automated Recruitment Flow — Wisemonk</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600;700;800&family=Geist+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --primary-50: #EEF1FF; --primary-100: #D6DCFF; --primary-200: #B3BEFF; --primary-500: #0026FF; --primary-600: #001FCC;
+      --neutral-0: #FFFFFF; --neutral-50: #F7F8FA; --neutral-100: #EEF0F4; --neutral-200: #DDE1E9; --neutral-300: #C4CAD6; --neutral-400: #9AA2B2; --neutral-500: #6B7588; --neutral-700: #363D4D; --neutral-800: #222733;
+      --ai-grad: linear-gradient(135deg, #7C5CFF, #2684FF);
+      --success-50: #E6F9F0; --success-500: #12B76A; --success-700: #027A48;
+      --warning-50: #FFFAEB; --warning-500: #F79009; --warning-700: #B54708;
+      --danger-50: #FFF1F0; --danger-500: #F04438; --danger-700: #B42318;
+      --border: #EEF0F4; --border-strong: #DDE1E9;
+      --text-primary: #222733; --text-secondary: #363D4D; --text-muted: #9AA2B2;
+      --radius-sm: 6px; --radius-md: 12px; --radius-lg: 16px; --radius-full: 100px;
+
+      --phase-discover: #0026FF;
+      --phase-screen: #7C5CFF;
+      --phase-decide: #F79009;
+      --phase-interview: #2684FF;
+      --phase-offer: #12B76A;
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html, body { scrollbar-width: none; -ms-overflow-style: none; }
+    html::-webkit-scrollbar, body::-webkit-scrollbar { width: 0; height: 0; display: none; }
+    body { font-family: 'GT Standard', 'Geist', sans-serif; background: linear-gradient(180deg, #F1F8FF 0%, #FFFFFF 100%); color: var(--text-primary); min-height: 100vh; padding: 48px 32px 80px; }
+    h1, h2, h3, h4, h5, h6 { font-family: 'GT Standard', 'Geist', sans-serif; }
+    .page { max-width: 1400px; margin: 0 auto; }
+
+    /* Header */
+    .head { text-align: center; margin-bottom: 36px; }
+    .head .eyebrow { display: inline-flex; align-items: center; gap: 6px; padding: 5px 12px; background: var(--neutral-0); border: 1px solid var(--border-strong); border-radius: var(--radius-full); font-size: 11px; font-weight: 700; color: var(--text-secondary); letter-spacing: 0.4px; text-transform: uppercase; margin-bottom: 14px; font-family: 'Geist Mono', monospace; font-weight: 500; }
+    .head h1 { font-size: 40px; font-weight: 700; letter-spacing: -0.7px; line-height: 1.1; margin-bottom: 10px; }
+    .head p { font-size: 15px; color: var(--text-muted); max-width: 620px; margin: 0 auto; line-height: 1.55; }
+
+    /* Stats */
+    .savings { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; margin-bottom: 44px; }
+    .save-stat { background: var(--neutral-0); border: 1px solid var(--border-strong); border-radius: var(--radius-md); padding: 18px 20px; }
+    .save-stat .num { font-size: 26px; font-weight: 700; letter-spacing: -0.4px; color: var(--primary-500); margin-bottom: 4px; }
+    .save-stat .num.gold { color: #F79009; }
+    .save-stat .num.green { color: var(--success-500); }
+    .save-stat .num.violet { color: #7C5CFF; }
+    .save-stat .lbl { font-size: 12.5px; color: var(--text-muted); line-height: 1.4; }
+
+    /* Swimlane board */
+    .board {
+      position: relative;
+      background: var(--neutral-0);
+      border: 1.5px solid var(--border-strong);
+      border-radius: var(--radius-lg);
+      padding: 28px 28px 24px;
+      margin-bottom: 36px;
+      box-shadow: 0 2px 4px rgba(34,39,51,0.04);
+    }
+
+    /* Phase strip across the top */
+    .phase-strip {
+      display: grid;
+      grid-template-columns: 130px repeat(5, 1fr);
+      gap: 12px;
+      margin-bottom: 14px;
+    }
+    .phase-spacer { /* empty cell over the actor labels */ }
+    .phase-card {
+      padding: 10px 14px;
+      background: var(--neutral-50);
+      border-radius: var(--radius-sm);
+      border-left: 3px solid var(--phase-discover);
+    }
+    .phase-card.p2 { border-left-color: var(--phase-screen); }
+    .phase-card.p3 { border-left-color: var(--phase-decide); }
+    .phase-card.p4 { border-left-color: var(--phase-interview); }
+    .phase-card.p5 { border-left-color: var(--phase-offer); }
+    .phase-num { font-family: 'Geist Mono', monospace; font-weight: 500; font-size: 10px; letter-spacing: 0.5px; text-transform: uppercase; color: var(--text-muted); margin-bottom: 2px; }
+    .phase-name { font-size: 13.5px; font-weight: 700; letter-spacing: -0.1px; }
+
+    /* Swimlanes */
+    .lane {
+      display: grid;
+      grid-template-columns: 130px repeat(5, 1fr);
+      gap: 12px;
+      align-items: stretch;
+      position: relative;
+      min-height: 110px;
+    }
+    .lane + .lane { margin-top: 12px; }
+    .lane-label {
+      background: var(--neutral-50);
+      border-radius: var(--radius-md);
+      padding: 14px 12px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: flex-start;
+      gap: 6px;
+    }
+    .lane-label .role-icon {
+      width: 28px; height: 28px;
+      border-radius: 8px;
+      display: inline-flex; align-items: center; justify-content: center;
+      color: #fff;
+    }
+    .lane-label .role-icon svg { width: 14px; height: 14px; }
+    .lane.candidate .role-icon { background: #FF6B35; }
+    .lane.ai .role-icon { background: var(--ai-grad); }
+    .lane.client .role-icon { background: var(--text-primary); }
+    .lane-label .role-name { font-size: 12.5px; font-weight: 700; color: var(--text-primary); }
+    .lane-label .role-sub { font-size: 10.5px; color: var(--text-muted); font-family: 'Geist Mono', monospace; font-weight: 500; }
+
+    /* Stage node */
+    .node {
+      background: var(--neutral-0);
+      border: 1.5px solid var(--border-strong);
+      border-radius: var(--radius-md);
+      padding: 12px 14px;
+      display: flex; flex-direction: column;
+      gap: 6px;
+      box-shadow: 0 1px 2px rgba(34,39,51,0.04);
+      position: relative;
+      transition: all 0.15s;
+    }
+    .node:hover { transform: translateY(-2px); box-shadow: 0 8px 20px -8px rgba(34,39,51,0.18); }
+    .node.empty { background: transparent; border: 1.5px dashed var(--border); box-shadow: none; }
+    .node.empty:hover { transform: none; box-shadow: none; }
+    .node-head { display: flex; align-items: center; gap: 6px; }
+    .node-icon { width: 22px; height: 22px; border-radius: 6px; display: inline-flex; align-items: center; justify-content: center; color: #fff; flex-shrink: 0; }
+    .node-icon svg { width: 12px; height: 12px; }
+    .node-title { font-size: 13px; font-weight: 700; letter-spacing: -0.1px; line-height: 1.25; }
+    .node-sub { font-size: 11.5px; color: var(--text-muted); line-height: 1.4; }
+
+    /* Phase color coding for nodes */
+    .node.p1 { border-color: rgba(0, 38, 255, 0.22); }
+    .node.p1 .node-icon { background: var(--phase-discover); }
+    .node.p2 { border-color: rgba(124, 92, 255, 0.25); }
+    .node.p2 .node-icon { background: var(--phase-screen); }
+    .node.p3 { border-color: rgba(247, 144, 9, 0.3); }
+    .node.p3 .node-icon { background: var(--phase-decide); }
+    .node.p4 { border-color: rgba(38, 132, 255, 0.25); }
+    .node.p4 .node-icon { background: var(--phase-interview); }
+    .node.p5 { border-color: rgba(18, 183, 106, 0.3); }
+    .node.p5 .node-icon { background: var(--phase-offer); }
+
+    /* Tags */
+    .auto-tag {
+      position: absolute;
+      top: -7px; right: 8px;
+      display: inline-flex; align-items: center; gap: 3px;
+      padding: 2px 7px;
+      background: var(--ai-grad);
+      color: #fff;
+      border-radius: var(--radius-full);
+      font-size: 9px; font-weight: 700;
+      letter-spacing: 0.4px; text-transform: uppercase;
+      font-family: 'Geist Mono', monospace; font-weight: 500;
+    }
+    .auto-tag svg { width: 8px; height: 8px; }
+
+    /* Connecting flow line behind nodes */
+    .flow-line {
+      position: absolute;
+      pointer-events: none;
+      z-index: 0;
+    }
+    .node { z-index: 1; }
+
+    /* Legend */
+    .legend { display: flex; justify-content: center; gap: 12px; margin-bottom: 28px; flex-wrap: wrap; }
+    .leg-item { display: inline-flex; align-items: center; gap: 8px; padding: 6px 14px; background: var(--neutral-0); border: 1px solid var(--border-strong); border-radius: var(--radius-full); font-size: 12.5px; font-weight: 600; color: var(--text-secondary); }
+    .leg-swatch { width: 18px; height: 4px; border-radius: 2px; }
+    .leg-swatch.s1 { background: var(--phase-discover); }
+    .leg-swatch.s2 { background: var(--phase-screen); }
+    .leg-swatch.s3 { background: var(--phase-decide); }
+    .leg-swatch.s4 { background: var(--phase-interview); }
+    .leg-swatch.s5 { background: var(--phase-offer); }
+
+    /* Bottom: learning loop + key wins */
+    .bottom-grid { display: grid; grid-template-columns: 1.4fr 1fr; gap: 18px; margin-top: 32px; }
+    .loop-card { padding: 24px 28px; background: var(--neutral-0); border: 1.5px dashed var(--primary-200); border-radius: var(--radius-lg); position: relative; overflow: hidden; }
+    .loop-card::before { content: ''; position: absolute; top: -40%; right: -10%; width: 240px; height: 240px; background: radial-gradient(circle, rgba(124,92,255,0.08), transparent 60%); pointer-events: none; }
+    .loop-card .loop-title { display: flex; align-items: center; gap: 10px; font-size: 15px; font-weight: 700; margin-bottom: 8px; color: var(--primary-600); position: relative; }
+    .loop-card .loop-title svg { width: 18px; height: 18px; }
+    .loop-card p { font-size: 13px; color: var(--text-secondary); line-height: 1.6; position: relative; max-width: 520px; }
+    .loop-card p strong { color: var(--text-primary); }
+
+    .wins-card { padding: 22px 24px; background: var(--text-primary); color: #fff; border-radius: var(--radius-lg); }
+    .wins-card h3 { font-size: 15px; font-weight: 700; letter-spacing: -0.1px; margin-bottom: 14px; display: flex; align-items: center; gap: 8px; }
+    .wins-card h3 svg { width: 16px; height: 16px; color: #FFD66F; }
+    .wins-card ul { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 10px; }
+    .wins-card li { display: flex; gap: 8px; font-size: 12.5px; line-height: 1.5; color: rgba(255,255,255,0.86); }
+    .wins-card li::before { content: ''; width: 5px; height: 5px; background: #FFD66F; border-radius: 50%; flex-shrink: 0; margin-top: 8px; }
+    .wins-card li strong { color: #fff; font-weight: 700; }
+
+    @media (max-width: 1080px) {
+      .savings { grid-template-columns: repeat(2, 1fr); }
+      .phase-strip, .lane { grid-template-columns: 110px repeat(5, minmax(140px, 1fr)); }
+      .board { overflow-x: auto; }
+      .bottom-grid { grid-template-columns: 1fr; }
+    }
+    @media (max-width: 720px) {
+      body { padding: 28px 16px 60px; }
+      .head h1 { font-size: 28px; }
+      .savings { grid-template-columns: 1fr 1fr; }
+    }
+  </style>
+</head>
+<body>
+<div class="page">
+
+  <!-- Header -->
+  <div class="head">
+    <span class="eyebrow">Product Flow</span>
+    <h1>Automated recruitment flow</h1>
+    <p>Three actors, five phases, almost zero coordination. Each row shows what one player does across the journey — AI handles the heavy lifting, the client steps in only at decision points.</p>
+  </div>
+
+  <!-- Stats -->
+  <div class="savings">
+    <div class="save-stat"><div class="num">~80%</div><div class="lbl">of stage transitions happen automatically</div></div>
+    <div class="save-stat"><div class="num gold">3 clicks</div><div class="lbl">total client effort per hire on average</div></div>
+    <div class="save-stat"><div class="num green">5×</div><div class="lbl">faster time-to-offer vs. manual flow</div></div>
+    <div class="save-stat"><div class="num violet">12 of 14</div><div class="lbl">recruitment tasks handled by AI</div></div>
+  </div>
+
+  <!-- Phase Legend -->
+  <div class="legend">
+    <span class="leg-item"><span class="leg-swatch s1"></span>Discover</span>
+    <span class="leg-item"><span class="leg-swatch s2"></span>Screen</span>
+    <span class="leg-item"><span class="leg-swatch s3"></span>Decide</span>
+    <span class="leg-item"><span class="leg-swatch s4"></span>Interview</span>
+    <span class="leg-item"><span class="leg-swatch s5"></span>Offer</span>
+  </div>
+
+  <!-- Swimlane board -->
+  <div class="board">
+
+    <!-- Phase headers -->
+    <div class="phase-strip">
+      <div class="phase-spacer"></div>
+      <div class="phase-card"><div class="phase-num">Phase 1</div><div class="phase-name">Discover</div></div>
+      <div class="phase-card p2"><div class="phase-num">Phase 2</div><div class="phase-name">Screen</div></div>
+      <div class="phase-card p3"><div class="phase-num">Phase 3</div><div class="phase-name">Decide</div></div>
+      <div class="phase-card p4"><div class="phase-num">Phase 4</div><div class="phase-name">Interview</div></div>
+      <div class="phase-card p5"><div class="phase-num">Phase 5</div><div class="phase-name">Offer</div></div>
+    </div>
+
+    <!-- Lane 1: Candidate -->
+    <div class="lane candidate">
+      <div class="lane-label">
+        <div class="role-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></div>
+        <div>
+          <div class="role-name">Candidate</div>
+          <div class="role-sub">Applies & responds</div>
+        </div>
+      </div>
+      <div class="node p1">
+        <div class="node-head">
+          <span class="node-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span>
+          <div class="node-title">Applies</div>
+        </div>
+        <div class="node-sub">Submits resume via careers page or job board</div>
+      </div>
+      <div class="node p2">
+        <div class="node-head">
+          <span class="node-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="23 7 16 12 23 17 23 7"/><rect x="1" y="5" width="15" height="14" rx="2"/></svg></span>
+          <div class="node-title">Records async interview</div>
+        </div>
+        <div class="node-sub">Answers 4–6 questions via voice or text</div>
+      </div>
+      <div class="node empty"></div>
+      <div class="node p4">
+        <div class="node-head">
+          <span class="node-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/></svg></span>
+          <div class="node-title">Picks slot</div>
+        </div>
+        <div class="node-sub">Self-books interview from client's free calendar</div>
+      </div>
+      <div class="node p5">
+        <div class="node-head">
+          <span class="node-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span>
+          <div class="node-title">Accepts offer</div>
+        </div>
+        <div class="node-sub">Accepts and e-signs → moves to onboarding</div>
+      </div>
+    </div>
+
+    <!-- Lane 2: AI Recruiter -->
+    <div class="lane ai">
+      <div class="lane-label">
+        <div class="role-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9.937 15.5A2 2 0 0 0 8.5 14.063l-6.135-1.582a.5.5 0 0 1 0-.962L8.5 9.936A2 2 0 0 0 9.937 8.5l1.582-6.135a.5.5 0 0 1 .963 0L14.063 8.5A2 2 0 0 0 15.5 9.937l6.135 1.581a.5.5 0 0 1 0 .964L15.5 14.063a2 2 0 0 0-1.437 1.437l-1.582 6.135a.5.5 0 0 1-.963 0z"/></svg></div>
+        <div>
+          <div class="role-name">AI Recruiter</div>
+          <div class="role-sub">Does the work</div>
+        </div>
+      </div>
+      <div class="node p1">
+        <span class="auto-tag"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l1.9 5.8L20 9.7l-4.5 3.9L17 20l-5-3-5 3 1.5-6.4L4 9.7l6.1-1.9L12 2z"/></svg>Auto</span>
+        <div class="node-head">
+          <span class="node-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg></span>
+          <div class="node-title">Sources & scores</div>
+        </div>
+        <div class="node-sub">Pulls from boards + referrals, ranks top 20 vs JD</div>
+      </div>
+      <div class="node p2">
+        <span class="auto-tag"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l1.9 5.8L20 9.7l-4.5 3.9L17 20l-5-3-5 3 1.5-6.4L4 9.7l6.1-1.9L12 2z"/></svg>Auto</span>
+        <div class="node-head">
+          <span class="node-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg></span>
+          <div class="node-title">Conducts async screen</div>
+        </div>
+        <div class="node-sub">Sends questions, transcribes replies, scores, summarises</div>
+      </div>
+      <div class="node p3">
+        <span class="auto-tag"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l1.9 5.8L20 9.7l-4.5 3.9L17 20l-5-3-5 3 1.5-6.4L4 9.7l6.1-1.9L12 2z"/></svg>Auto</span>
+        <div class="node-head">
+          <span class="node-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 11.08 12 21.08 2 11.08"/><path d="M22 4L12 14.01l-3-3"/></svg></span>
+          <div class="node-title">Surfaces top 3–5</div>
+        </div>
+        <div class="node-sub">Recommends move-forward with confidence score</div>
+      </div>
+      <div class="node p4">
+        <span class="auto-tag"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l1.9 5.8L20 9.7l-4.5 3.9L17 20l-5-3-5 3 1.5-6.4L4 9.7l6.1-1.9L12 2z"/></svg>Auto</span>
+        <div class="node-head">
+          <span class="node-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></span>
+          <div class="node-title">Schedules & note-takes</div>
+        </div>
+        <div class="node-sub">Sends scheduling link + reminders, joins call, transcribes, scores</div>
+      </div>
+      <div class="node p5">
+        <span class="auto-tag"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l1.9 5.8L20 9.7l-4.5 3.9L17 20l-5-3-5 3 1.5-6.4L4 9.7l6.1-1.9L12 2z"/></svg>Auto</span>
+        <div class="node-head">
+          <span class="node-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/></svg></span>
+          <div class="node-title">Drafts offer & comms</div>
+        </div>
+        <div class="node-sub">Offer letter, rejection note, onboarding handoff</div>
+      </div>
+    </div>
+
+    <!-- Lane 3: Client -->
+    <div class="lane client">
+      <div class="lane-label">
+        <div class="role-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg></div>
+        <div>
+          <div class="role-name">Client</div>
+          <div class="role-sub">Decides only</div>
+        </div>
+      </div>
+      <div class="node p1">
+        <div class="node-head">
+          <span class="node-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></span>
+          <div class="node-title">Publishes role</div>
+        </div>
+        <div class="node-sub">Describes role in plain language — that's it</div>
+      </div>
+      <div class="node empty"></div>
+      <div class="node p3">
+        <div class="node-head">
+          <span class="node-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span>
+          <div class="node-title">One-click forward</div>
+        </div>
+        <div class="node-sub">Approve / reject AI shortlist (~3 clicks per role)</div>
+      </div>
+      <div class="node p4">
+        <div class="node-head">
+          <span class="node-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/></svg></span>
+          <div class="node-title">Takes interview</div>
+        </div>
+        <div class="node-sub">Joins live call. AI handles notes & rubric scoring</div>
+      </div>
+      <div class="node p5">
+        <div class="node-head">
+          <span class="node-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span>
+          <div class="node-title">Approves offer</div>
+        </div>
+        <div class="node-sub">Reviews AI-drafted offer, signs, sends</div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Bottom: Learning loop + key wins -->
+  <div class="bottom-grid">
+    <div class="loop-card">
+      <div class="loop-title">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12a9 9 0 1 1-6.219-8.56"/><polyline points="21 3 21 9 15 9"/></svg>
+        Continuous learning loop
+      </div>
+      <p>Every decision the client makes feeds back into the model. Rejected profiles <strong>down-weight</strong> similar candidates; hired profiles <strong>up-weight</strong> matching traits. Each subsequent shortlist for the same role gets sharper — without the client tuning anything.</p>
+    </div>
+
+    <div class="wins-card">
+      <h3>
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2z"/></svg>
+        Why this wins
+      </h3>
+      <ul>
+        <li>Client touches the system <strong>3 times</strong>: publish, approve forward, approve offer</li>
+        <li>AI runs the <strong>entire first round</strong> — no calendar Tetris for the client</li>
+        <li>Auto-stage transitions cut <strong>kanban toil</strong> to near zero</li>
+        <li>Same effort whether hiring <strong>1 person or 50</strong></li>
+      </ul>
+    </div>
+  </div>
+
+</div>
+</body>
+</html>

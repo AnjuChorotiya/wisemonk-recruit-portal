@@ -1,0 +1,707 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Help &amp; docs — Wisemonk Recruitment</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600;700;800&family=Geist+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --primary-50: #EEF1FF; --primary-100: #D6DCFF; --primary-500: #0026FF; --primary-600: #001FCC;
+      --neutral-0: #FFFFFF; --neutral-50: #F7F8FA; --neutral-100: #EEF0F4; --neutral-200: #DDE1E9; --neutral-300: #C4CAD6; --neutral-400: #9AA2B2; --neutral-500: #6B7588; --neutral-700: #363D4D; --neutral-800: #222733;
+      --ai-grad: linear-gradient(135deg, #7C5CFF, #2684FF);
+      --success-50: #E6F9F0; --success-500: #12B76A; --success-700: #027A48;
+      --danger-50: #FFF1F0; --danger-500: #F04438;
+      --border: #EEF0F4; --border-strong: #DDE1E9;
+      --text-primary: #222733; --text-secondary: #363D4D; --text-muted: #9AA2B2;
+      --radius-sm: 6px; --radius-md: 12px; --radius-lg: 16px; --radius-full: 100px;
+      --sidebar-w: 280px; --header-h: 60px;
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: 'GT Standard', 'Geist', sans-serif; background: #fff; color: var(--text-primary); min-height: 100vh; }
+    h1, h2, h3, h4, h5, h6 { font-family: 'GT Standard', 'Geist', sans-serif; }
+    a { text-decoration: none; color: inherit; }
+    button { font-family: inherit; border-radius: var(--radius-sm); }
+    .app { display: grid; grid-template-columns: var(--sidebar-w) 1fr; grid-template-areas: "sidebar main"; min-height: 100vh; }
+    .sidebar { grid-area: sidebar; background: #FFFFFF; padding: 12px 12px 16px; display: flex; flex-direction: column; position: sticky; top: 0; height: 100vh; }
+    .brand-logo { display: block; padding: 6px 8px; margin-bottom: 24px; cursor: pointer; }
+    .brand-logo { padding: 8px 8px !important; margin-bottom: 32px !important; }
+    .brand-logo img { height: 52px; display: block; clip-path: inset(19px 0 5px 10px); margin-top: -19px; margin-bottom: -5px; margin-left: -10px; mix-blend-mode: multiply; }
+    .ws-logo { width: 28px; height: 28px; border-radius: 7px; background: var(--ai-grad); display: flex; align-items: center; justify-content: center; font-size: 13px; font-weight: 700; color: #fff; }
+    .ws-body { flex: 1; min-width: 0; }
+    .ws-name { font-size: 13.5px; font-weight: 700; }
+    .ws-sub { font-size: 11.5px; color: var(--text-muted); margin-top: 1px; }
+    .ws-switch .chev svg { width: 14px; height: 14px; color: var(--text-muted); }
+    .sidebar-search { display: flex; align-items: center; gap: 8px; padding: 7px 10px; background: var(--neutral-50); border: 1px solid var(--border); border-radius: var(--radius-sm); margin: 4px 0 14px; cursor: pointer; }
+    .sidebar-search:hover { background: var(--neutral-100); }
+    .sidebar-search svg { width: 14px; height: 14px; color: var(--text-muted); }
+    .sidebar-search span { flex: 1; font-size: 12.5px; color: var(--text-muted); }
+    .sidebar-search kbd { padding: 1px 5px; background: var(--neutral-0); border: 1px solid var(--border-strong); border-radius: 4px; font-family: 'Geist Mono', monospace; font-weight: 500; font-size: 10px; color: var(--text-muted); }
+    .nav-section { display: flex; flex-direction: column; gap: 4px; }
+    .nav-section + .nav-section { margin-top: 16px; }
+    .nav-section-label { font-family: 'Geist Mono', monospace; font-weight: 500; font-size: 11px; letter-spacing: 0.6px; text-transform: uppercase; color: var(--neutral-500); padding: 0 10px; margin-bottom: 4px; }
+    .nav-item { display: flex; align-items: center; gap: 12px; padding: 10px 16px; border-radius: 8px; font-size: 16px; font-weight: 500; color: var(--text-secondary); cursor: pointer; transition: all 0.12s; letter-spacing: -0.1px; background: transparent; border: none; text-align: left; width: 100%; font-family: inherit; }
+    .nav-item:hover { background: var(--neutral-50); color: var(--text-secondary); }
+    .nav-item.active { background: #EEF1FF; color: var(--text-primary); font-weight: 600; box-shadow: 0 1px 2px rgba(34, 39, 51, 0.06); }
+    .nav-item svg { width: 17px; height: 17px; flex-shrink: 0; color: var(--text-secondary); stroke-width: 1.7; }
+    .nav-item.active svg { color: var(--text-primary); }
+    .nav-item .label { flex: 1; }
+    .nav-item .badge { padding: 1px 7px; background: transparent; color: var(--text-secondary); border-radius: var(--radius-full); font-size: 10.5px; font-weight: 600; }
+    .nav-item.active .badge { background: var(--text-primary); color: #fff; }
+    .nav-item .value { font-size: 12.5px; color: var(--text-secondary); font-family: 'Geist Mono', monospace; font-weight: 500; }
+    .ws-switch { background: var(--neutral-0); border-radius: 12px; padding: 4px; margin-bottom: 12px; box-shadow: 0 1px 2px rgba(34, 39, 51, 0.05); }
+    .ws-switch-row { display: flex; align-items: center; gap: 10px; padding: 8px 10px; border-radius: 8px; cursor: pointer; transition: background 0.12s; }
+    .ws-switch-row:hover { background: var(--neutral-50); }
+    .ws-switch-av { width: 32px; height: 32px; border-radius: 50%; background: #FF6B35; color: #fff; display: flex; align-items: center; justify-content: center; font-size: 13px; font-weight: 700; flex-shrink: 0; }
+    .ws-switch-body { flex: 1; min-width: 0; }
+    .ws-switch-name { font-size: 13px; font-weight: 600; color: var(--text-primary); line-height: 1.2; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; letter-spacing: -0.1px; }
+    .ws-switch-sub { font-size: 11.5px; color: var(--text-muted); margin-top: 2px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .ws-switch-chev { color: var(--text-muted); flex-shrink: 0; }
+    .ws-switch-chev svg { width: 14px; height: 14px; }
+    .ws-switch-divider { height: 1px; background: var(--neutral-100); margin: 0 6px; }
+    .ws-switch-score { display: flex; align-items: center; gap: 10px; padding: 8px 10px; border-radius: 8px; cursor: pointer; transition: background 0.12s; }
+    .ws-switch-score:hover { background: var(--neutral-50); }
+    .ws-switch-score .ring { width: 28px; height: 28px; border-radius: 50%; background: conic-gradient(var(--primary-500) 0% 78%, var(--neutral-100) 78% 100%); display: flex; align-items: center; justify-content: center; flex-shrink: 0; position: relative; }
+    .ws-switch-score .ring::after { content: ''; position: absolute; inset: 3px; background: var(--neutral-0); border-radius: 50%; }
+    .ws-switch-score .ring-num { font-size: 11px; font-weight: 700; color: var(--text-primary); position: relative; z-index: 1; }
+    .ws-switch-score .lbl { font-size: 13px; font-weight: 500; color: var(--text-secondary); letter-spacing: -0.1px; }
+    .create-btn { display: flex; align-items: center; justify-content: center; gap: 8px; width: 100%; padding: 11px 16px; background: var(--text-primary); color: #fff; border: none; border-radius: var(--radius-full); font-family: inherit; font-size: 14px; font-weight: 600; cursor: pointer; transition: all 0.15s; margin-bottom: 14px; box-shadow: 0 1px 2px rgba(0,0,0,0.06); letter-spacing: -0.1px; }
+    .create-btn:hover { background: #1a1a1a; transform: translateY(-1px); box-shadow: 0 4px 12px -4px rgba(0,0,0,0.3); }
+    .create-btn svg { width: 14px; height: 14px; }
+    /* Sidebar bottom (profile + utility icons) */
+    .sidebar-bottom { margin-top: auto; padding-top: 12px; display: flex; flex-direction: column; gap: 6px; }
+    .sidebar-utils { display: flex; align-items: center; gap: 4px; padding: 0 4px; }
+    .sb-icon-btn { width: 34px; height: 34px; border-radius: 8px; background: transparent; border: none; cursor: pointer; display: inline-flex; align-items: center; justify-content: center; color: var(--text-muted); transition: all 0.12s; position: relative; }
+    .sb-icon-btn:hover { background: var(--neutral-50); color: var(--text-primary); }
+    .sb-icon-btn svg { width: 17px; height: 17px; }
+    .sb-icon-btn .dot { position: absolute; top: 8px; right: 8px; width: 7px; height: 7px; background: var(--danger-500); border: 1.5px solid var(--neutral-0); border-radius: 50%; }
+    .sb-profile { display: flex; align-items: center; gap: 10px; padding: 8px 10px; border-radius: 8px; cursor: pointer; background: transparent; border: none; width: 100%; transition: background 0.12s; font-family: inherit; }
+    .sb-profile:hover { background: var(--neutral-50); }
+    .sb-profile .av { width: 28px; height: 28px; border-radius: 50%; background: #0026FF; color: #fff; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 600; flex-shrink: 0; }
+    .sb-profile .info { flex: 1; min-width: 0; text-align: left; }
+    .sb-profile .name { font-size: 13px; font-weight: 600; color: var(--text-primary); line-height: 1.2; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; letter-spacing: -0.1px; }
+    .sb-profile .chev { color: var(--text-muted); flex-shrink: 0; }
+    .sb-profile .chev svg { width: 14px; height: 14px; }
+    /* Search talent with AI — same as a regular nav item, only the icon is special */
+    .nav-item.ai-highlight .ai-pill { padding: 1px 7px; background: var(--ai-grad); color: #fff; border-radius: var(--radius-full); font-family: 'Geist Mono', monospace; font-weight: 500; font-size: 9.5px; font-weight: 700; letter-spacing: 0.4px; text-transform: uppercase; }
+    .sidebar-bottom { margin-top: auto; display: flex; flex-direction: column; gap: 8px; }
+    .upgrade-card { padding: 12px; background: linear-gradient(135deg, #F5F1FF, #EFF6FF); border: 1px solid #D6CFFF; border-radius: var(--radius-md); cursor: pointer; }
+    .upgrade-card:hover { transform: translateY(-1px); }
+    .uc-head { display: flex; align-items: center; gap: 8px; margin-bottom: 6px; }
+    .uc-badge { padding: 1px 7px; background: var(--ai-grad); color: #fff; border-radius: 4px; font-size: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.4px; }
+    .uc-cap { font-size: 11px; font-weight: 600; color: var(--text-muted); }
+    .uc-title { font-size: 13px; font-weight: 700; line-height: 1.35; margin-bottom: 8px; }
+    .uc-cta { display: inline-flex; align-items: center; gap: 4px; font-size: 11.5px; font-weight: 600; color: var(--primary-600); }
+    .uc-cta svg { width: 11px; height: 11px; }
+    .user-card { display: flex; align-items: center; gap: 10px; padding: 8px; border-radius: var(--radius-sm); cursor: pointer; }
+    .user-card:hover { background: var(--neutral-50); }
+    .user-card .av { width: 28px; height: 28px; border-radius: 50%; background: #0026FF; color: #fff; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 700; }
+    .user-card .body { flex: 1; min-width: 0; }
+    .user-card .name { font-size: 12.5px; font-weight: 700; }
+    .user-card .email { font-size: 11px; color: var(--text-muted); }
+    .user-card .more svg { width: 14px; height: 14px; color: var(--text-muted); }
+
+    .header { grid-area: header; background: var(--neutral-0); border-bottom: 1px solid var(--border); padding: 0 24px; display: flex; align-items: center; justify-content: space-between; gap: 14px; position: sticky; top: 0; z-index: 40; }
+    .breadcrumb { display: flex; align-items: center; gap: 8px; font-size: 14px; color: var(--text-muted); }
+    .breadcrumb .current { color: var(--text-primary); font-weight: 600; }
+    .header-actions { display: flex; align-items: center; gap: 8px; }
+    .icon-btn { width: 34px; height: 34px; border-radius: var(--radius-sm); background: transparent; border: none; cursor: pointer; display: flex; align-items: center; justify-content: center; color: var(--text-secondary); transition: all 0.15s; position: relative; }
+    .icon-btn:hover { background: var(--neutral-50); color: var(--text-primary); }
+    .icon-btn svg { width: 16px; height: 16px; }
+    .icon-btn .dot { position: absolute; top: 7px; right: 8px; width: 7px; height: 7px; background: var(--danger-500); border: 1.5px solid var(--neutral-0); border-radius: 50%; }
+    .profile-chip { display: inline-flex; align-items: center; gap: 10px; padding: 4px 8px 4px 4px; background: transparent; border: none; border-radius: var(--radius-full); cursor: pointer; transition: background 0.15s; font-family: inherit; }
+    .profile-chip:hover { background: var(--neutral-50); }
+    .profile-chip .av { width: 24px; height: 24px; border-radius: 50%; background: #0026FF; color: #fff; display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 700; flex-shrink: 0; }
+    .profile-chip .info { display: flex; flex-direction: column; line-height: 1.2; text-align: left; }
+    .profile-chip .name { font-size: 13px; font-weight: 700; color: var(--text-primary); white-space: nowrap; }
+    .profile-chip .email { font-size: 11px; color: var(--text-muted); white-space: nowrap; }
+    .profile-chip .chev { color: var(--text-muted); margin-left: 2px; }
+    .profile-chip .chev svg { width: 14px; height: 14px; }
+    @media (max-width: 720px) { .profile-chip .info { display: none; } }
+
+    main { grid-area: main; padding: 36px 32px 80px; overflow-x: hidden; background: #fff; }
+    .wrapper { max-width: 760px; margin: 0 auto; }
+
+    /* Hero search (Intercom-style) */
+    .help-hero { text-align: center; padding: 18px 0 32px; }
+    .help-hero h1 { font-size: 30px; font-weight: 700; letter-spacing: -0.4px; margin-bottom: 8px; }
+    .help-hero .sub { font-size: 15px; color: var(--text-muted); margin-bottom: 22px; }
+    .help-search {
+      display: flex; align-items: center; gap: 10px;
+      max-width: 520px; margin: 0 auto;
+      padding: 14px 18px;
+      background: var(--neutral-0);
+      border: 1.5px solid var(--border-strong);
+      border-radius: var(--radius-full);
+      transition: all 0.15s;
+    }
+    .help-search:focus-within { border-color: var(--primary-500); box-shadow: 0 0 0 4px var(--primary-50); }
+    .help-search svg { width: 18px; height: 18px; color: var(--text-muted); }
+    .help-search input { flex: 1; border: none; outline: none; background: transparent; font-family: inherit; font-size: 15px; color: var(--text-primary); }
+    .help-search input::placeholder { color: var(--text-muted); }
+
+    /* Category cards */
+    .cat-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-bottom: 36px; }
+    @media (max-width: 720px) { .cat-grid { grid-template-columns: 1fr; } }
+    .cat-card {
+      padding: 18px 20px;
+      background: var(--neutral-0);
+      border: 1.5px solid var(--border-strong);
+      border-radius: var(--radius-md);
+      cursor: pointer;
+      transition: all 0.15s;
+      text-align: left;
+      font-family: inherit;
+    }
+    .cat-card:hover { border-color: var(--primary-500); transform: translateY(-1px); box-shadow: 0 8px 20px -8px rgba(0, 38, 255, 0.15); }
+    .cat-card .ico {
+      width: 36px; height: 36px;
+      border-radius: 10px;
+      background: var(--primary-50);
+      display: flex; align-items: center; justify-content: center;
+      margin-bottom: 12px;
+    }
+    .cat-card .ico svg { width: 18px; height: 18px; color: var(--primary-500); }
+    .cat-card .title { font-size: 14.5px; font-weight: 700; margin-bottom: 3px; }
+    .cat-card .desc { font-size: 12.5px; color: var(--text-muted); line-height: 1.5; }
+
+    /* FAQ */
+    .section-head { display: flex; align-items: center; gap: 10px; margin-bottom: 14px; }
+    .section-head h2 { font-size: 18px; font-weight: 700; }
+    .section-head .count { font-family: 'Geist Mono', monospace; font-weight: 500; font-size: 12px; color: var(--text-muted); padding: 1px 8px; background: var(--neutral-100); border-radius: var(--radius-full); }
+
+    .faq { display: flex; flex-direction: column; gap: 6px; margin-bottom: 32px; }
+    .faq-item {
+      background: var(--neutral-0);
+      border: 1px solid var(--border-strong);
+      border-radius: var(--radius-md);
+      overflow: hidden;
+    }
+    .faq-q {
+      padding: 14px 18px;
+      display: flex; align-items: center; justify-content: space-between; gap: 14px;
+      cursor: pointer;
+      font-size: 14px; font-weight: 600;
+      color: var(--text-primary);
+      transition: background 0.15s;
+    }
+    .faq-q:hover { background: var(--neutral-50); }
+    .faq-q .chev { transition: transform 0.2s; flex-shrink: 0; color: var(--text-muted); }
+    .faq-q .chev svg { width: 16px; height: 16px; }
+    .faq-item.open .faq-q .chev { transform: rotate(180deg); }
+    .faq-a { max-height: 0; overflow: hidden; transition: max-height 0.3s ease, padding 0.2s; padding: 0 18px; font-size: 13.5px; color: var(--text-secondary); line-height: 1.6; }
+    .faq-item.open .faq-a { max-height: 400px; padding: 0 18px 16px; }
+    .faq-a strong { color: var(--text-primary); font-weight: 700; }
+    .faq-a a { color: var(--primary-500); font-weight: 600; text-decoration: underline; text-underline-offset: 3px; }
+
+    /* Contact */
+    .contact-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+    @media (max-width: 720px) { .contact-row { grid-template-columns: 1fr; } }
+    .contact-card {
+      padding: 18px 20px;
+      background: var(--neutral-0);
+      border: 1.5px solid var(--border-strong);
+      border-radius: var(--radius-md);
+      display: flex; align-items: center; gap: 14px;
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+    .contact-card:hover { border-color: var(--primary-500); transform: translateY(-1px); }
+    .contact-card .ico {
+      width: 40px; height: 40px;
+      border-radius: 10px;
+      background: var(--primary-50);
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0;
+    }
+    .contact-card .ico svg { width: 20px; height: 20px; color: var(--primary-500); }
+    .contact-card .title { font-size: 14px; font-weight: 700; margin-bottom: 2px; }
+    .contact-card .desc { font-size: 12.5px; color: var(--text-muted); }
+
+    @media (max-width: 880px) {
+      .app { grid-template-columns: 1fr; grid-template-areas: "header" "main"; }
+      .sidebar { display: none; }
+      main { padding: 22px 18px 56px; }
+    }
+      /* ============ NOTIFICATIONS SIDE PANEL ============ */
+    .notif-overlay { display: none; }
+    .notif-panel {
+      position: fixed;
+      top: 0; left: var(--sidebar-w);
+      width: 460px; max-width: calc(100vw - var(--sidebar-w));
+      height: 100vh;
+      background: var(--neutral-0);
+      box-shadow: -2px 0 8px rgba(17, 22, 35, 0.08), 2px 0 8px rgba(17, 22, 35, 0.08);
+      display: flex; flex-direction: column;
+      transform: translateX(calc(-100% - var(--sidebar-w, 280px)));
+      visibility: hidden;
+      z-index: 91;
+    }
+    .notif-panel.open { transform: translateX(0); visibility: visible; }
+    .notif-panel-head {
+      padding: 20px 22px 14px;
+      display: flex; align-items: center; justify-content: space-between;
+      gap: 12px;
+      flex-shrink: 0;
+    }
+    .notif-panel-head h2 { font-size: 20px; font-weight: 700; letter-spacing: -0.2px; }
+    .notif-head-actions { display: flex; align-items: center; gap: 12px; }
+    .notif-unread {
+      display: inline-flex; align-items: center; gap: 8px;
+      font-size: 12.5px; font-weight: 500;
+      color: var(--text-secondary);
+      cursor: pointer;
+    }
+    .notif-unread input { display: none; }
+    .notif-unread .track {
+      width: 28px; height: 16px;
+      background: var(--neutral-200);
+      border-radius: 100px;
+      position: relative;
+      transition: background 0.2s;
+    }
+    .notif-unread .track::after {
+      content: ''; position: absolute;
+      top: 2px; left: 2px;
+      width: 12px; height: 12px;
+      background: #fff; border-radius: 50%;
+      transition: transform 0.2s;
+      box-shadow: 0 1px 2px rgba(0,0,0,0.2);
+    }
+    .notif-unread input:checked + .track { background: var(--primary-500); }
+    .notif-unread input:checked + .track::after { transform: translateX(12px); }
+    .notif-close {
+      width: 32px; height: 32px;
+      border-radius: 8px;
+      background: transparent;
+      border: 1px solid var(--border-strong);
+      color: var(--text-secondary);
+      cursor: pointer;
+      display: inline-flex; align-items: center; justify-content: center;
+      transition: all 0.15s;
+    }
+    .notif-close:hover { background: var(--neutral-50); color: var(--text-primary); }
+    .notif-close svg { width: 14px; height: 14px; pointer-events: none; }
+    .notif-tabs {
+      display: flex; align-items: center; gap: 22px;
+      padding: 0 22px;
+      border-bottom: 1px solid var(--border);
+      flex-shrink: 0;
+    }
+    .notif-tab {
+      padding: 10px 0;
+      background: none; border: none; cursor: pointer;
+      font-family: inherit;
+      font-size: 13.5px; font-weight: 500;
+      color: var(--text-muted);
+      position: relative;
+      display: inline-flex; align-items: center; gap: 6px;
+      transition: color 0.15s;
+    }
+    .notif-tab:hover { color: var(--text-secondary); }
+    .notif-tab.active { color: var(--text-primary); font-weight: 600; }
+    .notif-tab.active::after {
+      content: ''; position: absolute;
+      bottom: -1px; left: 0; right: 0; height: 2px;
+      background: var(--text-primary);
+      border-radius: 2px;
+    }
+    .notif-tab .dot {
+      width: 6px; height: 6px;
+      border-radius: 50%;
+      background: var(--danger-500);
+      display: none;
+    }
+    .notif-tab.has-unread .dot { display: inline-block; }
+    .notif-list { flex: 1; overflow-y: auto; padding: 6px 12px 80px; }
+    .notif-item {
+      display: grid;
+      grid-template-columns: 36px 1fr auto;
+      gap: 12px;
+      padding: 14px 10px;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: background 0.12s;
+      position: relative;
+    }
+    .notif-item:hover { background: var(--neutral-50); }
+    .notif-item .av {
+      width: 36px; height: 36px;
+      border-radius: 50%;
+      background: var(--neutral-100);
+      display: flex; align-items: center; justify-content: center;
+      color: var(--text-primary);
+      font-size: 13px; font-weight: 700;
+      flex-shrink: 0;
+    }
+    .notif-item .av.ai { background: var(--ai-grad); color: #fff; }
+    .notif-item .av svg { width: 16px; height: 16px; }
+    .notif-item .body { min-width: 0; padding-top: 1px; }
+    .notif-item .title {
+      font-size: 13.5px;
+      color: var(--text-primary);
+      font-weight: 500;
+      line-height: 1.45;
+      display: flex; align-items: baseline; gap: 6px;
+    }
+    .notif-item.unread .title::before {
+      content: '';
+      width: 7px; height: 7px;
+      background: var(--danger-500);
+      border-radius: 50%;
+      flex-shrink: 0;
+      align-self: center;
+    }
+    .notif-item .title strong { font-weight: 700; }
+    .notif-item .desc {
+      font-size: 12.5px;
+      color: var(--text-muted);
+      margin-top: 3px;
+      line-height: 1.5;
+    }
+    .notif-item .when {
+      font-size: 11.5px;
+      color: var(--text-muted);
+      font-family: 'Geist Mono', monospace;
+      font-weight: 500;
+      white-space: nowrap;
+      align-self: start;
+      padding-top: 3px;
+    }
+    .notif-empty {
+      padding: 32px 22px;
+      text-align: center;
+      font-size: 13px;
+      color: var(--text-muted);
+    }
+      /* ============ COLLAPSIBLE SIDEBAR ============ */
+    body.sidebar-collapsed { --sidebar-w: 76px; }
+    body.sidebar-collapsed .sidebar { padding: 12px 8px 16px; }
+    body.sidebar-collapsed .brand-logo img { clip-path: none; margin-left: 0; margin-top: 0; margin-bottom: 0; width: 36px; height: auto; }
+    body.sidebar-collapsed .nav-item { justify-content: center; gap: 0; }
+    body.sidebar-collapsed .nav-item .label,
+    body.sidebar-collapsed .nav-item .badge,
+    body.sidebar-collapsed .nav-section-label,
+    body.sidebar-collapsed .sb-profile .info,
+    body.sidebar-collapsed .sb-profile .chev,
+    body.sidebar-collapsed .create-btn span,
+    body.sidebar-collapsed .sidebar-utils { display: none !important; }
+    body.sidebar-collapsed .create-btn { gap: 0; font-size: 0; line-height: 1; width: 42px; height: 42px; min-height: 0; padding: 0; margin: 0 auto 14px; border-radius: 50%; }
+    body.sidebar-collapsed .sb-profile { justify-content: center; padding: 6px 0; }
+    body.sidebar-collapsed .notif-panel { left: var(--sidebar-w); }
+    body.sidebar-collapsed .decision-bar { left: var(--sidebar-w); }
+    body.sidebar-collapsed .cand-panel-overlay,
+    body.sidebar-collapsed .filter-overlay { left: 0; }
+    body.sidebar-collapsed .wrapper { max-width: none; }
+    body.sidebar-collapsed main { padding-left: 24px; padding-right: 24px; }
+    /* Collapse toggle button */
+    .nav-collapse-btn {
+      position: absolute;
+      top: 26px;
+      right: -12px;
+      width: 24px; height: 24px;
+      border-radius: 50%;
+      background: var(--neutral-0);
+      border: 1px solid var(--border-strong);
+      color: var(--text-secondary);
+      cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      box-shadow: 0 2px 6px rgba(17, 22, 35, 0.08);
+      transition: all 0.15s;
+      z-index: 50;
+    }
+    .nav-collapse-btn:hover { color: var(--text-primary); border-color: var(--text-secondary); box-shadow: 0 3px 10px rgba(17, 22, 35, 0.12); }
+    .nav-collapse-btn svg { width: 12px; height: 12px; transition: transform 0.2s; }
+    body.sidebar-collapsed .nav-collapse-btn svg { transform: rotate(180deg); }
+  </style>
+</head>
+<body>
+<div class="app">
+  <aside class="sidebar">
+    <a href="recruit-pipeline.html" class="brand-logo"><img src="wisemonk_logo_final.png" alt="Wisemonk"></a>
+    <!-- Create button -->
+    <button class="create-btn" type="button" onclick="location.href='recruit-role.html'">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+      Create role
+    </button>
+    <div class="nav-section">
+      <a class="nav-item" href="recruit-pipeline.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg><span class="label">Open roles</span><span class="badge">1</span></a>
+      <a class="nav-item" href="recruit-candidates.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg><span class="label">Shortlisted</span><span class="badge">5</span></a>
+      <a class="nav-item" href="recruit-interviews.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg><span class="label">Interviews</span><span class="badge">1</span></a>
+      <button class="nav-item" type="button" data-action="open-notifications"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg><span class="label">Notifications</span><span class="badge">3</span></button>
+      <a class="nav-item ai-highlight" href="recruit-search.html"><svg viewBox="0 0 24 24" fill="url(#aiNavGrad5)" stroke="none"><defs><linearGradient id="aiNavGrad5" x1="0" y1="0" x2="24" y2="24" gradientUnits="userSpaceOnUse"><stop offset="0%" stop-color="#7C5CFF"/><stop offset="100%" stop-color="#2684FF"/></linearGradient></defs><path d="M12 2L13.8 9.5 L21 11 L13.8 12.5 L12 22 L10.2 12.5 L3 11 L10.2 9.5 Z"/></svg><span class="label">Search talent with AI</span></a>
+    </div>
+    <!-- Sidebar bottom: profile -->
+    <div class="sidebar-bottom">
+      <button class="sb-profile" onclick="location.href='recruit-settings.html'" title="Profile">
+        <div class="av">A</div>
+        <div class="info"><div class="name">Alex Mehta</div></div>
+        <span class="chev"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></span>
+      </button>
+    </div>
+  </aside>
+
+  <main>
+    <div class="wrapper">
+
+      <!-- Hero (Intercom-style) -->
+      <div class="help-hero">
+        <h1>How can we help?</h1>
+        <div class="sub">Search the docs, browse FAQs, or message us directly.</div>
+        <div class="help-search">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+          <input id="qIn" type="text" placeholder="Search for an answer…">
+        </div>
+      </div>
+
+      <!-- Categories -->
+      <div class="cat-grid">
+        <button class="cat-card">
+          <div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg></div>
+          <div class="title">Getting started</div>
+          <div class="desc">Set up your portal in 5 minutes</div>
+        </button>
+        <button class="cat-card">
+          <div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9.937 15.5A2 2 0 0 0 8.5 14.063l-6.135-1.582a.5.5 0 0 1 0-.962L8.5 9.936A2 2 0 0 0 9.937 8.5l1.582-6.135a.5.5 0 0 1 .963 0L14.063 8.5A2 2 0 0 0 15.5 9.937l6.135 1.581a.5.5 0 0 1 0 .964L15.5 14.063a2 2 0 0 0-1.437 1.437l-1.582 6.135a.5.5 0 0 1-.963 0z"/></svg></div>
+          <div class="title">How AI screening works</div>
+          <div class="desc">What we vet for, and how</div>
+        </button>
+        <button class="cat-card">
+          <div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div>
+          <div class="title">India EOR &amp; compliance</div>
+          <div class="desc">Payroll, PF, gratuity, ESI explained</div>
+        </button>
+      </div>
+
+      <!-- FAQ -->
+      <div class="section-head">
+        <h2>Frequently asked</h2>
+        <span class="count">6</span>
+      </div>
+      <div class="faq" id="faq">
+        <div class="faq-item">
+          <div class="faq-q">How does the free tier work?<span class="chev"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></span></div>
+          <div class="faq-a">Free includes <strong>unlimited roles</strong> and <strong>unlimited applicants</strong> — every applicant to your role gets AI-screened and surfaced. AI talent search across our broader network is capped at <strong>3 results</strong>, the interview plan is limited to <strong>2 rounds</strong>, and EOR hiring is Pro-only. Upgrade to <a href="recruit-upgrade.html">Pro ($99/mo)</a> for unlimited AI search, deeper interview plans, white-label careers page, India EOR + e-sign offer letters.</div>
+        </div>
+        <div class="faq-item">
+          <div class="faq-q">Where do candidates come from?<span class="chev"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></span></div>
+          <div class="faq-a">Three sources: <strong>(1)</strong> applicants from your shareable career link, <strong>(2)</strong> our talent network, and <strong>(3)</strong> AI-sourced from major Indian platforms. All go through the same vetting before reaching your pipeline.</div>
+        </div>
+        <div class="faq-item">
+          <div class="faq-q">What does AI screening check?<span class="chev"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></span></div>
+          <div class="faq-a">Resume + skills match against your JD, screening Q answers, a 3-min async video for communication + thinking, English fluency, and a role-specific rubric (e.g. system design for engineering roles).</div>
+        </div>
+        <div class="faq-item">
+          <div class="faq-q">Is India EOR really included?<span class="chev"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></span></div>
+          <div class="faq-a">Yes — on the Pro plan. Once a candidate accepts, we handle payroll, PF, gratuity, ESI, income tax, contracts and Form 16. You see one consolidated monthly invoice.</div>
+        </div>
+        <div class="faq-item">
+          <div class="faq-q">Can I bring my own ATS / pipeline?<span class="chev"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></span></div>
+          <div class="faq-a">Greenhouse and Ashby integrations are on the roadmap. For now, exported candidate data is available as CSV/JSON from any role.</div>
+        </div>
+        <div class="faq-item">
+          <div class="faq-q">How do refunds work?<span class="chev"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></span></div>
+          <div class="faq-a">14-day money-back if your first hire doesn't work out. Cancel anytime — no annual lock-in unless you choose the annual plan (which is 20% off).</div>
+        </div>
+      </div>
+
+      <!-- Contact -->
+      <div class="section-head"><h2>Still need help?</h2></div>
+      <div class="contact-row">
+        <a class="contact-card" href="mailto:help@wisemonk.io">
+          <div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 7.5 12 13l9-5.5"/><rect x="3" y="5" width="18" height="14" rx="2"/></svg></div>
+          <div><div class="title">Email us</div><div class="desc">help@wisemonk.io · replies within 4 hours</div></div>
+        </a>
+        <button class="contact-card">
+          <div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg></div>
+          <div><div class="title">Chat with us</div><div class="desc">Live chat · Mon–Fri 9am–7pm IST</div></div>
+        </button>
+      </div>
+
+    </div>
+  </main>
+</div>
+
+<script>
+  document.querySelectorAll('.faq-q').forEach(q => {
+    q.addEventListener('click', () => q.closest('.faq-item').classList.toggle('open'));
+  });
+
+  document.getElementById('qIn').addEventListener('input', e => {
+    const q = e.target.value.toLowerCase().trim();
+    document.querySelectorAll('.faq-item').forEach(i => {
+      const text = i.textContent.toLowerCase();
+      i.style.display = (!q || text.includes(q)) ? '' : 'none';
+    });
+  });
+</script>
+  <!-- ============ NOTIFICATIONS SIDE PANEL ============ -->
+  <div class="notif-overlay" id="notifOverlay"></div>
+  <aside class="notif-panel" id="notifPanel" aria-hidden="true" aria-labelledby="notifTitle">
+    <div class="notif-panel-head">
+      <h2 id="notifTitle">Notifications</h2>
+      <div class="notif-head-actions">
+        <label class="notif-unread">
+          Unread only
+          <input type="checkbox" id="notifUnreadOnly">
+          <span class="track"></span>
+        </label>
+        <button class="notif-close" type="button" id="notifCloseBtn" aria-label="Close notifications" onclick="document.getElementById('notifPanel').classList.remove('open'); document.getElementById('notifOverlay').classList.remove('open');">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+        </button>
+      </div>
+    </div>
+    <div class="notif-tabs" role="tablist">
+      <button class="notif-tab active has-unread" data-filter="all" role="tab">All <span class="dot"></span></button>
+      <button class="notif-tab has-unread" data-filter="candidates" role="tab">Candidates <span class="dot"></span></button>
+      <button class="notif-tab has-unread" data-filter="interviews" role="tab">Interviews <span class="dot"></span></button>
+      <button class="notif-tab" data-filter="system" role="tab">System</button>
+    </div>
+    <div class="notif-list" id="notifList"></div>
+  </aside>
+
+  <script>
+    // ===== Notifications panel =====
+    (function () {
+      const overlay = document.getElementById('notifOverlay');
+      const panel = document.getElementById('notifPanel');
+      if (!overlay || !panel) return;
+
+      const list = document.getElementById('notifList');
+      const unreadOnly = document.getElementById('notifUnreadOnly');
+      const tabs = document.querySelectorAll('.notif-tab');
+      let activeFilter = 'all';
+
+      const NOTIFS = [
+        { id: 1, cat: 'candidates', unread: true, av: 'P', avColor: '#0026FF', title: '<strong>Priya Sharma</strong> answered screening', desc: 'AI gave a 92% fit. Review her in the shortlist.', when: '2h ago' },
+        { id: 2, cat: 'interviews', unread: true, av: 'A', avColor: '#1B7FF5', title: '<strong>Arjun Patel</strong> · Round 1 interview completed', desc: 'AI summary + transcript ready. Decide next round.', when: '5h ago' },
+        { id: 4, cat: 'interviews', unread: false, av: 'P', avColor: '#0026FF', title: '<strong>Priya Sharma</strong> confirmed Tomorrow 11:00 IST', desc: 'Calendar invite sent. Video room link is ready.', when: '2d ago' },
+        { id: 5, cat: 'system', unread: false, av: 'ai', title: 'AI summary <strong>improved</strong>', desc: 'We refreshed our scoring model. Past summaries auto-updated.', when: '4d ago' }
+      ];
+
+      function aiAv() {
+        return '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2z"/></svg>';
+      }
+
+      function render() {
+        const filtered = NOTIFS.filter(n => {
+          if (unreadOnly.checked && !n.unread) return false;
+          if (activeFilter !== 'all' && n.cat !== activeFilter) return false;
+          return true;
+        });
+        if (!filtered.length) {
+          list.innerHTML = '<div class="notif-empty">You\'re all caught up.</div>';
+          return;
+        }
+        list.innerHTML = filtered.map(n => `
+          <div class="notif-item ${n.unread ? 'unread' : ''}" data-id="${n.id}">
+            <div class="av ${n.av === 'ai' ? 'ai' : ''}" ${n.av !== 'ai' && n.avColor ? `style="background:${n.avColor};color:#fff;"` : ''}>${n.av === 'ai' ? aiAv() : n.av}</div>
+            <div class="body">
+              <div class="title">${n.title}</div>
+              <div class="desc">${n.desc}</div>
+            </div>
+            <div class="when">${n.when}</div>
+          </div>
+        `).join('');
+        // Mark as read on click
+        list.querySelectorAll('.notif-item').forEach(el => {
+          el.addEventListener('click', () => {
+            const id = +el.dataset.id;
+            const n = NOTIFS.find(x => x.id === id);
+            if (n) n.unread = false;
+            render();
+          });
+        });
+      }
+
+      function open() {
+        overlay.classList.add('open');
+        panel.classList.add('open');
+        panel.setAttribute('aria-hidden', 'false');
+        // Highlight the Notifications nav item
+        document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+        document.querySelector('[data-action="open-notifications"]')?.classList.add('active');
+        render();
+      }
+      function close() {
+        overlay.classList.remove('open');
+        panel.classList.remove('open');
+        panel.setAttribute('aria-hidden', 'true');
+        // Restore which nav item should be active (this page)
+        document.querySelector('[data-action="open-notifications"]')?.classList.remove('active');
+      }
+
+      document.querySelectorAll('[data-action="open-notifications"]').forEach(el => {
+        el.addEventListener('click', e => {
+          e.preventDefault();
+          e.stopPropagation();
+          if (panel.classList.contains('open')) close();
+          else open();
+        });
+      });
+      document.getElementById('notifCloseBtn').addEventListener('click', e => {
+        e.stopPropagation();
+        close();
+      });
+      // Click anywhere outside the panel/trigger closes it
+      document.addEventListener('click', e => {
+        if (!panel.classList.contains('open')) return;
+        if (panel.contains(e.target)) return;
+        if (e.target.closest('[data-action="open-notifications"]')) return;
+        close();
+      });
+      document.addEventListener('keydown', e => { if (e.key === 'Escape' && panel.classList.contains('open')) close(); });
+
+      unreadOnly.addEventListener('change', render);
+      tabs.forEach(t => {
+        t.addEventListener('click', () => {
+          tabs.forEach(x => x.classList.remove('active'));
+          t.classList.add('active');
+          activeFilter = t.dataset.filter;
+          render();
+        });
+      });
+    })();
+  </script>
+
+<script>
+  (function () {
+    // Restore saved state
+    try {
+      if (localStorage.getItem('wm_sidebar_collapsed') === '1') {
+        document.body.classList.add('sidebar-collapsed');
+      }
+    } catch (e) {}
+
+    // Inject the toggle button into the sidebar
+    const sidebar = document.querySelector('.sidebar');
+    if (!sidebar) return;
+    const btn = document.createElement('button');
+    btn.type = 'button';
+    btn.className = 'nav-collapse-btn';
+    btn.setAttribute('aria-label', 'Toggle sidebar');
+    btn.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>';
+    sidebar.appendChild(btn);
+
+    // Swap the brand logo image src based on collapsed state
+    const logoImg = document.querySelector('.brand-logo img');
+    const FULL_LOGO = 'wisemonk_logo_final.png';
+    const CROPPED_LOGO = 'croped%20logo.png';
+    function syncLogo() {
+      if (!logoImg) return;
+      const isCollapsed = document.body.classList.contains('sidebar-collapsed');
+      logoImg.src = isCollapsed ? CROPPED_LOGO : FULL_LOGO;
+    }
+    syncLogo(); // apply on load (in case we restored a collapsed state)
+
+    btn.addEventListener('click', () => {
+      const collapsed = document.body.classList.toggle('sidebar-collapsed');
+      try { localStorage.setItem('wm_sidebar_collapsed', collapsed ? '1' : '0'); } catch (e) {}
+      syncLogo();
+    });
+  })();
+</script>
+</body>
+</html>
