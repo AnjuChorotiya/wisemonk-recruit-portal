@@ -328,6 +328,32 @@
       padding: 18px 20px;
       margin-bottom: 16px;
     }
+    .comp-currency-row { display: flex; justify-content: flex-start; margin-bottom: 14px; }
+    .comp-currency-toggle {
+      display: inline-flex;
+      padding: 4px;
+      background: var(--neutral-50);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-full);
+      gap: 2px;
+    }
+    .comp-cur-tab {
+      padding: 7px 14px;
+      background: transparent;
+      border: none;
+      border-radius: var(--radius-full);
+      font-family: inherit;
+      font-size: 12.5px; font-weight: 600;
+      color: var(--text-muted);
+      cursor: pointer;
+      transition: all 0.12s;
+    }
+    .comp-cur-tab:hover { color: var(--text-secondary); }
+    .comp-cur-tab.active {
+      background: var(--neutral-0);
+      color: var(--text-primary);
+      box-shadow: 0 1px 2px rgba(34, 39, 51, 0.08);
+    }
     .comp-suggested {
       display: flex; align-items: center; gap: 8px;
       font-size: 13.5px; color: var(--text-secondary);
@@ -863,8 +889,6 @@
       .meta-row { flex-direction: column; }
     }
   </style>
-  <link rel="stylesheet" href="mobile-fixes.css">
-  <script src="mobile-fixes.js" defer></script>
 </head>
 <body>
 
@@ -1001,6 +1025,12 @@
         </div>
 
         <div class="comp-card">
+          <div class="comp-currency-row">
+            <div class="comp-currency-toggle" role="tablist" aria-label="Currency">
+              <button type="button" class="comp-cur-tab active" data-cur="INR" role="tab">₹ INR (LPA)</button>
+              <button type="button" class="comp-cur-tab" data-cur="USD" role="tab">$ USD (per year)</button>
+            </div>
+          </div>
           <div class="comp-suggested">
             <svg class="comp-spark" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2z"/></svg>
             <span id="compSuggestText">AI suggests <strong>₹25–40 LPA</strong> — typical for Senior Backend Engineers in India with 4+ years.</span>
@@ -1009,18 +1039,18 @@
             <div class="comp-field">
               <label>Min</label>
               <div class="comp-input-wrap">
-                <span class="prefix">₹</span>
-                <input type="number" id="compMin" value="25" min="1" max="999">
-                <span class="suffix">LPA</span>
+                <span class="prefix" id="compMinPrefix">₹</span>
+                <input type="number" id="compMin" value="25" min="1" max="9999">
+                <span class="suffix" id="compMinSuffix">LPA</span>
               </div>
             </div>
             <span class="comp-dash">–</span>
             <div class="comp-field">
               <label>Max</label>
               <div class="comp-input-wrap">
-                <span class="prefix">₹</span>
-                <input type="number" id="compMax" value="40" min="1" max="999">
-                <span class="suffix">LPA</span>
+                <span class="prefix" id="compMaxPrefix">₹</span>
+                <input type="number" id="compMax" value="40" min="1" max="9999">
+                <span class="suffix" id="compMaxSuffix">LPA</span>
               </div>
             </div>
           </div>
@@ -1443,30 +1473,103 @@
       return { label: 'this role', min: 15, max: 30, level: 'in India' };
     }
 
+    // ===== Currency state (INR / USD) =====
+    let compCurrency = 'INR';
+    const LPA_TO_USD = 1200; // 1 LPA ≈ $1,200 USD/year (₹1L/yr ≈ $1.2K at ₹83/$)
+    function currencyMeta() {
+      return compCurrency === 'USD'
+        ? { symbol: '$', suffix: 'per year', factor: LPA_TO_USD }
+        : { symbol: '₹', suffix: 'LPA', factor: 1 };
+    }
+    function formatCompactValue(val) {
+      // For USD, show as e.g. 30K instead of 30000
+      if (compCurrency !== 'USD') return val;
+      if (val >= 1000) return Math.round(val / 1000) + 'K';
+      return val;
+    }
+    function refreshCompUi(rawMinLpa, rawMaxLpa) {
+      const m = currencyMeta();
+      document.getElementById('compMinPrefix').textContent = m.symbol;
+      document.getElementById('compMaxPrefix').textContent = m.symbol;
+      document.getElementById('compMinSuffix').textContent = m.suffix;
+      document.getElementById('compMaxSuffix').textContent = m.suffix;
+      // Convert + write values
+      const minOut = compCurrency === 'USD' ? Math.round(rawMinLpa * LPA_TO_USD / 1000) : rawMinLpa;
+      const maxOut = compCurrency === 'USD' ? Math.round(rawMaxLpa * LPA_TO_USD / 1000) : rawMaxLpa;
+      document.getElementById('compMin').value = minOut;
+      document.getElementById('compMax').value = maxOut;
+      // For USD, the suffix is "K" - so we treat input as thousands. Update suffix to clarify:
+      if (compCurrency === 'USD') {
+        document.getElementById('compMinSuffix').textContent = 'K /yr';
+        document.getElementById('compMaxSuffix').textContent = 'K /yr';
+      }
+    }
     function applyCompSuggestion() {
       const r = detectRole();
       const minInput = document.getElementById('compMin');
       const maxInput = document.getElementById('compMax');
       const suggestText = document.getElementById('compSuggestText');
-      // Only overwrite if the user hasn't manually edited yet (still at defaults 25/40)
-      const stillDefault = parseInt(minInput.value, 10) === 25 && parseInt(maxInput.value, 10) === 40;
+      // Only overwrite if the user hasn't manually edited yet (still at defaults 25/40 INR or USD equivalent)
+      const currentMin = parseInt(minInput.value, 10);
+      const currentMax = parseInt(maxInput.value, 10);
+      const defaultMinUsd = Math.round(25 * LPA_TO_USD / 1000);
+      const defaultMaxUsd = Math.round(40 * LPA_TO_USD / 1000);
+      const stillDefault = (currentMin === 25 && currentMax === 40) || (currentMin === defaultMinUsd && currentMax === defaultMaxUsd);
       if (stillDefault) {
-        minInput.value = r.min;
-        maxInput.value = r.max;
+        // r.min/r.max are LPA values; convert if USD
+        refreshCompUi(r.min, r.max);
       }
-      const min = minInput.value;
-      const max = maxInput.value;
-      suggestText.innerHTML = `AI suggests <strong>₹${min}–${max} LPA</strong> — typical for ${r.label} in India ${r.level}.`;
+      // Build the suggest text in the current currency
+      if (compCurrency === 'USD') {
+        const minUsd = Math.round(r.min * LPA_TO_USD / 1000);
+        const maxUsd = Math.round(r.max * LPA_TO_USD / 1000);
+        suggestText.innerHTML = `AI suggests <strong>$${minUsd}K–${maxUsd}K /yr</strong> — typical for ${r.label} in India ${r.level}.`;
+      } else {
+        suggestText.innerHTML = `AI suggests <strong>₹${r.min}–${r.max} LPA</strong> — typical for ${r.label} in India ${r.level}.`;
+      }
     }
+
+    // Wire currency toggle
+    document.querySelectorAll('.comp-cur-tab').forEach(tab => {
+      tab.addEventListener('click', () => {
+        if (tab.classList.contains('active')) return;
+        document.querySelectorAll('.comp-cur-tab').forEach(t => t.classList.remove('active'));
+        tab.classList.add('active');
+        // Read current values *in the old currency*, convert back to LPA basis
+        const oldCur = compCurrency;
+        const minVal = parseInt(document.getElementById('compMin').value, 10) || 25;
+        const maxVal = parseInt(document.getElementById('compMax').value, 10) || 40;
+        // Normalise to LPA (always our base)
+        let minLpa, maxLpa;
+        if (oldCur === 'USD') {
+          minLpa = Math.round(minVal * 1000 / LPA_TO_USD);
+          maxLpa = Math.round(maxVal * 1000 / LPA_TO_USD);
+        } else {
+          minLpa = minVal;
+          maxLpa = maxVal;
+        }
+        compCurrency = tab.dataset.cur;
+        refreshCompUi(minLpa, maxLpa);
+        applyCompSuggestion();
+      });
+    });
     showSalaryToggle?.addEventListener('change', () => {
       showSalaryLabel.textContent = showSalaryToggle.checked ? 'On' : 'Off';
     });
     document.getElementById('compContinue').addEventListener('click', () => {
-      const min = parseInt(document.getElementById('compMin').value, 10) || 25;
-      const max = parseInt(document.getElementById('compMax').value, 10) || 40;
+      const minRaw = parseInt(document.getElementById('compMin').value, 10) || 25;
+      const maxRaw = parseInt(document.getElementById('compMax').value, 10) || 40;
+      // Normalise to LPA (our base unit) for storage, but keep the display in the selected currency
+      const minLpa = compCurrency === 'USD' ? Math.round(minRaw * 1000 / LPA_TO_USD) : minRaw;
+      const maxLpa = compCurrency === 'USD' ? Math.round(maxRaw * 1000 / LPA_TO_USD) : maxRaw;
+      const display = compCurrency === 'USD'
+        ? `$${minRaw}K–${maxRaw}K /yr`
+        : `₹${minRaw}–${maxRaw} LPA`;
       const salary = {
-        min, max,
-        display: `₹${min}–${max} LPA`,
+        min: minLpa, max: maxLpa,
+        currency: compCurrency,
+        minDisplay: minRaw, maxDisplay: maxRaw,
+        display,
         showPublic: showSalaryToggle.checked
       };
       try { localStorage.setItem('wm_salary', JSON.stringify(salary)); } catch (e) {}
