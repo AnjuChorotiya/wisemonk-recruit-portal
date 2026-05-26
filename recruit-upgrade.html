@@ -107,14 +107,14 @@
       .split { grid-template-columns: 1fr; gap: 24px; }
     }
 
-    /* ===== Finalized 3-tier plans layout ===== */
-    .plans-hero { text-align: center; margin-bottom: 40px; }
-    .plans-hero h1 {
-      font-size: 42px; font-weight: 700; letter-spacing: -1.2px;
-      line-height: 1.1;
-      margin-bottom: 14px;
+    /* ===== Plans layout (matches pipeline design system) ===== */
+    .plans-hero { text-align: center; margin-bottom: 32px; }
+    .plans-hero h2 {
+      font-size: 30px; font-weight: 700; letter-spacing: -0.6px;
+      line-height: 1.15;
+      margin-bottom: 10px;
     }
-    .plans-hero h1 em {
+    .plans-hero h2 em {
       font-style: normal;
       background: var(--ai-grad);
       -webkit-background-clip: text;
@@ -122,143 +122,113 @@
       color: transparent;
     }
     .plans-hero .lede {
-      font-size: 16.5px; color: var(--text-secondary);
-      max-width: 620px; margin: 0 auto;
+      font-size: 15px; color: var(--text-secondary);
+      max-width: 600px; margin: 0 auto;
       line-height: 1.55;
     }
 
+    /* 3-tier pricing - identical to in-app modal */
     .plans-grid {
       display: grid;
-      grid-template-columns: 1fr 1fr 1fr;
+      grid-template-columns: repeat(3, 1fr);
       gap: 18px;
-      align-items: stretch;
-      margin-bottom: 40px;
+      margin-bottom: 28px;
     }
-    @media (max-width: 920px) {
-      .plans-grid { grid-template-columns: 1fr; }
-    }
+    @media (max-width: 760px) { .plans-grid { grid-template-columns: 1fr; } }
 
-    .plan-card {
+    .pricing-card {
       position: relative;
-      display: flex; flex-direction: column;
-      padding: 28px 24px 24px;
       background: var(--neutral-0);
-      border: 1.5px solid var(--border-strong);
-      border-radius: 18px;
-      transition: border-color 0.15s, transform 0.15s;
+      border-radius: 16px;
+      overflow: hidden;
+      display: flex; flex-direction: column;
+      box-shadow: 0 2px 6px rgba(34, 39, 51, 0.08);
     }
-    .plan-card:hover { border-color: var(--neutral-300); }
-    .plan-card.featured {
-      border-color: var(--primary-500);
-      box-shadow: 0 14px 40px -12px rgba(0, 38, 255, 0.22), 0 0 0 4px rgba(0, 38, 255, 0.05);
-    }
-    .plan-popular-pill {
-      position: absolute; top: -12px; left: 50%; transform: translateX(-50%);
-      padding: 5px 12px;
-      background: var(--primary-500); color: #fff;
-      font-size: 11px; font-weight: 700; letter-spacing: 0.6px;
-      text-transform: uppercase;
-      border-radius: 9999px;
-      box-shadow: 0 6px 14px -4px rgba(0, 38, 255, 0.4);
-    }
-    .plan-name {
-      font-size: 15px; font-weight: 700;
-      color: var(--text-secondary);
-      letter-spacing: -0.1px;
+    .pricing-card .card-top { padding: 22px 22px 20px; }
+    .pricing-card.free .card-top { background: #fff; }
+    .pricing-card.popular .card-top { background: #E0EAFF; }
+    .pricing-card.expert .card-top { background: #1A1F2E; color: #fff; }
+    .pricing-card.expert .card-top .plan-name { color: #fff; }
+    .pricing-card.expert .card-top .plan-amt { color: #fff; }
+    .pricing-card.expert .card-top .plan-per { color: rgba(255,255,255,0.7); }
+    .pricing-card.expert .card-top .plan-desc { color: rgba(255,255,255,0.85); }
+    .pricing-card.expert .plan-cta { background: #fff; color: #1A1F2E; }
+    .pricing-card.expert .plan-cta:hover { background: #F5F5F5; }
+
+    .pricing-card .plan-name {
+      font-size: 14px; font-weight: 600;
+      color: var(--text-primary);
       margin-bottom: 6px;
     }
-    .plan-tagline {
-      font-size: 13px; color: var(--text-muted);
+    .pricing-card .plan-price-row {
+      display: flex; align-items: baseline; gap: 6px;
+      margin-bottom: 12px;
+    }
+    .pricing-card .plan-amt {
+      font-size: 38px; font-weight: 700;
+      letter-spacing: -1px;
+      color: var(--text-primary);
+      line-height: 1;
+    }
+    .pricing-card .plan-per {
+      font-size: 13px; font-weight: 500;
+      color: var(--text-secondary);
+    }
+    .pricing-card .plan-desc {
+      font-size: 13px; font-weight: 600;
+      color: var(--text-primary);
       line-height: 1.45;
-      margin-bottom: 18px;
+      margin-bottom: 16px;
       min-height: 38px;
     }
-    .plan-price-row {
-      display: flex; align-items: baseline; gap: 6px;
-      margin-bottom: 4px;
-    }
-    .plan-price-amt {
-      font-size: 42px; font-weight: 700; letter-spacing: -1.4px;
-      line-height: 1; color: var(--text-primary);
-    }
-    .plan-price-amt .cur {
-      font-size: 22px; font-weight: 600;
-      color: var(--text-secondary);
-      vertical-align: top; margin-right: 2px;
-    }
-    .plan-price-per {
-      font-size: 13px; color: var(--text-muted); font-weight: 500;
-    }
-    .plan-price-sub {
-      font-size: 12px; color: var(--text-muted);
-      margin-bottom: 22px;
-      min-height: 17px;
-    }
-    .plan-cta {
-      display: flex; align-items: center; justify-content: center; gap: 8px;
+    .pricing-card .plan-cta {
       width: 100%;
-      padding: 12px 16px;
-      border-radius: var(--radius-full);
+      padding: 11px 18px;
+      background: #1A1F2E;
+      color: #fff;
+      border: none;
+      border-radius: 999px;
       font-family: inherit;
-      font-size: 14px; font-weight: 700;
+      font-size: 13px; font-weight: 600;
       cursor: pointer;
       transition: all 0.15s;
-      margin-bottom: 22px;
     }
-    .plan-cta.primary {
-      background: var(--primary-500);
-      color: #fff;
-      border: 1.5px solid var(--primary-500);
-      box-shadow: 0 8px 20px -8px rgba(0, 38, 255, 0.5);
+    .pricing-card .plan-cta:hover { background: #000; }
+    .pricing-card .plan-cta.disabled { opacity: 0.5; cursor: default; }
+    .pricing-card .plan-cta.disabled:hover { background: #1A1F2E; }
+
+    .pricing-card .card-bottom {
+      padding: 20px 22px 22px;
+      background: var(--neutral-0);
+      flex: 1;
     }
-    .plan-cta.primary:hover { background: var(--primary-600); transform: translateY(-1px); }
-    .plan-cta.outline {
-      background: transparent;
+    .pricing-card .plan-feats-label {
+      font-size: 13px; font-weight: 600;
       color: var(--text-primary);
-      border: 1.5px solid var(--border-strong);
+      margin-bottom: 14px;
     }
-    .plan-cta.outline:hover { border-color: var(--text-primary); }
-    .plan-cta.dark {
-      background: var(--text-primary);
-      color: #fff;
-      border: 1.5px solid var(--text-primary);
-    }
-    .plan-cta.dark:hover { background: #1a1a1a; }
-    .plan-features {
-      list-style: none;
-      padding: 18px 0 0;
-      border-top: 1px solid var(--border);
-      margin: 0;
-      display: flex; flex-direction: column; gap: 11px;
-    }
-    .plan-features li {
-      display: flex; align-items: flex-start; gap: 9px;
-      font-size: 13.5px;
+    .pricing-card .plan-feats { display: flex; flex-direction: column; }
+    .pricing-card .plan-feat-row {
+      display: flex; align-items: flex-start; gap: 10px;
+      font-size: 13px;
       color: var(--text-secondary);
-      line-height: 1.45;
+      line-height: 1.4;
+      padding: 10px 0;
     }
-    .plan-features li svg {
-      width: 16px; height: 16px;
-      color: var(--primary-500);
+    .pricing-card .plan-feat-row + .plan-feat-row { border-top: 1px dashed var(--border-strong); }
+    .pricing-card .plan-feat-row .check {
+      display: inline-flex; align-items: center; justify-content: center;
       flex-shrink: 0;
-      margin-top: 1px;
+      color: var(--text-primary);
+      margin-top: 2px;
     }
-    .plan-features li strong { color: var(--text-primary); font-weight: 700; }
-    .plan-features-label {
-      font-size: 11px;
-      font-weight: 700;
-      text-transform: uppercase;
-      letter-spacing: 0.06em;
-      color: var(--text-muted);
-      margin: 18px 0 -6px;
-      padding-bottom: 0;
-    }
-    .plan-features-label:first-child { margin-top: 0; }
+    .pricing-card .plan-feat-row .check svg { width: 14px; height: 14px; }
+    .pricing-card .plan-feat-row strong { color: var(--text-primary); font-weight: 700; }
 
     /* Reassurance row */
     .plans-trust {
       display: flex; justify-content: center; gap: 32px;
-      padding: 24px 0 8px;
+      padding: 14px 0 8px;
       flex-wrap: wrap;
     }
     .plans-trust .item {
@@ -268,20 +238,6 @@
     .plans-trust .item strong { color: var(--text-primary); font-weight: 700; }
     .plans-trust .item svg { width: 14px; height: 14px; color: var(--success-500); }
     @media (max-width: 720px) { .plans-trust { gap: 16px; } .plans-trust .item { font-size: 12px; } }
-
-    /* FAQ-style strip */
-    .plans-faq {
-      margin-top: 32px;
-      padding: 24px 28px;
-      background: var(--neutral-50);
-      border: 1px solid var(--border);
-      border-radius: 16px;
-    }
-    .plans-faq h3 { font-size: 14px; font-weight: 700; margin-bottom: 14px; color: var(--text-primary); }
-    .plans-faq-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px 28px; }
-    @media (max-width: 720px) { .plans-faq-grid { grid-template-columns: 1fr; } }
-    .plans-faq-item .q { font-size: 13.5px; font-weight: 700; color: var(--text-primary); margin-bottom: 4px; }
-    .plans-faq-item .a { font-size: 13px; color: var(--text-secondary); line-height: 1.55; }
 
     /* ===== Left column — value props (Linear pricing) ===== */
     .left h1 {
@@ -587,95 +543,87 @@
   <main>
     <div class="wrapper">
 
-      <!-- ============ PLANS VIEW (finalized) ============ -->
+      <!-- ============ PLANS VIEW (matches in-app design system) ============ -->
       <div class="checkout-view" id="checkoutView">
 
         <div class="plans-hero">
-          <h1>Recruit free. <em>Pay only when you hire.</em></h1>
+          <h2>Recruit free. <em>Pay only when you hire.</em></h2>
           <p class="lede">
-            AI-powered recruiting is on us. We make money only when we successfully employ your candidate in India &mdash; fully legal, payroll, compliance handled.
+            AI-powered recruiting is on us. We make money only when we successfully employ your candidate in India &mdash; fully legal, payroll &amp; compliance handled.
           </p>
         </div>
 
         <div class="plans-grid">
 
           <!-- TIER 1: Recruit (Free) -->
-          <div class="plan-card">
-            <div class="plan-name">Recruit</div>
-            <div class="plan-tagline">For teams exploring or making their first India hire.</div>
-
-            <div class="plan-price-row">
-              <div class="plan-price-amt"><span class="cur">$</span>0</div>
-              <div class="plan-price-per">/ month</div>
+          <div class="pricing-card free">
+            <div class="card-top">
+              <div class="plan-name">Recruit</div>
+              <div class="plan-price-row">
+                <span class="plan-amt">$0</span>
+                <span class="plan-per">/ month</span>
+              </div>
+              <div class="plan-desc">For teams exploring or making their first India hire</div>
+              <button class="plan-cta disabled" type="button">Current plan</button>
             </div>
-            <div class="plan-price-sub">Free forever &middot; no card needed</div>
-
-            <button class="plan-cta outline" type="button" onclick="location.href=&quot;recruit-pipeline.html&quot;">
-              Continue with Recruit
-            </button>
-
-            <div class="plan-features-label">Includes</div>
-            <ul class="plan-features">
-              <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg> Unlimited job postings &amp; roles</li>
-              <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg> AI sourcing, screening &amp; async interviews</li>
-              <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg> AI scorecard &amp; pipeline</li>
-              <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg> <strong>5 contact / resume unlocks</strong> per month</li>
-              <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg> White-labelled candidate emails</li>
-            </ul>
+            <div class="card-bottom">
+              <div class="plan-feats-label">Includes:</div>
+              <div class="plan-feats">
+                <div class="plan-feat-row"><span class="check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span><span>Unlimited job postings &amp; roles</span></div>
+                <div class="plan-feat-row"><span class="check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span><span>AI sourcing, screening &amp; async interviews</span></div>
+                <div class="plan-feat-row"><span class="check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span><span>AI scorecard &amp; pipeline</span></div>
+                <div class="plan-feat-row"><span class="check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span><span><strong>5 contact / resume unlocks</strong> per month</span></div>
+                <div class="plan-feat-row"><span class="check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span><span>White-labelled candidate emails</span></div>
+              </div>
+            </div>
           </div>
 
-          <!-- TIER 2: Hire & Employ (Featured) -->
-          <div class="plan-card featured">
-            <span class="plan-popular-pill">Most popular</span>
-            <div class="plan-name">Hire &amp; Employ</div>
-            <div class="plan-tagline">For teams ready to hire and legally employ in India.</div>
-
-            <div class="plan-price-row">
-              <div class="plan-price-amt"><span class="cur">$</span>299</div>
-              <div class="plan-price-per">/ employee / month</div>
+          <!-- TIER 2: Hire & Employ (Popular) -->
+          <div class="pricing-card popular">
+            <div class="card-top">
+              <div class="plan-name">Hire &amp; Employ</div>
+              <div class="plan-price-row">
+                <span class="plan-amt">$299</span>
+                <span class="plan-per">/ employee / month</span>
+              </div>
+              <div class="plan-desc">Hire and legally employ talent in India</div>
+              <button class="plan-cta" id="ctaHire" type="button">Get started now</button>
             </div>
-            <div class="plan-price-sub">Billed monthly &middot; cancel anytime</div>
-
-            <button class="plan-cta primary" type="button" id="ctaHire">
-              Get started
-            </button>
-
-            <div class="plan-features-label">Everything in Recruit, plus</div>
-            <ul class="plan-features">
-              <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg> <strong>Unlimited unlocks</strong> &mdash; emails, resumes, everything</li>
-              <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg> Full <strong>Employer of Record</strong> in India</li>
-              <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg> Compliant payroll (PF, ESI, TDS, gratuity)</li>
-              <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg> Health insurance &amp; statutory benefits</li>
-              <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg> Offer letters, contracts, onboarding docs</li>
-              <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg> Invoicing in <strong>USD / EUR / GBP</strong></li>
-              <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg> Dedicated India HR contact</li>
-            </ul>
+            <div class="card-bottom">
+              <div class="plan-feats-label">Everything in Recruit, plus:</div>
+              <div class="plan-feats">
+                <div class="plan-feat-row"><span class="check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span><span><strong>Unlimited unlocks</strong> &mdash; emails, resumes, everything</span></div>
+                <div class="plan-feat-row"><span class="check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span><span>Full <strong>Employer of Record</strong> in India</span></div>
+                <div class="plan-feat-row"><span class="check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span><span>Compliant payroll (PF, ESI, TDS, gratuity)</span></div>
+                <div class="plan-feat-row"><span class="check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span><span>Health insurance &amp; statutory benefits</span></div>
+                <div class="plan-feat-row"><span class="check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span><span>Offer letters, contracts, onboarding docs</span></div>
+                <div class="plan-feat-row"><span class="check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span><span>Invoicing in <strong>USD / EUR / GBP</strong></span></div>
+                <div class="plan-feat-row"><span class="check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span><span>Dedicated India HR contact</span></div>
+              </div>
+            </div>
           </div>
 
-          <!-- TIER 3: Scale (Custom) -->
-          <div class="plan-card">
-            <div class="plan-name">Scale</div>
-            <div class="plan-tagline">For teams hiring 10+ in India over the next 12 months.</div>
-
-            <div class="plan-price-row">
-              <div class="plan-price-amt">Custom</div>
+          <!-- TIER 3: Scale (Custom / Expert) -->
+          <div class="pricing-card expert">
+            <div class="card-top">
+              <div class="plan-name">Scale</div>
+              <div class="plan-price-row">
+                <span class="plan-amt">Custom</span>
+              </div>
+              <div class="plan-desc">For teams hiring 10+ in India this year</div>
+              <button class="plan-cta" id="ctaSales" type="button">Talk to sales</button>
             </div>
-            <div class="plan-price-sub">Volume discount &middot; from $179 / employee</div>
-
-            <button class="plan-cta dark" type="button" id="ctaSales">
-              Talk to sales
-            </button>
-
-            <div class="plan-features-label">Everything in Hire &amp; Employ, plus</div>
-            <ul class="plan-features">
-              <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg> <strong>Volume EOR pricing</strong> (10+ / 25+ / 50+ tiers)</li>
-              <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg> Dedicated CSM + India recruiter</li>
-              <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg> ESOP / equity administration</li>
-              <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg> Custom MSA + 4-hour SLA</li>
-              <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg> SSO, SAML, role-based permissions</li>
-              <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg> API + ATS sync (Greenhouse, Lever, Workday)</li>
-              <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg> Quarterly compliance reviews</li>
-            </ul>
+            <div class="card-bottom">
+              <div class="plan-feats-label">Everything in Hire &amp; Employ, plus:</div>
+              <div class="plan-feats">
+                <div class="plan-feat-row"><span class="check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span><span><strong>Volume EOR pricing</strong> from $179 / employee</span></div>
+                <div class="plan-feat-row"><span class="check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span><span>Dedicated CSM + India recruiter</span></div>
+                <div class="plan-feat-row"><span class="check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span><span>ESOP / equity administration</span></div>
+                <div class="plan-feat-row"><span class="check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span><span>Custom MSA + 4-hour SLA</span></div>
+                <div class="plan-feat-row"><span class="check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span><span>SSO, SAML, role-based permissions</span></div>
+                <div class="plan-feat-row"><span class="check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span><span>API + ATS sync (Greenhouse, Lever, Workday)</span></div>
+              </div>
+            </div>
           </div>
 
         </div>
@@ -692,28 +640,6 @@
           <div class="item">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
             <span><strong>SOC 2</strong> &middot; <strong>ISO 27001</strong></span>
-          </div>
-        </div>
-
-        <div class="plans-faq">
-          <h3>Common questions</h3>
-          <div class="plans-faq-grid">
-            <div class="plans-faq-item">
-              <div class="q">Is the recruiting product really free?</div>
-              <div class="a">Yes. Source, screen, interview and shortlist forever &mdash; no card needed. You only pay when you employ someone through us.</div>
-            </div>
-            <div class="plans-faq-item">
-              <div class="q">What happens after 5 free unlocks?</div>
-              <div class="a">You can still browse and interview every candidate. Unlocks reset on the 1st of each month, or upgrade to Hire &amp; Employ for unlimited unlocks.</div>
-            </div>
-            <div class="plans-faq-item">
-              <div class="q">How does EOR pricing work?</div>
-              <div class="a">$299 per employee per month covers full legal employment, payroll, statutory benefits, and compliance. You pay only for employees you actually hire &mdash; no minimums.</div>
-            </div>
-            <div class="plans-faq-item">
-              <div class="q">Can I switch tiers anytime?</div>
-              <div class="a">Yes. Hire &amp; Employ is monthly and cancels anytime. Scale unlocks volume discounts and requires a brief conversation with our team.</div>
-            </div>
           </div>
         </div>
 
