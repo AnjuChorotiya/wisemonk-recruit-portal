@@ -177,6 +177,16 @@
       font-size: 13px; font-weight: 500;
       color: var(--text-secondary);
     }
+    .pricing-card .plan-example {
+      font-size: 12px;
+      color: var(--text-secondary);
+      line-height: 1.5;
+      margin-bottom: 10px;
+      padding-top: 2px;
+    }
+    .pricing-card .plan-example strong { color: var(--text-primary); font-weight: 700; }
+    .pricing-card.expert .plan-example { color: rgba(255,255,255,0.75); }
+    .pricing-card.expert .plan-example strong { color: #fff; }
     .pricing-card .plan-desc {
       font-size: 13px; font-weight: 600;
       color: var(--text-primary);
@@ -657,6 +667,7 @@
                 <span class="plan-amt">10%</span>
                 <span class="plan-per">of annual salary &middot; on hire</span>
               </div>
+              <div class="plan-example">For example, a $30,000 / yr hire costs <strong>$3,000</strong> &mdash; billed on day 1, no other fees.</div>
               <div class="plan-desc">A senior India recruiter runs your search end-to-end. Pay only when your candidate signs.</div>
               <button class="plan-cta" id="ctaHire" type="button">Talk to a recruiter</button>
             </div>
