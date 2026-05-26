@@ -697,31 +697,46 @@
     }
     .talent-tag .more-count { font-weight: 600; color: var(--text-muted); }
 
-    /* Source badge — distinguishes Wisemonk-vetted vs public applications */
-    .src-badge {
-      display: inline-flex; align-items: center; gap: 4px;
-      padding: 2px 8px;
-      border-radius: var(--radius-full);
-      font-size: 10.5px; font-weight: 600;
-      font-family: 'Geist Mono', monospace;
-      letter-spacing: 0.04em;
-      text-transform: uppercase;
-      margin-left: 8px;
-    }
-    .src-badge svg { width: 10px; height: 10px; }
-    .src-badge.vetted {
-      background: var(--primary-50);
-      color: var(--primary-600);
-      border: 1px solid var(--primary-100);
-    }
-    .src-badge.public {
+    /* Applicant source tabs */
+    .src-tabs {
+      display: inline-flex;
+      gap: 4px;
+      padding: 4px;
       background: var(--neutral-50);
-      color: var(--text-muted);
       border: 1px solid var(--border);
+      border-radius: var(--radius-full);
     }
-    /* Soft accent on vetted rows */
-    .talent-row.is-vetted .talent-logo {
-      box-shadow: 0 0 0 2px var(--primary-100);
+    .src-tab {
+      display: inline-flex; align-items: center; gap: 8px;
+      padding: 8px 16px;
+      background: transparent;
+      border: none;
+      border-radius: var(--radius-full);
+      font-family: inherit;
+      font-size: 13px; font-weight: 600;
+      color: var(--text-muted);
+      cursor: pointer;
+      transition: all 0.12s;
+    }
+    .src-tab:hover { color: var(--text-secondary); }
+    .src-tab.active {
+      background: var(--neutral-0);
+      color: var(--text-primary);
+      box-shadow: 0 1px 2px rgba(34, 39, 51, 0.08);
+    }
+    .src-tab-count {
+      display: inline-flex; align-items: center; justify-content: center;
+      min-width: 20px; height: 18px;
+      padding: 0 6px;
+      background: var(--neutral-100);
+      color: var(--text-secondary);
+      border-radius: var(--radius-full);
+      font-size: 11px; font-weight: 700;
+      font-family: 'Geist Mono', monospace;
+    }
+    .src-tab.active .src-tab-count {
+      background: var(--primary-500);
+      color: #fff;
     }
 
     .talent-actions-stack { display: flex; flex-direction: column; align-items: flex-end; justify-content: space-between; gap: 24px; flex-shrink: 0; }
@@ -2397,7 +2412,14 @@
           </div>
 
           <div class="candidates-heading" id="defaultHeading">
-            <h2><strong>5 applicants</strong> for this role &mdash; <span style="color:var(--primary-600);">2 vetted by your Wisemonk recruiter</span>, 3 applied via your job link.</h2>
+            <div class="src-tabs" role="tablist">
+              <button class="src-tab active" type="button" data-src="vetted" role="tab">
+                Vetted by Wisemonk <span class="src-tab-count" id="srcTabCountVetted">2</span>
+              </button>
+              <button class="src-tab" type="button" data-src="public" role="tab">
+                Public applications <span class="src-tab-count" id="srcTabCountPublic">3</span>
+              </button>
+            </div>
             <div class="cand-actions">
               <button class="ai-search-btn" type="button" id="aiSearchBtn">
                 <span class="spark">
@@ -3349,16 +3371,11 @@
       const isLocked = opts.locked;
       const skills = (c.skills || []).slice(0, 5);
       const skillsHtml = skills.map((s, i) => i < 3 ? `<span class="talent-tag">${s}</span>` : `<span class="talent-tag"><span class="tool-ico" style="background:#9AA2B2">${s.charAt(0)}</span>${s}</span>`).join('');
-      const sourceBadge = !isLocked && c.source === 'vetted'
-        ? `<span class="src-badge vetted" title="Sourced & vetted by a Wisemonk recruiter"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>Wisemonk vetted</span>`
-        : (!isLocked && c.source === 'public'
-            ? `<span class="src-badge public" title="Applied through your shared job link">Applied via link</span>`
-            : '');
       return `
-        <div class="talent-row${isLocked ? ' locked' : ''}${c.source === 'vetted' ? ' is-vetted' : ''}"${isLocked ? '' : ` data-id="${c.id}"`}>
+        <div class="talent-row${isLocked ? ' locked' : ''}"${isLocked ? '' : ` data-id="${c.id}"`}>
           <div class="talent-logo" style="background:${c.orgColor || c.color}">${c.orgInitial || c.initial}</div>
           <div class="talent-body">
-            <div class="talent-head"><span class="org">${c.currentOrg || c.org} (current)</span><span class="dot">·</span><span>${c.appliedAgo || c.ago || '1d'}</span>${sourceBadge}</div>
+            <div class="talent-head"><span class="org">${c.currentOrg || c.org} (current)</span><span class="dot">·</span><span>${c.appliedAgo || c.ago || '1d'}</span></div>
             <div class="talent-title">${c.name} — ${c.currentRole || c.role}${c.title && c.title.match(/(\d+) years?/) ? ', ' + c.title.match(/(\d+) years?/)[1] + ' yrs' : ''}</div>
             <div class="talent-pricing">${c.salary || '₹—'}<span class="sep">·</span>${c.notice || '—'} notice<span class="sep">·</span>${c.location || c.loc}</div>
             <div class="talent-tags">${skillsHtml}</div>
@@ -3411,10 +3428,29 @@
     window.addEventListener('resize', onLockScroll, { passive: true });
     function setupUnlockPromptObserver() { updatePromptVisibility(); }
 
+    // ===== Source filter (Vetted / Public) =====
+    let activeSource = 'vetted';
+    document.querySelectorAll('.src-tab').forEach(tab => {
+      tab.addEventListener('click', () => {
+        document.querySelectorAll('.src-tab').forEach(t => t.classList.remove('active'));
+        tab.classList.add('active');
+        activeSource = tab.dataset.src;
+        renderCandidates();
+      });
+    });
+
     function renderCandidates() {
       const shortlistedIds = getShortlisted();
-      // Show ALL applicants — no locking/blurring for now
-      listEl.innerHTML = candidates
+      // Show only candidates matching the active source tab
+      const filtered = candidates.filter(c => c.source === activeSource);
+      // Update tab counts
+      const vetted = candidates.filter(c => c.source === 'vetted').length;
+      const pub = candidates.filter(c => c.source === 'public').length;
+      const vEl = document.getElementById('srcTabCountVetted');
+      const pEl = document.getElementById('srcTabCountPublic');
+      if (vEl) vEl.textContent = vetted;
+      if (pEl) pEl.textContent = pub;
+      listEl.innerHTML = filtered
         .map(c => talentRowHtml(c, { shortlisted: shortlistedIds.includes(c.id) }))
         .join('');
       setupUnlockPromptObserver();
