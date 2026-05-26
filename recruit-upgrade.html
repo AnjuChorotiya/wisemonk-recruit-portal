@@ -130,9 +130,12 @@
     /* 3-tier pricing - identical to in-app modal */
     .plans-grid {
       display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 18px;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 22px;
       margin-bottom: 28px;
+      max-width: 860px;
+      margin-left: auto;
+      margin-right: auto;
     }
     @media (max-width: 760px) { .plans-grid { grid-template-columns: 1fr; } }
 
@@ -225,7 +228,74 @@
     .pricing-card .plan-feat-row .check svg { width: 14px; height: 14px; }
     .pricing-card .plan-feat-row strong { color: var(--text-primary); font-weight: 700; }
 
-    /* Reassurance row */
+    /* Success-fee explainer block */
+    .success-fee-explainer {
+      max-width: 860px;
+      margin: 28px auto 0;
+      padding: 24px 26px;
+      background: var(--neutral-50);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+    }
+    .sfe-head {
+      display: flex; align-items: center; gap: 10px;
+      margin-bottom: 18px;
+      font-size: 15px;
+      color: var(--text-primary);
+    }
+    .sfe-ico {
+      width: 28px; height: 28px;
+      background: var(--text-primary);
+      color: #fff;
+      border-radius: 8px;
+      display: inline-flex; align-items: center; justify-content: center;
+    }
+    .sfe-ico svg { width: 14px; height: 14px; }
+    .sfe-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 16px;
+      margin-bottom: 22px;
+    }
+    @media (max-width: 760px) { .sfe-grid { grid-template-columns: 1fr 1fr; } }
+    .sfe-step {
+      display: flex; gap: 10px;
+      align-items: flex-start;
+    }
+    .sfe-num {
+      width: 22px; height: 22px;
+      border-radius: 50%;
+      background: var(--text-primary);
+      color: #fff;
+      display: inline-flex; align-items: center; justify-content: center;
+      font-size: 11px; font-weight: 700;
+      flex-shrink: 0;
+      margin-top: 1px;
+    }
+    .sfe-body { display: flex; flex-direction: column; gap: 2px; }
+    .sfe-body strong { font-size: 13px; font-weight: 700; color: var(--text-primary); }
+    .sfe-body span { font-size: 12.5px; color: var(--text-secondary); line-height: 1.45; }
+
+    .sfe-example {
+      padding: 14px 16px;
+      background: var(--neutral-0);
+      border: 1px dashed var(--border-strong);
+      border-radius: 12px;
+    }
+    .sfe-example-label {
+      font-size: 11px; font-weight: 700;
+      text-transform: uppercase; letter-spacing: 0.06em;
+      color: var(--text-muted);
+      margin-bottom: 6px;
+    }
+    .sfe-example-body {
+      font-size: 13.5px;
+      color: var(--text-secondary);
+      line-height: 1.6;
+    }
+    .sfe-example-body strong { color: var(--text-primary); font-weight: 700; }
+
+        /* Reassurance row */
     .plans-trust {
       display: flex; justify-content: center; gap: 32px;
       padding: 14px 0 8px;
@@ -543,27 +613,27 @@
   <main>
     <div class="wrapper">
 
-      <!-- ============ PLANS VIEW (matches in-app design system) ============ -->
+      <!-- ============ PLANS VIEW (2 cards: Free + Human-Recruiter) ============ -->
       <div class="checkout-view" id="checkoutView">
 
         <div class="plans-hero">
-          <h2>Recruit free. <em>Pay only when you hire.</em></h2>
+          <h2>Recruit free. <em>Pay only on successful hires.</em></h2>
           <p class="lede">
-            AI-powered recruiting is on us. We make money only when we successfully employ your candidate in India &mdash; fully legal, payroll &amp; compliance handled.
+            Try the platform free, with 5 unlocks every month. When you want a senior recruiter to do the heavy lifting, you only pay <strong>10% of the candidate&#39;s annual salary</strong> &mdash; and only when they join.
           </p>
         </div>
 
         <div class="plans-grid">
 
-          <!-- TIER 1: Recruit (Free) -->
+          <!-- TIER 1: Free (self-serve, credit-limited) -->
           <div class="pricing-card free">
             <div class="card-top">
-              <div class="plan-name">Recruit</div>
+              <div class="plan-name">Free</div>
               <div class="plan-price-row">
                 <span class="plan-amt">$0</span>
                 <span class="plan-per">/ month</span>
               </div>
-              <div class="plan-desc">For teams exploring or making their first India hire</div>
+              <div class="plan-desc">Self-serve AI recruiting &mdash; perfect for trying us out</div>
               <button class="plan-cta disabled" type="button">Current plan</button>
             </div>
             <div class="card-bottom">
@@ -572,70 +642,97 @@
                 <div class="plan-feat-row"><span class="check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span><span>Unlimited job postings &amp; roles</span></div>
                 <div class="plan-feat-row"><span class="check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span><span>AI sourcing, screening &amp; async interviews</span></div>
                 <div class="plan-feat-row"><span class="check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span><span>AI scorecard &amp; pipeline</span></div>
-                <div class="plan-feat-row"><span class="check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span><span><strong>5 contact / resume unlocks</strong> per month</span></div>
+                <div class="plan-feat-row"><span class="check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span><span><strong>5 contact / resume unlocks</strong> every month</span></div>
                 <div class="plan-feat-row"><span class="check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span><span>White-labelled candidate emails</span></div>
+                <div class="plan-feat-row"><span class="check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span><span>Self-serve scheduling &amp; offer letters</span></div>
               </div>
             </div>
           </div>
 
-          <!-- TIER 2: Hire & Employ (Popular) -->
-          <div class="pricing-card popular">
-            <div class="card-top">
-              <div class="plan-name">Hire &amp; Employ</div>
-              <div class="plan-price-row">
-                <span class="plan-amt">$299</span>
-                <span class="plan-per">/ employee / month</span>
-              </div>
-              <div class="plan-desc">Hire and legally employ talent in India</div>
-              <button class="plan-cta" id="ctaHire" type="button">Get started now</button>
-            </div>
-            <div class="card-bottom">
-              <div class="plan-feats-label">Everything in Recruit, plus:</div>
-              <div class="plan-feats">
-                <div class="plan-feat-row"><span class="check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span><span><strong>Unlimited unlocks</strong> &mdash; emails, resumes, everything</span></div>
-                <div class="plan-feat-row"><span class="check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span><span>Full <strong>Employer of Record</strong> in India</span></div>
-                <div class="plan-feat-row"><span class="check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span><span>Compliant payroll (PF, ESI, TDS, gratuity)</span></div>
-                <div class="plan-feat-row"><span class="check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span><span>Health insurance &amp; statutory benefits</span></div>
-                <div class="plan-feat-row"><span class="check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span><span>Offer letters, contracts, onboarding docs</span></div>
-                <div class="plan-feat-row"><span class="check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span><span>Invoicing in <strong>USD / EUR / GBP</strong></span></div>
-                <div class="plan-feat-row"><span class="check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span><span>Dedicated India HR contact</span></div>
-              </div>
-            </div>
-          </div>
-
-          <!-- TIER 3: Scale (Custom / Expert) -->
+          <!-- TIER 2: Human Recruiter in the loop (success fee) -->
           <div class="pricing-card expert">
             <div class="card-top">
-              <div class="plan-name">Scale</div>
+              <div class="plan-name">Human recruiter in the loop</div>
               <div class="plan-price-row">
-                <span class="plan-amt">Custom</span>
+                <span class="plan-amt">10%</span>
+                <span class="plan-per">of annual salary &middot; on hire</span>
               </div>
-              <div class="plan-desc">For teams hiring 10+ in India this year</div>
-              <button class="plan-cta" id="ctaSales" type="button">Talk to sales</button>
+              <div class="plan-desc">Dedicated senior recruiter. You only pay when the candidate joins.</div>
+              <button class="plan-cta" id="ctaHire" type="button">Talk to a recruiter</button>
             </div>
             <div class="card-bottom">
-              <div class="plan-feats-label">Everything in Hire &amp; Employ, plus:</div>
+              <div class="plan-feats-label">Everything in Free, plus:</div>
               <div class="plan-feats">
-                <div class="plan-feat-row"><span class="check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span><span><strong>Volume EOR pricing</strong> from $179 / employee</span></div>
-                <div class="plan-feat-row"><span class="check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span><span>Dedicated CSM + India recruiter</span></div>
-                <div class="plan-feat-row"><span class="check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span><span>ESOP / equity administration</span></div>
-                <div class="plan-feat-row"><span class="check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span><span>Custom MSA + 4-hour SLA</span></div>
-                <div class="plan-feat-row"><span class="check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span><span>SSO, SAML, role-based permissions</span></div>
-                <div class="plan-feat-row"><span class="check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span><span>API + ATS sync (Greenhouse, Lever, Workday)</span></div>
+                <div class="plan-feat-row"><span class="check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span><span><strong>Dedicated India recruiter</strong> assigned to your role</span></div>
+                <div class="plan-feat-row"><span class="check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span><span>Curated shortlist within 7 days &mdash; not just AI matches</span></div>
+                <div class="plan-feat-row"><span class="check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span><span>Outreach to passive candidates via LinkedIn &amp; networks</span></div>
+                <div class="plan-feat-row"><span class="check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span><span>Recruiter joins interviews &amp; takes notes</span></div>
+                <div class="plan-feat-row"><span class="check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span><span>Offer negotiation &amp; close support</span></div>
+                <div class="plan-feat-row"><span class="check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span><span><strong>90-day replacement guarantee</strong> &mdash; if they leave, we re-hire free</span></div>
+                <div class="plan-feat-row"><span class="check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span><span>Unlimited unlocks &amp; rounds</span></div>
               </div>
             </div>
           </div>
 
         </div>
 
+        <!-- How the success fee works -->
+        <div class="success-fee-explainer">
+          <div class="sfe-head">
+            <span class="sfe-ico">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M16 8h-6a2 2 0 1 0 0 4h4a2 2 0 1 1 0 4H8"/><path d="M12 6v2m0 8v2"/></svg>
+            </span>
+            <strong>How the 10% success fee works</strong>
+          </div>
+          <div class="sfe-grid">
+            <div class="sfe-step">
+              <div class="sfe-num">1</div>
+              <div class="sfe-body">
+                <strong>Brief</strong>
+                <span>Tell us the role. Recruiter is assigned within 24 hours.</span>
+              </div>
+            </div>
+            <div class="sfe-step">
+              <div class="sfe-num">2</div>
+              <div class="sfe-body">
+                <strong>Shortlist</strong>
+                <span>Curated 5&ndash;8 candidates within 7 days. Interview them.</span>
+              </div>
+            </div>
+            <div class="sfe-step">
+              <div class="sfe-num">3</div>
+              <div class="sfe-body">
+                <strong>Hire</strong>
+                <span>You make an offer. We help negotiate and close.</span>
+              </div>
+            </div>
+            <div class="sfe-step">
+              <div class="sfe-num">4</div>
+              <div class="sfe-body">
+                <strong>Pay on join</strong>
+                <span>Invoice issued on day 1. 30-day net terms.</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="sfe-example">
+            <div class="sfe-example-label">Example</div>
+            <div class="sfe-example-body">
+              You hire a Senior Backend Engineer at <strong>&#8377;25 LPA</strong> (&asymp; <strong>$30,000/yr</strong>).<br>
+              Your fee: <strong>&#8377;2.5 lakhs</strong> (&asymp; <strong>$3,000</strong>), invoiced on day 1.<br>
+              No hire = no fee. Ever.
+            </div>
+          </div>
+        </div>
+
         <div class="plans-trust">
           <div class="item">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
-            <span><strong>14-day refund</strong> if your first hire doesn&#39;t work out</span>
+            <span><strong>90-day replacement guarantee</strong></span>
           </div>
           <div class="item">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
-            <span><strong>Cancel anytime</strong> &middot; no contracts</span>
+            <span><strong>No upfront fees</strong> &middot; pay only on join</span>
           </div>
           <div class="item">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
