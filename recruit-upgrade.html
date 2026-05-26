@@ -107,234 +107,150 @@
       .split { grid-template-columns: 1fr; gap: 24px; }
     }
 
-    /* ===== Hybrid plans layout: selector (L) + comparison table (R) ===== */
-    .plans-layout {
-      display: grid;
-      grid-template-columns: 340px 1fr;
-      gap: 48px;
-      align-items: start;
-      max-width: 1180px;
-      margin: 0 auto;
-    }
-    @media (max-width: 960px) { .plans-layout { grid-template-columns: 1fr; gap: 32px; } }
-
-    /* === LEFT: plan selector === */
-    .plan-selector h1 {
+    /* ===== Two-card plans layout ===== */
+    .plans-hero { text-align: center; margin-bottom: 32px; }
+    .plans-hero h2 {
       font-size: 30px; font-weight: 700; letter-spacing: -0.6px;
-      line-height: 1.2;
+      line-height: 1.15;
       margin-bottom: 10px;
     }
-    .plan-selector h1 em {
+    .plans-hero h2 em {
       font-style: normal;
       background: var(--ai-grad);
       -webkit-background-clip: text;
       background-clip: text;
       color: transparent;
     }
-    .plan-selector .lede {
-      font-size: 14px; color: var(--text-secondary);
+    .plans-hero .lede {
+      font-size: 15px; color: var(--text-secondary);
+      max-width: 600px; margin: 0 auto;
       line-height: 1.55;
-      margin-bottom: 24px;
-    }
-    .plan-radio-card {
-      display: block;
-      padding: 14px 16px;
-      border: 1.5px solid var(--border-strong);
-      border-radius: 12px;
-      cursor: pointer;
-      margin-bottom: 10px;
-      background: var(--neutral-0);
-      transition: all 0.15s;
-      position: relative;
-    }
-    .plan-radio-card:hover { border-color: var(--neutral-300); }
-    .plan-radio-card.selected {
-      border-color: var(--primary-500);
-      background: #FAFBFF;
-      box-shadow: 0 0 0 3px rgba(0, 38, 255, 0.06);
-    }
-    .plan-radio-card input { display: none; }
-    .plan-radio-head {
-      display: flex; align-items: center; gap: 10px;
-      margin-bottom: 4px;
-    }
-    .plan-radio-price {
-      margin-left: auto;
-      font-size: 16px; font-weight: 800;
-      color: var(--text-primary);
-      letter-spacing: -0.4px;
-    }
-    .plan-radio-dot {
-      width: 16px; height: 16px;
-      border-radius: 50%;
-      border: 1.5px solid var(--border-strong);
-      flex-shrink: 0;
-      transition: all 0.15s;
-      position: relative;
-    }
-    .plan-radio-card.selected .plan-radio-dot {
-      border-color: var(--primary-500);
-      border-width: 5px;
-    }
-    .plan-radio-name {
-      font-size: 15px; font-weight: 700;
-      color: var(--text-primary);
-      letter-spacing: -0.1px;
-    }
-    .plan-radio-sub {
-      font-size: 12.5px;
-      color: var(--text-muted);
-      line-height: 1.45;
-      padding-left: 26px;
-    }
-    .plans-main-cta {
-      width: 100%;
-      padding: 13px 18px;
-      margin-top: 18px;
-      background: var(--text-primary);
-      color: #fff;
-      border: none;
-      border-radius: var(--radius-full);
-      font-family: inherit;
-      font-size: 14px; font-weight: 700;
-      cursor: pointer;
-      transition: all 0.15s;
-      display: inline-flex; align-items: center; justify-content: center; gap: 8px;
-    }
-    .plans-main-cta:hover { background: #000; transform: translateY(-1px); }
-    .plans-reassurance {
-      text-align: center;
-      font-size: 12px; color: var(--text-muted);
-      margin-top: 12px;
-      line-height: 1.5;
     }
 
-    /* === RIGHT: comparison table (compact, no outer border) === */
-    .compare-table {
-      background: var(--neutral-0);
-      border: none;
-      border-radius: 0;
-      overflow: visible;
-      position: relative;
-    }
-    /* Continuous primary-blue → white gradient panel behind the Concierge column */
-    .compare-table::after {
-      content: '';
-      position: absolute;
-      top: 0;
-      bottom: 0;
-      right: 20px;
-      width: calc((100% - 40px) / 3.5);
-      background: linear-gradient(180deg, var(--primary-500) 0%, #4A66FF 18%, #95A8FF 40%, #D6DCFF 65%, #FFFFFF 100%);
-      border-radius: 14px;
-      z-index: 0;
-      pointer-events: none;
-    }
-    .ct-header, .ct-section, .ct-row { position: relative; z-index: 1; }
-    .ct-header {
+    .plans-grid {
       display: grid;
-      grid-template-columns: 1.5fr 1fr 1fr;
-      gap: 0;
-      padding: 16px 20px 12px;
-      background: transparent;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 22px;
+      max-width: 860px;
+      margin: 0 auto 28px;
     }
-    .ct-header-label {
-      font-size: 16px; font-weight: 700;
-      color: var(--text-primary);
-      letter-spacing: -0.3px;
-      align-self: end;
+    @media (max-width: 760px) { .plans-grid { grid-template-columns: 1fr; } }
+
+    .pricing-card {
+      position: relative;
+      background: var(--neutral-0);
+      border-radius: 16px;
+      overflow: hidden;
+      display: flex; flex-direction: column;
+      box-shadow: 0 2px 6px rgba(34, 39, 51, 0.08);
     }
-    .ct-plan-col {
-      text-align: center;
-      padding: 0 8px;
+    .pricing-card .card-top { padding: 22px 22px 20px; }
+    .pricing-card.free .card-top { background: #fff; }
+
+    /* Scout card: continuous primary-blue → white gradient top-to-bottom */
+    .pricing-card.scout {
+      background: linear-gradient(180deg, var(--primary-500) 0%, #4A66FF 12%, #95A8FF 30%, #D6DCFF 55%, #FFFFFF 100%);
+      box-shadow: 0 8px 28px -10px rgba(0, 38, 255, 0.35);
     }
-    .ct-plan-col.featured {
-      background: transparent;
-      padding-top: 4px;
-    }
-    .ct-plan-col.featured .ct-plan-name { color: #fff; }
-    .ct-plan-col.featured .ct-plan-price { color: rgba(255, 255, 255, 0.85); }
-    .ct-plan-col.featured .ct-plan-cta.primary {
+    .pricing-card.scout .card-top,
+    .pricing-card.scout .card-bottom { background: transparent; }
+    .pricing-card.scout .plan-name { color: #fff; }
+    .pricing-card.scout .plan-price-suffix { color: rgba(255, 255, 255, 0.85); }
+    .pricing-card.scout .plan-price-amt-row { color: #fff; }
+    .pricing-card.scout .plan-desc { color: rgba(255, 255, 255, 0.92); }
+    .pricing-card.scout .plan-cta {
       background: #fff;
       color: var(--primary-600);
       border-color: #fff;
     }
-    .ct-plan-col.featured .ct-plan-cta.primary:hover {
+    .pricing-card.scout .plan-cta:hover {
       background: var(--neutral-50);
       border-color: var(--neutral-50);
-      color: var(--primary-700);
     }
-    .ct-plan-name {
-      font-size: 14px; font-weight: 700;
+    .pricing-card.scout .plan-feats-label { color: var(--text-primary); }
+    .pricing-card.scout .plan-feat-row { color: var(--text-secondary); }
+
+    .pricing-card .plan-head-row {
+      display: flex; align-items: baseline; justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 12px;
+    }
+    .pricing-card .plan-name {
+      font-size: 16px; font-weight: 700;
       color: var(--text-primary);
-      margin-bottom: 2px;
+      letter-spacing: -0.2px;
     }
-    .ct-plan-price {
-      font-size: 11.5px;
+    .pricing-card .plan-price-amt-row {
+      display: flex; align-items: baseline; gap: 4px;
+      font-size: 24px; font-weight: 800;
+      color: var(--text-primary);
+      letter-spacing: -0.5px;
+      line-height: 1;
+    }
+    .pricing-card .plan-price-suffix {
+      font-size: 12px; font-weight: 500;
       color: var(--text-muted);
-      margin-bottom: 8px;
-      font-weight: 500;
+      letter-spacing: 0;
     }
-    .ct-plan-cta {
-      display: inline-flex; align-items: center; justify-content: center;
-      padding: 5px 14px;
+    .pricing-card .plan-desc {
+      font-size: 13.5px; font-weight: 500;
+      color: var(--text-secondary);
+      line-height: 1.5;
+      margin-bottom: 16px;
+      min-height: 40px;
+    }
+    .pricing-card .plan-cta {
+      display: flex; align-items: center; justify-content: center;
+      width: 100%;
+      padding: 11px 18px;
+      background: var(--text-primary);
+      color: #fff;
+      border: 1.5px solid var(--text-primary);
       border-radius: var(--radius-full);
       font-family: inherit;
-      font-size: 11.5px; font-weight: 600;
+      font-size: 13.5px; font-weight: 700;
       cursor: pointer;
-      border: 1.5px solid var(--border-strong);
-      background: var(--neutral-0);
-      color: var(--text-primary);
       transition: all 0.15s;
     }
-    .ct-plan-cta:hover { border-color: var(--text-primary); }
-    .ct-plan-cta.primary {
-      background: var(--primary-500);
-      border-color: var(--primary-500);
-      color: #fff;
+    .pricing-card .plan-cta:hover { background: #000; }
+    .pricing-card .plan-cta.disabled {
+      opacity: 0.55;
+      cursor: default;
+      background: var(--neutral-100);
+      color: var(--text-secondary);
+      border-color: var(--neutral-100);
     }
-    .ct-plan-cta.primary:hover { background: var(--primary-600); border-color: var(--primary-600); }
+    .pricing-card .plan-cta.disabled:hover { background: var(--neutral-100); }
 
-    .ct-section {
-      padding: 4px 20px 0;
+    .pricing-card .card-bottom {
+      padding: 20px 22px 24px;
+      background: var(--neutral-0);
+      flex: 1;
     }
-    .ct-section-title {
+    .pricing-card .plan-feats-label {
       font-size: 12px; font-weight: 700;
       color: var(--text-primary);
-      padding: 10px 0 8px;
-      letter-spacing: -0.1px;
+      margin-bottom: 12px;
       text-transform: uppercase;
-      letter-spacing: 0.04em;
-      color: var(--text-muted);
+      letter-spacing: 0.05em;
     }
-    .ct-row {
-      display: grid;
-      grid-template-columns: 1.5fr 1fr 1fr;
-      gap: 0;
-      align-items: center;
-      padding: 7px 0;
-    }
-    .ct-feat {
-      font-size: 12.5px;
+    .pricing-card .plan-feats { display: flex; flex-direction: column; gap: 11px; }
+    .pricing-card .plan-feat-row {
+      display: flex; align-items: flex-start; gap: 10px;
+      font-size: 13px;
       color: var(--text-secondary);
-      line-height: 1.4;
+      line-height: 1.45;
     }
-    .ct-cell {
-      text-align: center;
-      font-size: 12.5px;
-      color: var(--text-secondary);
-      font-weight: 500;
+    .pricing-card .plan-feat-row .check {
+      display: inline-flex; align-items: center; justify-content: center;
+      flex-shrink: 0;
+      color: var(--text-primary);
+      margin-top: 2px;
     }
-    /* Cells are transparent; column tint comes from .compare-table::after */
-    .ct-cell.featured { background: transparent; }
-    .ct-cell svg {
-      width: 15px; height: 15px;
-      color: var(--success-500);
-    }
-    .ct-cell.no { color: var(--text-muted); }
-    .ct-cell.no::before { content: '—'; font-size: 14px; color: var(--neutral-300); }
+    .pricing-card .plan-feat-row .check svg { width: 14px; height: 14px; }
+    .pricing-card.scout .plan-feat-row .check { color: var(--primary-600); }
 
-    /* Reassurance row */
+        /* Reassurance row */
     /* Reassurance row */
     .plans-trust {
       display: flex; justify-content: center; gap: 32px;
@@ -653,111 +569,65 @@
   <main>
     <div class="wrapper">
 
-      <!-- ============ PLANS VIEW: selector + comparison ============ -->
+      <!-- ============ PLANS VIEW: two-card layout ============ -->
       <div class="checkout-view" id="checkoutView">
 
-        <div class="plans-layout">
+        <div class="plans-hero">
+          <h2>Plans built around outcomes.</h2>
+          <p class="lede">
+            Start free with our complete AI recruiting platform. When you need a senior India recruiter to run the search, you pay <strong>only on successful hires</strong>.
+          </p>
+        </div>
 
-          <!-- LEFT: plan selector -->
-          <aside class="plan-selector">
-            <h1>Choose your plan.</h1>
-            <p class="lede">Start free with our AI recruiting platform. When you need a senior recruiter to run the search, pay only on successful hires.</p>
+        <div class="plans-grid">
 
-            <label class="plan-radio-card" data-plan="free" for="r-free">
-              <input type="radio" name="plan" id="r-free">
-              <div class="plan-radio-head">
-                <span class="plan-radio-dot"></span>
-                <span class="plan-radio-name">Free plan</span>
-                <span class="plan-radio-price">$0</span>
+          <!-- TIER 1: Free plan -->
+          <div class="pricing-card free">
+            <div class="card-top">
+              <div class="plan-head-row">
+                <div class="plan-name">Free plan</div>
+                <div class="plan-price-amt-row">$0 <span class="plan-price-suffix">per month</span></div>
               </div>
-              <div class="plan-radio-sub">For teams hiring on their own</div>
-            </label>
-
-            <label class="plan-radio-card selected" data-plan="scout" for="r-scout">
-              <input type="radio" name="plan" id="r-scout" checked>
-              <div class="plan-radio-head">
-                <span class="plan-radio-dot"></span>
-                <span class="plan-radio-name">Scout plan</span>
-                <span class="plan-radio-price">10%</span>
-              </div>
-              <div class="plan-radio-sub">Senior recruiter runs the search</div>
-            </label>
-
-            <button class="plans-main-cta" type="button" id="ctaHire">
-              Talk to a recruiter
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" width="14" height="14"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
-            </button>
-            <div class="plans-reassurance">No retainer &middot; pay only on hire</div>
-          </aside>
-
-          <!-- RIGHT: comparison table -->
-          <div class="compare-table">
-
-            <div class="ct-header">
-              <div class="ct-header-label">Compare plans</div>
-              <div class="ct-plan-col">
-                <div class="ct-plan-name">Free</div>
-                <div class="ct-plan-price">$0 per month</div>
-                <button class="ct-plan-cta" type="button" onclick="location.href='recruit-pipeline.html'">Start free</button>
-              </div>
-              <div class="ct-plan-col featured">
-                <div class="ct-plan-name">Scout</div>
-                <div class="ct-plan-price">10% service fee</div>
-                <button class="ct-plan-cta primary" type="button" id="ctaHire2">Get started</button>
+              <div class="plan-desc">The complete AI recruiting platform for teams hiring on their own.</div>
+              <button class="plan-cta disabled" type="button">Current plan</button>
+            </div>
+            <div class="card-bottom">
+              <div class="plan-feats-label">Includes:</div>
+              <div class="plan-feats">
+                <div class="plan-feat-row"><span class="check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span><span>Unlimited roles&mdash;post jobs and run searches across teams</span></div>
+                <div class="plan-feat-row"><span class="check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span><span>AI sourcing&mdash;candidates surfaced from inbound and partner networks</span></div>
+                <div class="plan-feat-row"><span class="check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span><span>AI screening &amp; interviews&mdash;async video questions, scored automatically</span></div>
+                <div class="plan-feat-row"><span class="check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span><span>Configurable scorecard&mdash;define the criteria AI evaluates on</span></div>
+                <div class="plan-feat-row"><span class="check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span><span>5 unlocks per month&mdash;reveal contacts and download resumes</span></div>
+                <div class="plan-feat-row"><span class="check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span><span>White-labelled comms&mdash;candidates see your brand, not ours</span></div>
               </div>
             </div>
-
-            <div class="ct-section">
-              <div class="ct-row">
-                <div class="ct-feat">Unlimited roles &amp; AI sourcing</div>
-                <div class="ct-cell"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div>
-                <div class="ct-cell featured"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div>
-              </div>
-              <div class="ct-row">
-                <div class="ct-feat">AI talent search across our network</div>
-                <div class="ct-cell">Top 3</div>
-                <div class="ct-cell featured">Unlimited</div>
-              </div>
-              <div class="ct-row">
-                <div class="ct-feat">Active outreach &amp; curated shortlist</div>
-                <div class="ct-cell no"></div>
-                <div class="ct-cell featured"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div>
-              </div>
-            </div>
-
-            <div class="ct-section">
-              <div class="ct-row">
-                <div class="ct-feat">AI screening, scorecard &amp; rubric</div>
-                <div class="ct-cell"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div>
-                <div class="ct-cell featured"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div>
-              </div>
-              <div class="ct-row">
-                <div class="ct-feat">Scheduling, offers &amp; pipeline</div>
-                <div class="ct-cell"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div>
-                <div class="ct-cell featured"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div>
-              </div>
-              <div class="ct-row">
-                <div class="ct-feat">Candidate unlocks per month</div>
-                <div class="ct-cell">5</div>
-                <div class="ct-cell featured">Unlimited</div>
-              </div>
-            </div>
-
-            <div class="ct-section">
-              <div class="ct-row">
-                <div class="ct-feat">Dedicated recruiter + interview support</div>
-                <div class="ct-cell no"></div>
-                <div class="ct-cell featured"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div>
-              </div>
-              <div class="ct-row">
-                <div class="ct-feat">Offer negotiation &amp; 90-day guarantee</div>
-                <div class="ct-cell no"></div>
-                <div class="ct-cell featured"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div>
-              </div>
-            </div>
-
-
           </div>
+
+          <!-- TIER 2: Scout plan (primary-blue gradient) -->
+          <div class="pricing-card scout">
+            <div class="card-top">
+              <div class="plan-head-row">
+                <div class="plan-name">Scout plan</div>
+                <div class="plan-price-amt-row">10% <span class="plan-price-suffix">service fee</span></div>
+              </div>
+              <div class="plan-desc">A senior India recruiter manages your search from sourcing through close.</div>
+              <button class="plan-cta" id="ctaHire" type="button">Talk to a recruiter</button>
+            </div>
+            <div class="card-bottom">
+              <div class="plan-feats-label">Everything in Free, plus:</div>
+              <div class="plan-feats">
+                <div class="plan-feat-row"><span class="check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span><span>Dedicated recruiter&mdash;a senior India hire assigned to your role</span></div>
+                <div class="plan-feat-row"><span class="check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span><span>Curated shortlist&mdash;5&ndash;8 vetted candidates within 7 days</span></div>
+                <div class="plan-feat-row"><span class="check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span><span>Active outreach&mdash;LinkedIn, referrals, and direct sourcing</span></div>
+                <div class="plan-feat-row"><span class="check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span><span>Interview support&mdash;recruiter joins calls and shares structured notes</span></div>
+                <div class="plan-feat-row"><span class="check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span><span>Offer &amp; close management&mdash;negotiation, counters, and joining support</span></div>
+                <div class="plan-feat-row"><span class="check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span><span>90-day guarantee&mdash;free replacement if your hire leaves</span></div>
+                <div class="plan-feat-row"><span class="check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span><span>Unlimited unlocks&mdash;no cap on contacts, resumes, or rounds</span></div>
+              </div>
+            </div>
+          </div>
+
         </div>
 
       </div>
