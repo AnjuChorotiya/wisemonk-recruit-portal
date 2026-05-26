@@ -211,7 +211,7 @@
       overflow: visible;
       position: relative;
     }
-    /* Continuous blue-to-white gradient panel behind the Concierge column */
+    /* Continuous primary-blue → white gradient panel behind the Concierge column */
     .compare-table::after {
       content: '';
       position: absolute;
@@ -219,7 +219,7 @@
       bottom: 0;
       right: 20px;
       width: calc((100% - 40px) / 3.5);
-      background: linear-gradient(180deg, #B6C5FF 0%, #DDE5FF 30%, #F4F6FF 70%, #FFFFFF 100%);
+      background: linear-gradient(180deg, var(--primary-500) 0%, #4A66FF 18%, #95A8FF 40%, #D6DCFF 65%, #FFFFFF 100%);
       border-radius: 14px;
       z-index: 0;
       pointer-events: none;
@@ -245,6 +245,18 @@
     .ct-plan-col.featured {
       background: transparent;
       padding-top: 4px;
+    }
+    .ct-plan-col.featured .ct-plan-name { color: #fff; }
+    .ct-plan-col.featured .ct-plan-price { color: rgba(255, 255, 255, 0.85); }
+    .ct-plan-col.featured .ct-plan-cta.primary {
+      background: #fff;
+      color: var(--primary-600);
+      border-color: #fff;
+    }
+    .ct-plan-col.featured .ct-plan-cta.primary:hover {
+      background: var(--neutral-50);
+      border-color: var(--neutral-50);
+      color: var(--primary-700);
     }
     .ct-plan-name {
       font-size: 14px; font-weight: 700;
