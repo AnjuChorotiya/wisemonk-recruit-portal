@@ -413,6 +413,130 @@
     .ir-dur-opt.selected .check { opacity: 1; }
     .ir-note { font-size: 13px; color: var(--text-muted); margin-bottom: 14px; line-height: 1.5; }
 
+    /* ====== AI Scorecard tab ====== */
+    .sc-summary {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 14px 18px;
+      background: linear-gradient(180deg, #FAFBFF 0%, #FFFFFF 100%);
+      border: 1px solid var(--primary-100);
+      border-radius: 14px;
+      margin-bottom: 18px;
+    }
+    .sc-summary-label { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; color: var(--text-muted); margin-bottom: 4px; }
+    .sc-summary-num { font-family: 'Geist Mono', monospace; font-size: 24px; font-weight: 700; color: var(--text-primary); line-height: 1; }
+    .sc-summary-num .pct { font-size: 15px; color: var(--text-muted); margin-left: 2px; font-weight: 600; }
+    .sc-summary-right {
+      display: inline-flex; align-items: center; gap: 6px;
+      padding: 6px 12px;
+      background: var(--success-50);
+      color: var(--success-700);
+      font-size: 12px; font-weight: 700;
+      border-radius: var(--radius-full);
+    }
+    .sc-summary-right.warn { background: var(--warning-50); color: var(--warning-700); }
+    .sc-summary-right svg { width: 12px; height: 12px; }
+
+    .sc-card {
+      display: grid;
+      grid-template-columns: 28px 1.4fr 1fr auto 28px;
+      gap: 14px;
+      align-items: center;
+      padding: 14px 16px;
+      background: var(--neutral-0);
+      border: 1px solid var(--border-strong);
+      border-radius: 12px;
+      margin-bottom: 10px;
+      transition: border-color 0.12s;
+    }
+    .sc-card:hover { border-color: var(--neutral-300); }
+    .sc-card .sc-num {
+      width: 28px; height: 28px;
+      border-radius: 50%;
+      background: var(--neutral-100);
+      color: var(--text-primary);
+      display: flex; align-items: center; justify-content: center;
+      font-family: 'Geist Mono', monospace;
+      font-size: 11.5px; font-weight: 700;
+    }
+    .sc-card .sc-name {
+      border: 1px solid transparent;
+      background: transparent;
+      padding: 8px 10px;
+      font-family: inherit;
+      font-size: 14px; font-weight: 600;
+      color: var(--text-primary);
+      border-radius: 7px;
+      width: 100%;
+    }
+    .sc-card .sc-name:focus { outline: none; border-color: var(--primary-500); background: var(--neutral-0); box-shadow: 0 0 0 3px rgba(0, 38, 255, 0.08); }
+    .sc-card .sc-desc {
+      border: 1px solid transparent;
+      background: transparent;
+      padding: 8px 10px;
+      font-family: inherit;
+      font-size: 12.5px;
+      color: var(--text-secondary);
+      border-radius: 7px;
+      width: 100%;
+    }
+    .sc-card .sc-desc:focus { outline: none; border-color: var(--primary-500); background: var(--neutral-0); box-shadow: 0 0 0 3px rgba(0, 38, 255, 0.08); }
+    .sc-weight-wrap {
+      display: inline-flex; align-items: center; gap: 8px;
+      padding: 6px 10px 6px 12px;
+      background: var(--neutral-50);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-full);
+    }
+    .sc-weight-wrap input {
+      width: 36px;
+      border: none;
+      background: transparent;
+      font-family: 'Geist Mono', monospace;
+      font-size: 13px; font-weight: 700;
+      color: var(--text-primary);
+      text-align: right;
+      padding: 0;
+    }
+    .sc-weight-wrap input:focus { outline: none; }
+    .sc-weight-wrap .pct { font-size: 11px; color: var(--text-muted); font-weight: 600; font-family: 'Geist Mono', monospace; }
+    .sc-card .sc-bar { grid-column: 2 / 5; height: 4px; background: var(--neutral-100); border-radius: 4px; overflow: hidden; margin-top: 4px; }
+    .sc-card .sc-bar-fill { height: 100%; background: var(--primary-500); border-radius: 4px; transition: width 0.18s; }
+
+    .sc-howto {
+      margin-top: 24px;
+      padding: 18px 20px;
+      background: var(--neutral-50);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+    }
+    .sc-howto-head { display: flex; align-items: center; gap: 8px; margin-bottom: 12px; font-size: 13.5px; color: var(--text-primary); }
+    .sc-howto-ico { display: inline-flex; align-items: center; justify-content: center; width: 24px; height: 24px; background: var(--ai-grad); color: #fff; border-radius: 6px; }
+    .sc-howto-ico svg { width: 12px; height: 12px; }
+    .sc-howto-list { list-style: none; padding-left: 0; counter-reset: scstep; }
+    .sc-howto-list li {
+      position: relative;
+      padding: 6px 0 6px 30px;
+      font-size: 13px;
+      color: var(--text-secondary);
+      line-height: 1.55;
+      counter-increment: scstep;
+    }
+    .sc-howto-list li::before {
+      content: counter(scstep);
+      position: absolute;
+      left: 0; top: 8px;
+      width: 20px; height: 20px;
+      background: var(--neutral-0);
+      border: 1px solid var(--border);
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-family: 'Geist Mono', monospace;
+      font-size: 10.5px;
+      font-weight: 700;
+      color: var(--text-primary);
+    }
+    .sc-howto-list li strong { color: var(--text-primary); font-weight: 700; }
+
     /* Add-row button */
     .jp-add-btn {
       background: none;
@@ -437,8 +561,6 @@
       .jp-title-row .jp-actions { width: 100%; }
     }
   </style>
-  <link rel="stylesheet" href="mobile-fixes.css">
-  <script src="mobile-fixes.js" defer></script>
 </head>
 <body>
 
@@ -460,6 +582,7 @@
     <button class="jp-tab active" type="button" data-pane="jd" role="tab">Job description</button>
     <button class="jp-tab" type="button" data-pane="screening" role="tab">Screening questions <span class="ct" id="screeningCount">3</span></button>
     <button class="jp-tab" type="button" data-pane="rounds" role="tab">Interview rounds <span class="ct" id="roundsCount">3</span></button>
+    <button class="jp-tab" type="button" data-pane="scorecard" role="tab">AI scorecard <span class="ct" id="scoreCount">5</span></button>
   </div>
 
   <!-- JD header (title + actions + author + meta) — only visible on the JD tab -->
@@ -556,6 +679,52 @@
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
         Add another round
       </button>
+    </section>
+  </div>
+
+  <!-- TAB: AI SCORECARD (evaluation areas) -->
+  <div class="jp-pane" data-pane="scorecard">
+    <section class="jp-section">
+      <h2>AI scorecard</h2>
+      <p class="ir-note">
+        These are the dimensions our AI uses to evaluate every candidate — from their answers, resume, and interviews. Adjust the weights so the score reflects what <em>you</em> care about most for this role.
+      </p>
+
+      <!-- Live total preview -->
+      <div class="sc-summary">
+        <div class="sc-summary-left">
+          <div class="sc-summary-label">Total weight</div>
+          <div class="sc-summary-num"><span id="scTotal">100</span><span class="pct">%</span></div>
+        </div>
+        <div class="sc-summary-right" id="scBalance">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+          Balanced
+        </div>
+      </div>
+
+      <!-- Editable evaluation areas -->
+      <div id="scoreList"></div>
+
+      <button type="button" id="addScoreBtn" class="jp-add-btn">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+        Add evaluation area
+      </button>
+
+      <!-- How AI scores -->
+      <div class="sc-howto">
+        <div class="sc-howto-head">
+          <span class="sc-howto-ico">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2z"/></svg>
+          </span>
+          <strong>How AI calculates the score</strong>
+        </div>
+        <ol class="sc-howto-list">
+          <li><strong>Signals.</strong> AI reads the resume, screening answers, and interview transcripts.</li>
+          <li><strong>Per-area scoring.</strong> Each area above is scored 0-10 against the signals it found.</li>
+          <li><strong>Weighted sum.</strong> Area score × weight, summed across all areas, normalised to a 0-100 fit score.</li>
+          <li><strong>Confidence.</strong> Lower confidence is shown when the signal is thin (e.g. no interview yet).</li>
+        </ol>
+      </div>
     </section>
   </div>
 </article>
@@ -1061,6 +1230,92 @@
   });
 
   renderQuestions();
+
+  // ============ AI SCORECARD (evaluation areas) ============
+  const DEFAULT_SCORECARD = [
+    { name: 'Technical depth',  desc: 'Code, system design, problem-solving', weight: 30 },
+    { name: 'Domain expertise', desc: 'Industry / stack specific knowledge',   weight: 20 },
+    { name: 'Communication',    desc: 'Clarity, structure, written + spoken',  weight: 20 },
+    { name: 'Ownership',        desc: 'Initiative, follow-through, impact',     weight: 15 },
+    { name: 'Culture fit',      desc: 'Working style and team collaboration',  weight: 15 }
+  ];
+  let scorecard;
+  try { scorecard = JSON.parse(localStorage.getItem('wm_scorecard_def')) || DEFAULT_SCORECARD.slice(); }
+  catch (e) { scorecard = DEFAULT_SCORECARD.slice(); }
+
+  const scoreList = document.getElementById('scoreList');
+  const scTotalEl = document.getElementById('scTotal');
+  const scBalance = document.getElementById('scBalance');
+
+  function renderScorecard() {
+    scoreList.innerHTML = scorecard.map((s, i) => `
+      <div class="sc-card" data-i="${i}">
+        <span class="sc-num">${i + 1}</span>
+        <input class="sc-name" type="text" value="${escapeAttr(s.name)}" placeholder="Evaluation area">
+        <input class="sc-desc" type="text" value="${escapeAttr(s.desc)}" placeholder="What signal is this measuring?">
+        <span class="sc-weight-wrap">
+          <input class="sc-weight" type="number" min="0" max="100" value="${s.weight}">
+          <span class="pct">%</span>
+        </span>
+        <button type="button" class="row-remove" aria-label="Remove area" ${scorecard.length === 1 ? 'style="visibility:hidden"' : ''}>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-2 14a2 2 0 0 1-2 2H9a2 2 0 0 1-2-2L5 6"/></svg>
+        </button>
+        <div class="sc-bar"><div class="sc-bar-fill" style="width:${Math.min(100, s.weight)}%"></div></div>
+      </div>
+    `).join('');
+    document.getElementById('scoreCount').textContent = scorecard.length;
+    wireScoreRows();
+    updateScTotal();
+  }
+
+  function updateScTotal() {
+    const total = scorecard.reduce((s, x) => s + (Number(x.weight) || 0), 0);
+    scTotalEl.textContent = total;
+    if (total === 100) {
+      scBalance.classList.remove('warn');
+      scBalance.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg> Balanced';
+    } else {
+      scBalance.classList.add('warn');
+      scBalance.innerHTML = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12" y2="16"/></svg> ${total > 100 ? 'Over by ' + (total - 100) : 'Under by ' + (100 - total)}%`;
+    }
+  }
+
+  function saveScorecard() {
+    try { localStorage.setItem('wm_scorecard_def', JSON.stringify(scorecard)); } catch (e) {}
+  }
+
+  function wireScoreRows() {
+    scoreList.querySelectorAll('.sc-card').forEach(card => {
+      const i = parseInt(card.dataset.i, 10);
+      const nameInp = card.querySelector('.sc-name');
+      const descInp = card.querySelector('.sc-desc');
+      const wInp = card.querySelector('.sc-weight');
+      const barFill = card.querySelector('.sc-bar-fill');
+      nameInp.addEventListener('input', () => { scorecard[i].name = nameInp.value; saveScorecard(); });
+      descInp.addEventListener('input', () => { scorecard[i].desc = descInp.value; saveScorecard(); });
+      wInp.addEventListener('input', () => {
+        const val = Math.max(0, Math.min(100, parseInt(wInp.value, 10) || 0));
+        scorecard[i].weight = val;
+        barFill.style.width = val + '%';
+        updateScTotal();
+        saveScorecard();
+      });
+      card.querySelector('.row-remove').addEventListener('click', () => {
+        if (scorecard.length === 1) return;
+        scorecard.splice(i, 1);
+        saveScorecard();
+        renderScorecard();
+      });
+    });
+  }
+
+  document.getElementById('addScoreBtn').addEventListener('click', () => {
+    scorecard.push({ name: 'New area', desc: '', weight: 10 });
+    saveScorecard();
+    renderScorecard();
+  });
+
+  renderScorecard();
 </script>
 </body>
 </html>
