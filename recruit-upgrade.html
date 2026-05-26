@@ -203,12 +203,12 @@
       line-height: 1.5;
     }
 
-    /* === RIGHT: comparison table (compact) === */
+    /* === RIGHT: comparison table (compact, no outer border) === */
     .compare-table {
       background: var(--neutral-0);
-      border: 1px solid var(--border);
-      border-radius: 14px;
-      overflow: hidden;
+      border: none;
+      border-radius: 0;
+      overflow: visible;
     }
     .ct-header {
       display: grid;
@@ -229,10 +229,12 @@
       padding: 0 8px;
     }
     .ct-plan-col.featured {
-      background: linear-gradient(180deg, #F4F6FF 0%, transparent 60%);
-      border-radius: 10px 10px 0 0;
-      margin-top: -4px;
-      padding-top: 4px;
+      background: linear-gradient(180deg, #E8ECFF 0%, #F0F3FF 100%);
+      border-radius: 12px 12px 0 0;
+      padding-top: 8px;
+      padding-bottom: 4px;
+      margin-top: -8px;
+      margin-bottom: -12px;
     }
     .ct-plan-name {
       font-size: 14px; font-weight: 700;
@@ -285,7 +287,8 @@
       padding: 7px 0;
       border-top: 1px solid var(--border);
     }
-    .ct-row:first-of-type { border-top: none; }
+    /* Suppress border only on the very first row of the table */
+    .compare-table > .ct-section:first-of-type > .ct-row:first-child { border-top: none; }
     .ct-feat {
       font-size: 12.5px;
       color: var(--text-secondary);
@@ -297,8 +300,11 @@
       color: var(--text-secondary);
       font-weight: 500;
     }
-    .ct-cell.featured {
-      background: linear-gradient(180deg, transparent, #FAFBFF 100%);
+    /* Continuous lavender background extending down the entire Concierge column */
+    .ct-cell.featured { background: #F0F3FF; }
+    /* Round the bottom corners of the very last featured cell so the column has rounded ends */
+    .compare-table > .ct-section:last-of-type > .ct-row:last-child .ct-cell.featured {
+      border-radius: 0 0 12px 12px;
     }
     .ct-cell svg {
       width: 15px; height: 15px;
