@@ -158,6 +158,12 @@
       display: flex; align-items: center; gap: 10px;
       margin-bottom: 4px;
     }
+    .plan-radio-price {
+      margin-left: auto;
+      font-size: 16px; font-weight: 800;
+      color: var(--text-primary);
+      letter-spacing: -0.4px;
+    }
     .plan-radio-dot {
       width: 16px; height: 16px;
       border-radius: 50%;
@@ -657,22 +663,24 @@
             <h1>Choose your plan.</h1>
             <p class="lede">Start free with our AI recruiting platform. When you need a senior recruiter to run the search, pay only on successful hires.</p>
 
-            <label class="plan-radio-card" data-plan="self-serve" for="r-self">
-              <input type="radio" name="plan" id="r-self">
+            <label class="plan-radio-card" data-plan="free" for="r-free">
+              <input type="radio" name="plan" id="r-free">
               <div class="plan-radio-head">
                 <span class="plan-radio-dot"></span>
-                <span class="plan-radio-name">Self-serve</span>
+                <span class="plan-radio-name">Free plan</span>
+                <span class="plan-radio-price">$0</span>
               </div>
-              <div class="plan-radio-sub">$0 &middot; for teams hiring on their own</div>
+              <div class="plan-radio-sub">For teams hiring on their own</div>
             </label>
 
-            <label class="plan-radio-card selected" data-plan="concierge" for="r-concierge">
-              <input type="radio" name="plan" id="r-concierge" checked>
+            <label class="plan-radio-card selected" data-plan="scout" for="r-scout">
+              <input type="radio" name="plan" id="r-scout" checked>
               <div class="plan-radio-head">
                 <span class="plan-radio-dot"></span>
-                <span class="plan-radio-name">Concierge</span>
+                <span class="plan-radio-name">Scout plan</span>
+                <span class="plan-radio-price">10%</span>
               </div>
-              <div class="plan-radio-sub">10% service fee &middot; senior recruiter runs the search</div>
+              <div class="plan-radio-sub">Senior recruiter runs the search</div>
             </label>
 
             <button class="plans-main-cta" type="button" id="ctaHire">
@@ -688,12 +696,12 @@
             <div class="ct-header">
               <div class="ct-header-label">Compare plans</div>
               <div class="ct-plan-col">
-                <div class="ct-plan-name">Self-serve</div>
+                <div class="ct-plan-name">Free</div>
                 <div class="ct-plan-price">$0 per month</div>
                 <button class="ct-plan-cta" type="button" onclick="location.href='recruit-pipeline.html'">Start free</button>
               </div>
               <div class="ct-plan-col featured">
-                <div class="ct-plan-name">Concierge</div>
+                <div class="ct-plan-name">Scout</div>
                 <div class="ct-plan-price">10% service fee</div>
                 <button class="ct-plan-cta primary" type="button" id="ctaHire2">Get started</button>
               </div>
