@@ -209,7 +209,22 @@
       border: none;
       border-radius: 0;
       overflow: visible;
+      position: relative;
     }
+    /* Continuous blue-to-white gradient panel behind the Concierge column */
+    .compare-table::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      right: 20px;
+      width: calc((100% - 40px) / 3.5);
+      background: linear-gradient(180deg, #B6C5FF 0%, #DDE5FF 30%, #F4F6FF 70%, #FFFFFF 100%);
+      border-radius: 14px;
+      z-index: 0;
+      pointer-events: none;
+    }
+    .ct-header, .ct-section, .ct-row { position: relative; z-index: 1; }
     .ct-header {
       display: grid;
       grid-template-columns: 1.5fr 1fr 1fr;
@@ -228,12 +243,8 @@
       padding: 0 8px;
     }
     .ct-plan-col.featured {
-      background: linear-gradient(180deg, #E8ECFF 0%, #F0F3FF 100%);
-      border-radius: 12px 12px 0 0;
-      padding-top: 8px;
-      padding-bottom: 4px;
-      margin-top: -8px;
-      margin-bottom: -12px;
+      background: transparent;
+      padding-top: 4px;
     }
     .ct-plan-name {
       font-size: 14px; font-weight: 700;
@@ -296,12 +307,8 @@
       color: var(--text-secondary);
       font-weight: 500;
     }
-    /* Continuous lavender background extending down the entire Concierge column */
-    .ct-cell.featured { background: #F0F3FF; }
-    /* Round the bottom corners of the very last featured cell so the column has rounded ends */
-    .compare-table > .ct-section:last-of-type > .ct-row:last-child .ct-cell.featured {
-      border-radius: 0 0 12px 12px;
-    }
+    /* Cells are transparent; column tint comes from .compare-table::after */
+    .ct-cell.featured { background: transparent; }
     .ct-cell svg {
       width: 15px; height: 15px;
       color: var(--success-500);
