@@ -203,25 +203,25 @@
       line-height: 1.5;
     }
 
-    /* === RIGHT: comparison table === */
+    /* === RIGHT: comparison table (compact) === */
     .compare-table {
       background: var(--neutral-0);
       border: 1px solid var(--border);
-      border-radius: 16px;
+      border-radius: 14px;
       overflow: hidden;
     }
     .ct-header {
       display: grid;
       grid-template-columns: 1.5fr 1fr 1fr;
       gap: 0;
-      padding: 28px 24px 20px;
+      padding: 16px 20px 12px;
       border-bottom: 1px solid var(--border);
       background: var(--neutral-0);
     }
     .ct-header-label {
-      font-size: 22px; font-weight: 700;
+      font-size: 16px; font-weight: 700;
       color: var(--text-primary);
-      letter-spacing: -0.4px;
+      letter-spacing: -0.3px;
       align-self: end;
     }
     .ct-plan-col {
@@ -230,27 +230,27 @@
     }
     .ct-plan-col.featured {
       background: linear-gradient(180deg, #F4F6FF 0%, transparent 60%);
-      border-radius: 12px 12px 0 0;
-      margin-top: -8px;
-      padding-top: 8px;
+      border-radius: 10px 10px 0 0;
+      margin-top: -4px;
+      padding-top: 4px;
     }
     .ct-plan-name {
-      font-size: 17px; font-weight: 700;
+      font-size: 14px; font-weight: 700;
       color: var(--text-primary);
-      margin-bottom: 4px;
+      margin-bottom: 2px;
     }
     .ct-plan-price {
-      font-size: 12px;
+      font-size: 11.5px;
       color: var(--text-muted);
-      margin-bottom: 12px;
+      margin-bottom: 8px;
       font-weight: 500;
     }
     .ct-plan-cta {
       display: inline-flex; align-items: center; justify-content: center;
-      padding: 7px 18px;
+      padding: 5px 14px;
       border-radius: var(--radius-full);
       font-family: inherit;
-      font-size: 12.5px; font-weight: 600;
+      font-size: 11.5px; font-weight: 600;
       cursor: pointer;
       border: 1.5px solid var(--border-strong);
       background: var(--neutral-0);
@@ -266,31 +266,34 @@
     .ct-plan-cta.primary:hover { background: var(--primary-600); border-color: var(--primary-600); }
 
     .ct-section {
-      padding: 18px 24px 8px;
+      padding: 4px 20px 0;
     }
     .ct-section-title {
-      font-size: 14px; font-weight: 700;
+      font-size: 12px; font-weight: 700;
       color: var(--text-primary);
-      padding: 12px 0 14px;
+      padding: 10px 0 8px;
       letter-spacing: -0.1px;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      color: var(--text-muted);
     }
     .ct-row {
       display: grid;
       grid-template-columns: 1.5fr 1fr 1fr;
       gap: 0;
       align-items: center;
-      padding: 12px 0;
+      padding: 7px 0;
       border-top: 1px solid var(--border);
     }
     .ct-row:first-of-type { border-top: none; }
     .ct-feat {
-      font-size: 13.5px;
+      font-size: 12.5px;
       color: var(--text-secondary);
-      line-height: 1.45;
+      line-height: 1.4;
     }
     .ct-cell {
       text-align: center;
-      font-size: 13px;
+      font-size: 12.5px;
       color: var(--text-secondary);
       font-weight: 500;
     }
@@ -298,11 +301,11 @@
       background: linear-gradient(180deg, transparent, #FAFBFF 100%);
     }
     .ct-cell svg {
-      width: 18px; height: 18px;
+      width: 15px; height: 15px;
       color: var(--success-500);
     }
     .ct-cell.no { color: var(--text-muted); }
-    .ct-cell.no::before { content: '—'; font-size: 16px; color: var(--neutral-300); }
+    .ct-cell.no::before { content: '—'; font-size: 14px; color: var(--neutral-300); }
 
     /* Reassurance row */
     /* Reassurance row */
@@ -677,109 +680,56 @@
 
             <div class="ct-section">
               <div class="ct-section-title">Find candidates</div>
-          <div class="ct-row">
-            <div class="ct-feat">Unlimited job postings and roles</div>
-            <div class="ct-cell"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div>
-            <div class="ct-cell featured"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div>
-          </div>
-          <div class="ct-row">
-            <div class="ct-feat">AI sourcing from inbound applications</div>
-            <div class="ct-cell"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div>
-            <div class="ct-cell featured"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div>
-          </div>
-          <div class="ct-row">
-            <div class="ct-feat">AI talent search across our network</div>
-            <div class="ct-cell">Top 3</div>
-            <div class="ct-cell featured">Unlimited</div>
-          </div>
-          <div class="ct-row">
-            <div class="ct-feat">Active outreach via LinkedIn & referrals</div>
-            <div class="ct-cell no"></div>
-            <div class="ct-cell featured"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div>
-          </div>
-          <div class="ct-row">
-            <div class="ct-feat">Curated shortlist delivered in 7 days</div>
-            <div class="ct-cell no"></div>
-            <div class="ct-cell featured"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div>
-          </div>
+              <div class="ct-row">
+                <div class="ct-feat">Unlimited roles &amp; AI sourcing</div>
+                <div class="ct-cell"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div>
+                <div class="ct-cell featured"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div>
+              </div>
+              <div class="ct-row">
+                <div class="ct-feat">AI talent search across our network</div>
+                <div class="ct-cell">Top 3</div>
+                <div class="ct-cell featured">Unlimited</div>
+              </div>
+              <div class="ct-row">
+                <div class="ct-feat">Active outreach &amp; curated shortlist</div>
+                <div class="ct-cell no"></div>
+                <div class="ct-cell featured"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div>
+              </div>
             </div>
 
             <div class="ct-section">
-              <div class="ct-section-title">Screen &amp; evaluate with AI</div>
-          <div class="ct-row">
-            <div class="ct-feat">AI screening &amp; async video interviews</div>
-            <div class="ct-cell"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div>
-            <div class="ct-cell featured"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div>
-          </div>
-          <div class="ct-row">
-            <div class="ct-feat">Configurable AI scorecard</div>
-            <div class="ct-cell"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div>
-            <div class="ct-cell featured"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div>
-          </div>
-          <div class="ct-row">
-            <div class="ct-feat">AI summary &amp; rubric scoring</div>
-            <div class="ct-cell"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div>
-            <div class="ct-cell featured"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div>
-          </div>
-          <div class="ct-row">
-            <div class="ct-feat">Pipeline &amp; kanban management</div>
-            <div class="ct-cell"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div>
-            <div class="ct-cell featured"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div>
-          </div>
+              <div class="ct-section-title">Screen &amp; manage</div>
+              <div class="ct-row">
+                <div class="ct-feat">AI screening, scorecard &amp; rubric</div>
+                <div class="ct-cell"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div>
+                <div class="ct-cell featured"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div>
+              </div>
+              <div class="ct-row">
+                <div class="ct-feat">Scheduling, offers &amp; pipeline</div>
+                <div class="ct-cell"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div>
+                <div class="ct-cell featured"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div>
+              </div>
+              <div class="ct-row">
+                <div class="ct-feat">Candidate unlocks per month</div>
+                <div class="ct-cell">5</div>
+                <div class="ct-cell featured">Unlimited</div>
+              </div>
             </div>
 
             <div class="ct-section">
-              <div class="ct-section-title">Hands-on hiring support</div>
-          <div class="ct-row">
-            <div class="ct-feat">Dedicated India recruiter</div>
-            <div class="ct-cell no"></div>
-            <div class="ct-cell featured"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div>
-          </div>
-          <div class="ct-row">
-            <div class="ct-feat">Recruiter attends interviews &amp; shares notes</div>
-            <div class="ct-cell no"></div>
-            <div class="ct-cell featured"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div>
-          </div>
-          <div class="ct-row">
-            <div class="ct-feat">Offer negotiation &amp; close management</div>
-            <div class="ct-cell no"></div>
-            <div class="ct-cell featured"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div>
-          </div>
-          <div class="ct-row">
-            <div class="ct-feat">90-day replacement guarantee</div>
-            <div class="ct-cell no"></div>
-            <div class="ct-cell featured"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div>
-          </div>
+              <div class="ct-section-title">Concierge service</div>
+              <div class="ct-row">
+                <div class="ct-feat">Dedicated recruiter + interview support</div>
+                <div class="ct-cell no"></div>
+                <div class="ct-cell featured"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div>
+              </div>
+              <div class="ct-row">
+                <div class="ct-feat">Offer negotiation &amp; 90-day guarantee</div>
+                <div class="ct-cell no"></div>
+                <div class="ct-cell featured"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div>
+              </div>
             </div>
 
-            <div class="ct-section">
-              <div class="ct-section-title">Limits &amp; included</div>
-          <div class="ct-row">
-            <div class="ct-feat">Candidate unlocks (contact &amp; resume)</div>
-            <div class="ct-cell">5 / month</div>
-            <div class="ct-cell featured">Unlimited</div>
-          </div>
-          <div class="ct-row">
-            <div class="ct-feat">Interview rounds per role</div>
-            <div class="ct-cell">Unlimited</div>
-            <div class="ct-cell featured">Unlimited</div>
-          </div>
-          <div class="ct-row">
-            <div class="ct-feat">Team seats</div>
-            <div class="ct-cell">Unlimited</div>
-            <div class="ct-cell featured">Unlimited</div>
-          </div>
-          <div class="ct-row">
-            <div class="ct-feat">White-labelled candidate emails</div>
-            <div class="ct-cell"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div>
-            <div class="ct-cell featured"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div>
-          </div>
-          <div class="ct-row">
-            <div class="ct-feat">Built-in scheduling &amp; offer letters</div>
-            <div class="ct-cell"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div>
-            <div class="ct-cell featured"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div>
-          </div>
-            </div>
 
           </div>
         </div>
