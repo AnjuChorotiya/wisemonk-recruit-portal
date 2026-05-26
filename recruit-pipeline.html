@@ -697,6 +697,33 @@
     }
     .talent-tag .more-count { font-weight: 600; color: var(--text-muted); }
 
+    /* Source badge — distinguishes Wisemonk-vetted vs public applications */
+    .src-badge {
+      display: inline-flex; align-items: center; gap: 4px;
+      padding: 2px 8px;
+      border-radius: var(--radius-full);
+      font-size: 10.5px; font-weight: 600;
+      font-family: 'Geist Mono', monospace;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      margin-left: 8px;
+    }
+    .src-badge svg { width: 10px; height: 10px; }
+    .src-badge.vetted {
+      background: var(--primary-50);
+      color: var(--primary-600);
+      border: 1px solid var(--primary-100);
+    }
+    .src-badge.public {
+      background: var(--neutral-50);
+      color: var(--text-muted);
+      border: 1px solid var(--border);
+    }
+    /* Soft accent on vetted rows */
+    .talent-row.is-vetted .talent-logo {
+      box-shadow: 0 0 0 2px var(--primary-100);
+    }
+
     .talent-actions-stack { display: flex; flex-direction: column; align-items: flex-end; justify-content: space-between; gap: 24px; flex-shrink: 0; }
     .talent-icons { display: flex; align-items: center; gap: 6px; }
     .talent-icons .new-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--danger-500); }
@@ -2370,7 +2397,7 @@
           </div>
 
           <div class="candidates-heading" id="defaultHeading">
-            <h2>We screened <strong>1,000+ applicants</strong> and hand-picked these top fits for you.</h2>
+            <h2><strong>5 applicants</strong> for this role &mdash; <span style="color:var(--primary-600);">2 vetted by your Wisemonk recruiter</span>, 3 applied via your job link.</h2>
             <div class="cand-actions">
               <button class="ai-search-btn" type="button" id="aiSearchBtn">
                 <span class="spark">
@@ -3245,7 +3272,7 @@
 
     // ===== CANDIDATES (per role) =====
     const candidates = [
-      { id: 'priya', name: 'Priya Sharma', initial: 'P', color: '#FF6B35', title: 'Senior Backend Engineer · 6 years', location: 'Bangalore', salary: '₹38 LPA', notice: '30-day', english: 'fluent', fit: 92, fitClass: 'fit-high', skills: ['Python', 'Django', 'PostgreSQL', 'AWS', 'Kafka', 'gRPC'],
+      { id: 'priya', source: 'vetted', name: 'Priya Sharma', initial: 'P', color: '#FF6B35', title: 'Senior Backend Engineer · 6 years', location: 'Bangalore', salary: '₹38 LPA', notice: '30-day', english: 'fluent', fit: 92, fitClass: 'fit-high', skills: ['Python', 'Django', 'PostgreSQL', 'AWS', 'Kafka', 'gRPC'],
         currentRole: 'Senior Backend Engineer', currentOrg: 'Razorpay', orgColor: '#072654', orgInitial: 'R',
         status: 'not-contacted', statusLabel: 'Not Contacted',
         owner: { name: 'Anju', initial: 'A', color: '#5FA748' },
@@ -3260,7 +3287,7 @@
         ],
         resume: [ { when: '2020–now', role: 'Senior Backend Engineer', org: 'Razorpay' }, { when: '2018–2020', role: 'Backend Engineer', org: 'Swiggy' }, { when: '2016–2018', role: 'Software Engineer', org: 'BITS Pilani · CS' } ]
       },
-      { id: 'arjun', name: 'Arjun Patel', initial: 'A', color: '#7C5CFF', title: 'Backend Engineer · 5 years', location: 'Pune', salary: '₹32 LPA', notice: '60-day', english: 'fluent', fit: 88, fitClass: 'fit-high', skills: ['Python', 'FastAPI', 'PostgreSQL', 'Docker', 'Kubernetes'],
+      { id: 'arjun', source: 'public', name: 'Arjun Patel', initial: 'A', color: '#7C5CFF', title: 'Backend Engineer · 5 years', location: 'Pune', salary: '₹32 LPA', notice: '60-day', english: 'fluent', fit: 88, fitClass: 'fit-high', skills: ['Python', 'FastAPI', 'PostgreSQL', 'Docker', 'Kubernetes'],
         currentRole: 'Backend Engineer', currentOrg: 'FinBox', orgColor: '#1F5BFF', orgInitial: 'F',
         status: 'contacted', statusLabel: 'Contacted',
         owner: { name: 'Anju', initial: 'A', color: '#5FA748' },
@@ -3271,7 +3298,7 @@
         qa: [ { q: 'Walk us through a system you scaled.', a: 'Loan origination at FinBox. 200K applications/day.' }, { q: 'What broke first under load?', a: 'Redis cache eviction during peak.' }, { q: 'Salary and notice?', a: '₹32 LPA. 60-day notice.' } ],
         resume: [ { when: '2021–now', role: 'Backend Engineer', org: 'FinBox' }, { when: '2019–2021', role: 'Software Engineer', org: 'Freshworks' }, { when: '2014–2018', role: 'B.Tech CS', org: 'VIT Vellore' } ]
       },
-      { id: 'meera', name: 'Meera Iyer', initial: 'M', color: '#12B76A', title: 'Senior Engineer · 7 years', location: 'Chennai', salary: '₹42 LPA', notice: '15-day', english: 'native', fit: 85, fitClass: 'fit-high', skills: ['Python', 'Go', 'PostgreSQL', 'Redis', 'AWS'],
+      { id: 'meera', source: 'vetted', name: 'Meera Iyer', initial: 'M', color: '#12B76A', title: 'Senior Engineer · 7 years', location: 'Chennai', salary: '₹42 LPA', notice: '15-day', english: 'native', fit: 85, fitClass: 'fit-high', skills: ['Python', 'Go', 'PostgreSQL', 'Redis', 'AWS'],
         currentRole: 'Senior Engineer', currentOrg: 'Stripe', orgColor: '#635BFF', orgInitial: 'S',
         status: 'interview', statusLabel: 'Interview',
         owner: { name: 'Rohit', initial: 'R', color: '#7C5CFF' },
@@ -3282,7 +3309,7 @@
         qa: [ { q: 'Walk us through a system you scaled.', a: 'Reduced P99 latency on Stripe India billing service from 800ms → 90ms.' }, { q: 'What broke first under load?', a: 'N+1 queries hidden behind ORM.' }, { q: 'Salary and notice?', a: '₹42 LPA, 15-day notice.' } ],
         resume: [ { when: '2022–now', role: 'Senior Engineer', org: 'Stripe' }, { when: '2018–2022', role: 'Backend Engineer', org: 'Flipkart' }, { when: '2013–2017', role: 'B.E. CS', org: 'Anna University' } ]
       },
-      { id: 'rohan', name: 'Rohan Kapoor', initial: 'R', color: '#F79009', title: 'Backend Engineer · 4 years', location: 'Delhi NCR', salary: '₹28 LPA', notice: '30-day', english: 'fluent', fit: 78, fitClass: 'fit-med', skills: ['Python', 'Flask', 'MySQL', 'AWS', 'Redis'],
+      { id: 'rohan', source: 'public', name: 'Rohan Kapoor', initial: 'R', color: '#F79009', title: 'Backend Engineer · 4 years', location: 'Delhi NCR', salary: '₹28 LPA', notice: '30-day', english: 'fluent', fit: 78, fitClass: 'fit-med', skills: ['Python', 'Flask', 'MySQL', 'AWS', 'Redis'],
         currentRole: 'Backend Engineer', currentOrg: 'Cred', orgColor: '#000000', orgInitial: 'C',
         status: 'not-contacted', statusLabel: 'Not Contacted',
         owner: { name: 'Anju', initial: 'A', color: '#5FA748' },
@@ -3293,7 +3320,7 @@
         qa: [ { q: 'Walk us through a system you scaled.', a: 'Built notifications service at Cred, 50M sends/day.' }, { q: 'What broke first under load?', a: 'SQS DLQ backlog.' }, { q: 'Salary and notice?', a: '₹28 LPA, 30-day.' } ],
         resume: [ { when: '2022–now', role: 'Backend Engineer', org: 'Cred' }, { when: '2020–2022', role: 'SDE', org: 'Paytm' }, { when: '2016–2020', role: 'B.Tech CS', org: 'IIIT Delhi' } ]
       },
-      { id: 'sanjana', name: 'Sanjana Reddy', initial: 'S', color: '#0026FF', title: 'Senior Engineer · 5 years', location: 'Hyderabad', salary: '₹35 LPA', notice: '45-day', english: 'fluent', fit: 75, fitClass: 'fit-med', skills: ['Python', 'Django', 'PostgreSQL', 'GCP'],
+      { id: 'sanjana', source: 'public', name: 'Sanjana Reddy', initial: 'S', color: '#0026FF', title: 'Senior Engineer · 5 years', location: 'Hyderabad', salary: '₹35 LPA', notice: '45-day', english: 'fluent', fit: 75, fitClass: 'fit-med', skills: ['Python', 'Django', 'PostgreSQL', 'GCP'],
         currentRole: 'Senior Engineer', currentOrg: 'Zerodha', orgColor: '#387ED1', orgInitial: 'Z',
         status: 'offered', statusLabel: 'Offered',
         owner: { name: 'Rohit', initial: 'R', color: '#7C5CFF' },
@@ -3322,11 +3349,16 @@
       const isLocked = opts.locked;
       const skills = (c.skills || []).slice(0, 5);
       const skillsHtml = skills.map((s, i) => i < 3 ? `<span class="talent-tag">${s}</span>` : `<span class="talent-tag"><span class="tool-ico" style="background:#9AA2B2">${s.charAt(0)}</span>${s}</span>`).join('');
+      const sourceBadge = !isLocked && c.source === 'vetted'
+        ? `<span class="src-badge vetted" title="Sourced & vetted by a Wisemonk recruiter"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>Wisemonk vetted</span>`
+        : (!isLocked && c.source === 'public'
+            ? `<span class="src-badge public" title="Applied through your shared job link">Applied via link</span>`
+            : '');
       return `
-        <div class="talent-row${isLocked ? ' locked' : ''}"${isLocked ? '' : ` data-id="${c.id}"`}>
+        <div class="talent-row${isLocked ? ' locked' : ''}${c.source === 'vetted' ? ' is-vetted' : ''}"${isLocked ? '' : ` data-id="${c.id}"`}>
           <div class="talent-logo" style="background:${c.orgColor || c.color}">${c.orgInitial || c.initial}</div>
           <div class="talent-body">
-            <div class="talent-head"><span class="org">${c.currentOrg || c.org} (current)</span><span class="dot">·</span><span>${c.appliedAgo || c.ago || '1d'}</span></div>
+            <div class="talent-head"><span class="org">${c.currentOrg || c.org} (current)</span><span class="dot">·</span><span>${c.appliedAgo || c.ago || '1d'}</span>${sourceBadge}</div>
             <div class="talent-title">${c.name} — ${c.currentRole || c.role}${c.title && c.title.match(/(\d+) years?/) ? ', ' + c.title.match(/(\d+) years?/)[1] + ' yrs' : ''}</div>
             <div class="talent-pricing">${c.salary || '₹—'}<span class="sep">·</span>${c.notice || '—'} notice<span class="sep">·</span>${c.location || c.loc}</div>
             <div class="talent-tags">${skillsHtml}</div>
